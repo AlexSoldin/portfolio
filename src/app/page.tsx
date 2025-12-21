@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="max-w-4xl mx-auto px-6 py-16">
       {/* Hero Section */}
       <section className="flex flex-col lg:flex-row items-start gap-12 mb-20">
         <div className="flex-1 order-2 lg:order-1 animate-fade-in">

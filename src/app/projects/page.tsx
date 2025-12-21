@@ -74,7 +74,7 @@ export default function ProjectsPage() {
   const otherProjects = projects.filter((p) => !p.featured);
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="max-w-4xl mx-auto px-6 py-16">
       <PageHeader
         title="Projects"
         subtitle="A collection of things I've built. From production applications to creative experiments, each project represents a problem I found interesting."

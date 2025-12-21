@@ -16,7 +16,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--background)]">
-      <nav className="max-w-3xl mx-auto px-6 py-5">
+      <nav className="max-w-4xl mx-auto px-6 py-5">
         <ul className="flex items-center gap-6 flex-wrap">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
