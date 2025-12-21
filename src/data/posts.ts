@@ -1,0 +1,81 @@
+import type { Post } from "@/types";
+
+export const posts: Post[] = [
+  {
+    slug: "scalable-django-applications",
+    title: "Building Scalable Django Applications",
+    excerpt:
+      "Lessons learned from architecting systems that handle millions of requests. From database optimization to caching strategies, a practical guide to scaling Python applications.",
+    date: "Dec 15, 2024",
+    readTime: "8 min read",
+    category: "Engineering",
+    published: true,
+  },
+  {
+    slug: "art-of-component-design",
+    title: "The Art of Component Design",
+    excerpt:
+      "Creating reusable, accessible components that developers actually want to use. A deep dive into API design, composition patterns, and building for extensibility.",
+    date: "Nov 28, 2024",
+    readTime: "6 min read",
+    category: "Design Systems",
+    published: true,
+  },
+  {
+    slug: "performance-optimization-deep-dive",
+    title: "Performance Optimization Deep Dive",
+    excerpt:
+      "A comprehensive guide to measuring and improving web application performance. From Core Web Vitals to bundle optimization, with practical examples.",
+    date: "Oct 12, 2024",
+    readTime: "12 min read",
+    category: "Performance",
+    published: true,
+  },
+  {
+    slug: "async-patterns-python",
+    title: "Async Patterns in Python",
+    excerpt:
+      "Understanding when and how to use asynchronous programming in Python. Comparing threading, multiprocessing, and asyncio with real-world use cases.",
+    date: "Sep 20, 2024",
+    readTime: "10 min read",
+    category: "Python",
+    published: true,
+  },
+  {
+    slug: "designing-developer-experience",
+    title: "Designing for Developer Experience",
+    excerpt:
+      "What makes an API delightful to use? Exploring the principles of developer-focused design and how to build tools that people love.",
+    date: "Aug 5, 2024",
+    readTime: "7 min read",
+    category: "Design",
+    published: true,
+  },
+  {
+    slug: "database-migrations-scale",
+    title: "Database Migrations at Scale",
+    excerpt:
+      "Strategies for safely evolving database schemas in production systems with zero downtime. Learned the hard way so you don't have to.",
+    date: "Jul 18, 2024",
+    readTime: "9 min read",
+    category: "Engineering",
+    published: true,
+  },
+];
+
+// Helper functions that could later become API calls
+export function getPublishedPosts(): Post[] {
+  return posts.filter((p) => p.published);
+}
+
+export function getRecentPosts(count: number = 3): Post[] {
+  return getPublishedPosts().slice(0, count);
+}
+
+export function getPostBySlug(slug: string): Post | undefined {
+  return posts.find((p) => p.slug === slug);
+}
+
+export function getPostCategories(): string[] {
+  return [...new Set(posts.map((p) => p.category))];
+}

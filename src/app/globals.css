@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Clean, minimal palette inspired by meowni.ca */
+  /* Clean design inspired by meowni.ca */
   --background: #ffffff;
   --foreground: #000000;
-  --accent: #e63946;
-  --accent-hover: #c5303c;
-  --muted: #666666;
+  --accent: #059669; /* Emerald green */
+  --accent-hover: #047857;
+  --muted: #525252; /* Neutral gray for text */
   --border: #e5e5e5;
   --card: #ffffff;
-  --highlight: #f8f8f8;
+  --highlight: #f5f5f5;
 
   /* Typography */
   --font-serif: var(--font-playfair);
@@ -30,9 +30,9 @@
   :root {
     --background: #0a0a0a;
     --foreground: #fafafa;
-    --accent: #ff6b6b;
-    --accent-hover: #ee5a5a;
-    --muted: #999999;
+    --accent: #10b981; /* Brighter emerald for dark mode */
+    --accent-hover: #059669;
+    --muted: #a3a3a3;
     --border: #262626;
     --card: #141414;
     --highlight: #1a1a1a;
@@ -57,8 +57,8 @@ body {
 }
 
 ::selection {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--accent);
+  color: white;
 }
 
 /* Link styles */
@@ -141,7 +141,7 @@ a:hover {
 
 .prose p {
   margin-bottom: 1.25em;
-  color: var(--foreground);
+  color: var(--muted);
 }
 
 .prose strong {

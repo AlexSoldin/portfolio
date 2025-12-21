@@ -1,21 +1,23 @@
 import GenerativeArt from "@/components/GenerativeArt";
-import { SectionHeader, Card, Tag } from "@/components/ui";
+import { SectionHeader, Card, Tag, RichText } from "@/components/ui";
+import { heroContent, skills, getFeaturedProjects, getRecentPosts } from "@/data";
 import Link from "next/link";
 
 export default function Home() {
+  const featuredProjects = getFeaturedProjects();
+  const recentPosts = getRecentPosts(3);
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
       {/* Hero Section */}
       <section className="flex flex-col lg:flex-row items-start gap-12 mb-20">
         <div className="flex-1 order-2 lg:order-1 animate-fade-in">
           <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-bold leading-tight mb-8">
-            Alex Soldin
+            {heroContent.greeting}
           </h1>
-          <div className="space-y-4 text-base leading-relaxed">
+          <div className="space-y-4 text-base leading-relaxed text-[var(--muted)]">
             <p className="animate-fade-in-delay-1">
-              I&apos;m a <strong>creative engineer</strong> who builds delightful web experiences. I
-              can advise your company about the <strong>web platform</strong>, performance, creative
-              user interactions, and usable machine learning.
+              <RichText>{heroContent.description}</RichText>
             </p>
           </div>
           <div className="flex flex-wrap gap-4 mt-8 animate-fade-in-delay-2">
@@ -42,40 +44,19 @@ export default function Home() {
       <section className="mb-16 animate-fade-in-delay-2">
         <SectionHeader title="What I Do" />
         <div className="space-y-6">
-          <div>
-            <h3 className="font-bold text-lg mb-3">Engineering</h3>
-            <ul className="list-disc list-inside space-y-2 text-[var(--muted)]">
-              <li>
-                <strong className="text-[var(--foreground)]">prototyping</strong>: build small
-                prototypes while you&apos;re still figuring out your tech
-              </li>
-              <li>
-                <strong className="text-[var(--foreground)]">backend development</strong>: robust
-                APIs and scalable systems with Django, PostgreSQL, and modern Python
-              </li>
-              <li>
-                <strong className="text-[var(--foreground)]">frontend engineering</strong>:
-                responsive, accessible interfaces with React, TypeScript, and attention to detail
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-bold text-lg mb-3">Design & Strategy</h3>
-            <ul className="list-disc list-inside space-y-2 text-[var(--muted)]">
-              <li>
-                <strong className="text-[var(--foreground)]">user experience</strong>: design
-                interactions that are easy to use and intuitive for your users
-              </li>
-              <li>
-                <strong className="text-[var(--foreground)]">system design</strong>: architect
-                solutions that balance performance, maintainability, and developer experience
-              </li>
-              <li>
-                <strong className="text-[var(--foreground)]">advising</strong>: answer technical
-                questions, do code reviews, or offer feedback and suggestions
-              </li>
-            </ul>
-          </div>
+          {skills.map((category) => (
+            <div key={category.title}>
+              <h3 className="font-bold text-lg mb-3">{category.title}</h3>
+              <ul className="list-disc list-inside space-y-2 text-[var(--muted)]">
+                {category.items.map((item) => (
+                  <li key={item.name}>
+                    <strong className="text-[var(--foreground)]">{item.name}</strong>:{" "}
+                    {item.description}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -83,22 +64,8 @@ export default function Home() {
       <section className="mb-16 animate-fade-in-delay-3">
         <SectionHeader title="Projects" href="/projects" />
         <div className="grid sm:grid-cols-2 gap-6">
-          {[
-            {
-              title: "Project Alpha",
-              description:
-                "A full-stack application for managing complex workflows with real-time collaboration.",
-              tags: ["Django", "React", "PostgreSQL"],
-              year: "2024",
-            },
-            {
-              title: "Design System",
-              description: "A comprehensive component library with accessibility-first approach.",
-              tags: ["TypeScript", "Storybook", "CSS"],
-              year: "2024",
-            },
-          ].map((project) => (
-            <Card key={project.title} className="group cursor-pointer">
+          {featuredProjects.map((project) => (
+            <Card key={project.id} className="group cursor-pointer">
               <span className="text-xs text-[var(--muted)]">{project.year}</span>
               <h3 className="font-bold text-lg mt-1 mb-2 group-hover:opacity-70 transition-opacity">
                 {project.title}
@@ -118,28 +85,9 @@ export default function Home() {
       <section className="animate-fade-in-delay-4">
         <SectionHeader title="Writing" href="/writing" linkText="Read more →" />
         <div className="space-y-1">
-          {[
-            {
-              title: "Building Scalable Django Applications",
-              excerpt:
-                "Lessons learned from architecting systems that handle millions of requests...",
-              date: "Dec 2024",
-            },
-            {
-              title: "The Art of Component Design",
-              excerpt:
-                "Creating reusable, accessible components that developers actually want to use...",
-              date: "Nov 2024",
-            },
-            {
-              title: "Performance Optimization Deep Dive",
-              excerpt:
-                "A comprehensive guide to measuring and improving web application performance...",
-              date: "Oct 2024",
-            },
-          ].map((post) => (
+          {recentPosts.map((post) => (
             <article
-              key={post.title}
+              key={post.slug}
               className="group flex items-start justify-between gap-4 py-4 border-b border-[var(--border)] last:border-0 cursor-pointer"
             >
               <div>

@@ -1,72 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader, Tag } from "@/components/ui";
+import { getPublishedPosts, getPostCategories } from "@/data";
 
 export const metadata: Metadata = {
   title: "Writing — Alex Soldin",
   description: "Thoughts on software engineering, design, and building better products.",
 };
 
-const posts = [
-  {
-    title: "Building Scalable Django Applications",
-    excerpt:
-      "Lessons learned from architecting systems that handle millions of requests. From database optimization to caching strategies, a practical guide to scaling Python applications.",
-    date: "Dec 15, 2024",
-    readTime: "8 min read",
-    category: "Engineering",
-    slug: "scalable-django-applications",
-  },
-  {
-    title: "The Art of Component Design",
-    excerpt:
-      "Creating reusable, accessible components that developers actually want to use. A deep dive into API design, composition patterns, and building for extensibility.",
-    date: "Nov 28, 2024",
-    readTime: "6 min read",
-    category: "Design Systems",
-    slug: "art-of-component-design",
-  },
-  {
-    title: "Performance Optimization Deep Dive",
-    excerpt:
-      "A comprehensive guide to measuring and improving web application performance. From Core Web Vitals to bundle optimization, with practical examples.",
-    date: "Oct 12, 2024",
-    readTime: "12 min read",
-    category: "Performance",
-    slug: "performance-optimization-deep-dive",
-  },
-  {
-    title: "Async Patterns in Python",
-    excerpt:
-      "Understanding when and how to use asynchronous programming in Python. Comparing threading, multiprocessing, and asyncio with real-world use cases.",
-    date: "Sep 20, 2024",
-    readTime: "10 min read",
-    category: "Python",
-    slug: "async-patterns-python",
-  },
-  {
-    title: "Designing for Developer Experience",
-    excerpt:
-      "What makes an API delightful to use? Exploring the principles of developer-focused design and how to build tools that people love.",
-    date: "Aug 5, 2024",
-    readTime: "7 min read",
-    category: "Design",
-    slug: "designing-developer-experience",
-  },
-  {
-    title: "Database Migrations at Scale",
-    excerpt:
-      "Strategies for safely evolving database schemas in production systems with zero downtime. Learned the hard way so you don't have to.",
-    date: "Jul 18, 2024",
-    readTime: "9 min read",
-    category: "Engineering",
-    slug: "database-migrations-scale",
-  },
-];
-
-const categories = ["All", ...new Set(posts.map((p) => p.category))];
-
 export default function WritingPage() {
+  const posts = getPublishedPosts();
+  const categories = ["All", ...getPostCategories()];
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
       <PageHeader
@@ -128,7 +73,7 @@ export default function WritingPage() {
           <input
             type="email"
             placeholder="you@example.com"
-            className="flex-1 px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20 focus:border-[var(--foreground)] transition-all"
+            className="flex-1 px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 focus:border-[var(--accent)] transition-all"
           />
           <button
             type="submit"
