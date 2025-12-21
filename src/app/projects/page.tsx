@@ -3,14 +3,17 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Projects — Alex Soldin",
-  description: "A collection of projects I've built, from full-stack applications to creative experiments.",
+  description:
+    "A collection of projects I've built, from full-stack applications to creative experiments.",
 };
 
 const projects = [
   {
     title: "Project Alpha",
-    description: "A full-stack application for managing complex workflows with real-time collaboration features. Built to handle enterprise-scale data while maintaining a delightful user experience.",
-    longDescription: "This project challenged me to think deeply about system architecture, real-time data synchronization, and building intuitive interfaces for complex operations.",
+    description:
+      "A full-stack application for managing complex workflows with real-time collaboration features. Built to handle enterprise-scale data while maintaining a delightful user experience.",
+    longDescription:
+      "This project challenged me to think deeply about system architecture, real-time data synchronization, and building intuitive interfaces for complex operations.",
     tags: ["Django", "React", "PostgreSQL", "WebSockets"],
     year: "2024",
     link: "#",
@@ -18,8 +21,10 @@ const projects = [
   },
   {
     title: "Design System",
-    description: "A comprehensive component library with an accessibility-first approach. Includes thorough documentation, interactive examples, and design tokens.",
-    longDescription: "Created to establish consistency across multiple products while empowering designers and developers to work faster without sacrificing quality.",
+    description:
+      "A comprehensive component library with an accessibility-first approach. Includes thorough documentation, interactive examples, and design tokens.",
+    longDescription:
+      "Created to establish consistency across multiple products while empowering designers and developers to work faster without sacrificing quality.",
     tags: ["TypeScript", "Storybook", "CSS Variables", "A11y"],
     year: "2024",
     link: "#",
@@ -27,7 +32,8 @@ const projects = [
   },
   {
     title: "Data Pipeline",
-    description: "An ETL pipeline for processing and transforming large datasets with built-in monitoring and error recovery mechanisms.",
+    description:
+      "An ETL pipeline for processing and transforming large datasets with built-in monitoring and error recovery mechanisms.",
     tags: ["Python", "Celery", "RabbitMQ", "PostgreSQL"],
     year: "2023",
     link: "#",
@@ -35,7 +41,8 @@ const projects = [
   },
   {
     title: "API Gateway",
-    description: "A high-performance API gateway with rate limiting, authentication, and comprehensive logging for microservices architecture.",
+    description:
+      "A high-performance API gateway with rate limiting, authentication, and comprehensive logging for microservices architecture.",
     tags: ["Django REST Framework", "Redis", "Docker"],
     year: "2023",
     link: "#",
@@ -43,7 +50,8 @@ const projects = [
   },
   {
     title: "Creative Experiments",
-    description: "A collection of generative art pieces and creative coding experiments exploring the intersection of code and visual design.",
+    description:
+      "A collection of generative art pieces and creative coding experiments exploring the intersection of code and visual design.",
     tags: ["Canvas API", "p5.js", "TypeScript"],
     year: "2024",
     link: "#",
@@ -51,7 +59,8 @@ const projects = [
   },
   {
     title: "CLI Tooling",
-    description: "Developer productivity tools including code generators, migration helpers, and project scaffolding utilities.",
+    description:
+      "Developer productivity tools including code generators, migration helpers, and project scaffolding utilities.",
     tags: ["Python", "Click", "Rich"],
     year: "2023",
     link: "#",
@@ -60,8 +69,8 @@ const projects = [
 ];
 
 export default function ProjectsPage() {
-  const featuredProjects = projects.filter(p => p.featured);
-  const otherProjects = projects.filter(p => !p.featured);
+  const featuredProjects = projects.filter((p) => p.featured);
+  const otherProjects = projects.filter((p) => !p.featured);
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
@@ -70,8 +79,8 @@ export default function ProjectsPage() {
           Projects
         </h1>
         <p className="text-lg text-[var(--muted)] max-w-2xl">
-          A collection of things I&apos;ve built. From production applications to 
-          creative experiments, each project represents a problem I found interesting.
+          A collection of things I&apos;ve built. From production applications to creative
+          experiments, each project represents a problem I found interesting.
         </p>
       </header>
 
@@ -82,7 +91,7 @@ export default function ProjectsPage() {
         </h2>
         <div className="space-y-8">
           {featuredProjects.map((project, index) => (
-            <article 
+            <article
               key={project.title}
               className="group p-8 bg-[var(--card)] border border-[var(--border)] rounded-2xl hover:shadow-xl hover:border-[var(--accent)]/30 transition-all duration-300 animate-fade-in-delay-2"
               style={{ animationDelay: `${0.2 + index * 0.1}s` }}
@@ -94,17 +103,17 @@ export default function ProjectsPage() {
                     {project.title}
                   </h3>
                 </div>
-                <Link 
+                <Link
                   href={project.link}
                   className="p-2 rounded-lg border border-[var(--border)] hover:bg-[var(--highlight)] transition-colors"
                   aria-label={`View ${project.title}`}
                 >
-                  <svg 
-                    width="20" 
-                    height="20" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
                     strokeWidth="2"
                     className="text-[var(--muted)]"
                   >
@@ -112,9 +121,7 @@ export default function ProjectsPage() {
                   </svg>
                 </Link>
               </div>
-              <p className="text-[var(--muted)] leading-relaxed mb-3">
-                {project.description}
-              </p>
+              <p className="text-[var(--muted)] leading-relaxed mb-3">{project.description}</p>
               {project.longDescription && (
                 <p className="text-sm text-[var(--muted)] leading-relaxed mb-4 italic">
                   {project.longDescription}
@@ -122,8 +129,8 @@ export default function ProjectsPage() {
               )}
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
-                  <span 
-                    key={tag} 
+                  <span
+                    key={tag}
                     className="px-3 py-1 text-xs bg-[var(--highlight)] rounded-full font-medium"
                   >
                     {tag}
@@ -142,24 +149,24 @@ export default function ProjectsPage() {
         </h2>
         <div className="grid sm:grid-cols-2 gap-6">
           {otherProjects.map((project, index) => (
-            <article 
+            <article
               key={project.title}
               className="group p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:shadow-lg hover:border-[var(--accent)]/30 transition-all duration-300 animate-fade-in-delay-4"
               style={{ animationDelay: `${0.4 + index * 0.05}s` }}
             >
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs text-[var(--muted)]">{project.year}</span>
-                <Link 
+                <Link
                   href={project.link}
                   className="opacity-0 group-hover:opacity-100 transition-opacity"
                   aria-label={`View ${project.title}`}
                 >
-                  <svg 
-                    width="16" 
-                    height="16" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
                     strokeWidth="2"
                     className="text-[var(--muted)]"
                   >
@@ -173,10 +180,7 @@ export default function ProjectsPage() {
               <p className="text-sm text-[var(--muted)] mb-4">{project.description}</p>
               <div className="flex flex-wrap gap-2">
                 {project.tags.slice(0, 3).map((tag) => (
-                  <span 
-                    key={tag} 
-                    className="px-2 py-1 text-xs bg-[var(--highlight)] rounded-md"
-                  >
+                  <span key={tag} className="px-2 py-1 text-xs bg-[var(--highlight)] rounded-md">
                     {tag}
                   </span>
                 ))}
@@ -188,4 +192,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-

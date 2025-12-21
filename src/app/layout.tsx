@@ -18,7 +18,8 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Alex Soldin — Engineer & Designer",
-  description: "A creative engineer who builds delightful web experiences. Explore my projects, writing, and design work.",
+  description:
+    "A creative engineer who builds delightful web experiences. Explore my projects, writing, and design work.",
   keywords: ["engineer", "designer", "portfolio", "web development", "creative"],
   authors: [{ name: "Alex Soldin" }],
   openGraph: {
@@ -37,9 +38,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <body className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>

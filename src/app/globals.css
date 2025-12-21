@@ -10,7 +10,7 @@
   --border: #e8e4de;
   --card: #ffffff;
   --highlight: #fff8e7;
-  
+
   /* Typography */
   --font-serif: var(--font-playfair);
   --font-sans: var(--font-dm-sans);
@@ -103,7 +103,8 @@ a:hover {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -144,7 +145,9 @@ a:hover {
   max-width: 65ch;
 }
 
-.prose h1, .prose h2, .prose h3 {
+.prose h1,
+.prose h2,
+.prose h3 {
   font-family: var(--font-serif), Georgia, serif;
   font-weight: 600;
   line-height: 1.3;
@@ -164,7 +167,9 @@ a:hover {
 /* Generative art canvas */
 .art-container {
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   border-radius: 12px;
   overflow: hidden;
 }

@@ -12,24 +12,25 @@ export default function Home() {
             <span className="text-[var(--accent)]">Soldin</span>
           </h1>
           <p className="text-lg text-[var(--muted)] leading-relaxed mb-6 max-w-xl animate-fade-in-delay-1">
-            I&apos;m a <strong className="text-[var(--foreground)]">creative engineer</strong> who 
-            builds delightful web experiences. I specialize in the <strong className="text-[var(--foreground)]">web platform</strong>, 
-            performance optimization, and crafting intuitive user interactions.
+            I&apos;m a <strong className="text-[var(--foreground)]">creative engineer</strong> who
+            builds delightful web experiences. I specialize in the{" "}
+            <strong className="text-[var(--foreground)]">web platform</strong>, performance
+            optimization, and crafting intuitive user interactions.
           </p>
           <p className="text-lg text-[var(--muted)] leading-relaxed mb-8 max-w-xl animate-fade-in-delay-2">
-            Currently focused on building scalable applications with Django, React, and everything 
-            in between. I believe great software is at the intersection of 
-            engineering excellence and thoughtful design.
+            Currently focused on building scalable applications with Django, React, and everything
+            in between. I believe great software is at the intersection of engineering excellence
+            and thoughtful design.
           </p>
           <div className="flex flex-wrap gap-4 animate-fade-in-delay-3">
-            <Link 
+            <Link
               href="/projects"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--foreground)] text-[var(--background)] rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
               View Projects
               <span>→</span>
             </Link>
-            <Link 
+            <Link
               href="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--border)] rounded-lg font-medium hover:bg-[var(--border)]/50 transition-colors"
             >
@@ -51,21 +52,24 @@ export default function Home() {
           {[
             {
               title: "Backend Development",
-              description: "Building robust APIs and scalable systems with Django, PostgreSQL, and modern Python practices.",
-              icon: "⚙️"
+              description:
+                "Building robust APIs and scalable systems with Django, PostgreSQL, and modern Python practices.",
+              icon: "⚙️",
             },
             {
               title: "Frontend Engineering",
-              description: "Creating responsive, accessible interfaces with React, TypeScript, and attention to detail.",
-              icon: "🎨"
+              description:
+                "Creating responsive, accessible interfaces with React, TypeScript, and attention to detail.",
+              icon: "🎨",
             },
             {
               title: "System Design",
-              description: "Architecting solutions that balance performance, maintainability, and developer experience.",
-              icon: "📐"
-            }
+              description:
+                "Architecting solutions that balance performance, maintainability, and developer experience.",
+              icon: "📐",
+            },
           ].map((item, index) => (
-            <div 
+            <div
               key={item.title}
               className="p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:shadow-lg hover:border-[var(--accent)]/30 transition-all duration-300"
               style={{ animationDelay: `${0.4 + index * 0.1}s` }}
@@ -92,18 +96,20 @@ export default function Home() {
           {[
             {
               title: "Project Alpha",
-              description: "A full-stack application for managing complex workflows with real-time collaboration.",
+              description:
+                "A full-stack application for managing complex workflows with real-time collaboration.",
               tags: ["Django", "React", "PostgreSQL"],
-              year: "2024"
+              year: "2024",
             },
             {
               title: "Design System",
-              description: "A comprehensive component library with accessibility-first approach and thorough documentation.",
+              description:
+                "A comprehensive component library with accessibility-first approach and thorough documentation.",
               tags: ["TypeScript", "Storybook", "CSS"],
-              year: "2024"
-            }
+              year: "2024",
+            },
           ].map((project) => (
-            <article 
+            <article
               key={project.title}
               className="group p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:shadow-lg hover:border-[var(--accent)]/30 transition-all duration-300 cursor-pointer"
             >
@@ -116,10 +122,7 @@ export default function Home() {
               <p className="text-sm text-[var(--muted)] mb-4">{project.description}</p>
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
-                  <span 
-                    key={tag} 
-                    className="px-2 py-1 text-xs bg-[var(--highlight)] rounded-md"
-                  >
+                  <span key={tag} className="px-2 py-1 text-xs bg-[var(--highlight)] rounded-md">
                     {tag}
                   </span>
                 ))}
@@ -143,21 +146,24 @@ export default function Home() {
           {[
             {
               title: "Building Scalable Django Applications",
-              excerpt: "Lessons learned from architecting systems that handle millions of requests...",
-              date: "Dec 2024"
+              excerpt:
+                "Lessons learned from architecting systems that handle millions of requests...",
+              date: "Dec 2024",
             },
             {
               title: "The Art of Component Design",
-              excerpt: "Creating reusable, accessible components that developers actually want to use...",
-              date: "Nov 2024"
+              excerpt:
+                "Creating reusable, accessible components that developers actually want to use...",
+              date: "Nov 2024",
             },
             {
               title: "Performance Optimization Deep Dive",
-              excerpt: "A comprehensive guide to measuring and improving web application performance...",
-              date: "Oct 2024"
-            }
+              excerpt:
+                "A comprehensive guide to measuring and improving web application performance...",
+              date: "Oct 2024",
+            },
           ].map((post) => (
-            <article 
+            <article
               key={post.title}
               className="group flex items-start justify-between gap-4 p-4 -mx-4 rounded-lg hover:bg-[var(--highlight)] transition-colors cursor-pointer"
             >

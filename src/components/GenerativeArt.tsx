@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from "react";
 
 interface GenerativeArtProps {
   width?: number;
@@ -14,20 +14,20 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Clear canvas
-    ctx.fillStyle = '#faf8f5';
+    ctx.fillStyle = "#faf8f5";
     ctx.fillRect(0, 0, width, height);
 
     // Color palettes inspired by warm, artistic tones
     const palettes = [
-      ['#c45d3a', '#e07a5a', '#f4a261', '#2a9d8f', '#264653'],
-      ['#9b2226', '#ae2012', '#bb3e03', '#ca6702', '#ee9b00'],
-      ['#264653', '#287271', '#2a9d8f', '#8ab17d', '#e9c46a'],
-      ['#606c38', '#283618', '#fefae0', '#dda15e', '#bc6c25'],
-      ['#5f0f40', '#9a031e', '#fb8b24', '#e36414', '#0f4c5c'],
+      ["#c45d3a", "#e07a5a", "#f4a261", "#2a9d8f", "#264653"],
+      ["#9b2226", "#ae2012", "#bb3e03", "#ca6702", "#ee9b00"],
+      ["#264653", "#287271", "#2a9d8f", "#8ab17d", "#e9c46a"],
+      ["#606c38", "#283618", "#fefae0", "#dda15e", "#bc6c25"],
+      ["#5f0f40", "#9a031e", "#fb8b24", "#e36414", "#0f4c5c"],
     ];
 
     const palette = palettes[Math.floor(Math.random() * palettes.length)];
@@ -42,7 +42,7 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
         ctx.beginPath();
         ctx.strokeStyle = palette[i % palette.length];
         ctx.lineWidth = 2 + Math.random() * 4;
-        ctx.lineCap = 'round';
+        ctx.lineCap = "round";
 
         const startX = Math.random() * width;
         const startY = Math.random() * height;
@@ -65,12 +65,12 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
         ctx.save();
         ctx.translate(Math.random() * width, Math.random() * height);
         ctx.rotate(Math.random() * Math.PI * 2);
-        
+
         const size = 20 + Math.random() * 60;
         const shapeType = Math.floor(Math.random() * 3);
-        
-        ctx.fillStyle = palette[i % palette.length] + (Math.random() > 0.5 ? '80' : 'cc');
-        
+
+        ctx.fillStyle = palette[i % palette.length] + (Math.random() > 0.5 ? "80" : "cc");
+
         if (shapeType === 0) {
           // Circle
           ctx.beginPath();
@@ -102,7 +102,7 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
           const y = row * cellSize;
           const pattern = Math.floor(Math.random() * 4);
 
-          ctx.fillStyle = palette[(row + col) % palette.length] + '60';
+          ctx.fillStyle = palette[(row + col) % palette.length] + "60";
           ctx.strokeStyle = palette[(row + col + 1) % palette.length];
           ctx.lineWidth = 2;
 
@@ -136,7 +136,7 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
         const points = 6 + Math.floor(Math.random() * 4);
 
         ctx.beginPath();
-        ctx.fillStyle = palette[i % palette.length] + '90';
+        ctx.fillStyle = palette[i % palette.length] + "90";
 
         for (let j = 0; j <= points; j++) {
           const angle = (j / points) * Math.PI * 2;
@@ -166,25 +166,18 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
   }, [generateArt]);
 
   return (
-    <div 
-      className="art-container inline-block"
-      onClick={generateArt}
-      title="Click to regenerate"
-    >
-      <canvas 
-        ref={canvasRef} 
-        width={width} 
+    <div className="art-container inline-block" onClick={generateArt} title="Click to regenerate">
+      <canvas
+        ref={canvasRef}
+        width={width}
         height={height}
         className="rounded-xl shadow-lg"
-        style={{ 
-          background: 'var(--card)',
-          display: 'block'
+        style={{
+          background: "var(--card)",
+          display: "block",
         }}
       />
-      <p className="text-center text-xs text-[var(--muted)] mt-2">
-        click to regenerate ✨
-      </p>
+      <p className="text-center text-xs text-[var(--muted)] mt-2">click to regenerate ✨</p>
     </div>
   );
 }
-

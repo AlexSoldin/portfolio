@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navItems = [
-  { label: '🏠', href: '/', title: 'Home' },
-  { label: 'about', href: '/about' },
-  { label: 'projects', href: '/projects' },
-  { label: 'writing', href: '/writing' },
-  { label: 'contact', href: '/contact' },
+  { label: "🏠", href: "/", title: "Home" },
+  { label: "about", href: "/about" },
+  { label: "projects", href: "/projects" },
+  { label: "writing", href: "/writing" },
+  { label: "contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -28,9 +28,10 @@ export default function Header() {
                   className={`
                     relative px-3 py-2 text-sm font-medium rounded-lg
                     transition-all duration-200 ease-out
-                    ${isActive 
-                      ? 'text-[var(--accent)] bg-[var(--highlight)]' 
-                      : 'text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--border)]/50'
+                    ${
+                      isActive
+                        ? "text-[var(--accent)] bg-[var(--highlight)]"
+                        : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--border)]/50"
                     }
                   `}
                   style={{ animationDelay: `${index * 50}ms` }}
@@ -48,4 +49,3 @@ export default function Header() {
     </header>
   );
 }
-

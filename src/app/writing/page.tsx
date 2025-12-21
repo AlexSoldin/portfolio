@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 const posts = [
   {
     title: "Building Scalable Django Applications",
-    excerpt: "Lessons learned from architecting systems that handle millions of requests. From database optimization to caching strategies, a practical guide to scaling Python applications.",
+    excerpt:
+      "Lessons learned from architecting systems that handle millions of requests. From database optimization to caching strategies, a practical guide to scaling Python applications.",
     date: "Dec 15, 2024",
     readTime: "8 min read",
     category: "Engineering",
@@ -17,7 +18,8 @@ const posts = [
   },
   {
     title: "The Art of Component Design",
-    excerpt: "Creating reusable, accessible components that developers actually want to use. A deep dive into API design, composition patterns, and building for extensibility.",
+    excerpt:
+      "Creating reusable, accessible components that developers actually want to use. A deep dive into API design, composition patterns, and building for extensibility.",
     date: "Nov 28, 2024",
     readTime: "6 min read",
     category: "Design Systems",
@@ -25,7 +27,8 @@ const posts = [
   },
   {
     title: "Performance Optimization Deep Dive",
-    excerpt: "A comprehensive guide to measuring and improving web application performance. From Core Web Vitals to bundle optimization, with practical examples.",
+    excerpt:
+      "A comprehensive guide to measuring and improving web application performance. From Core Web Vitals to bundle optimization, with practical examples.",
     date: "Oct 12, 2024",
     readTime: "12 min read",
     category: "Performance",
@@ -33,7 +36,8 @@ const posts = [
   },
   {
     title: "Async Patterns in Python",
-    excerpt: "Understanding when and how to use asynchronous programming in Python. Comparing threading, multiprocessing, and asyncio with real-world use cases.",
+    excerpt:
+      "Understanding when and how to use asynchronous programming in Python. Comparing threading, multiprocessing, and asyncio with real-world use cases.",
     date: "Sep 20, 2024",
     readTime: "10 min read",
     category: "Python",
@@ -41,7 +45,8 @@ const posts = [
   },
   {
     title: "Designing for Developer Experience",
-    excerpt: "What makes an API delightful to use? Exploring the principles of developer-focused design and how to build tools that people love.",
+    excerpt:
+      "What makes an API delightful to use? Exploring the principles of developer-focused design and how to build tools that people love.",
     date: "Aug 5, 2024",
     readTime: "7 min read",
     category: "Design",
@@ -49,7 +54,8 @@ const posts = [
   },
   {
     title: "Database Migrations at Scale",
-    excerpt: "Strategies for safely evolving database schemas in production systems with zero downtime. Learned the hard way so you don't have to.",
+    excerpt:
+      "Strategies for safely evolving database schemas in production systems with zero downtime. Learned the hard way so you don't have to.",
     date: "Jul 18, 2024",
     readTime: "9 min read",
     category: "Engineering",
@@ -57,7 +63,7 @@ const posts = [
   },
 ];
 
-const categories = ["All", ...new Set(posts.map(p => p.category))];
+const categories = ["All", ...new Set(posts.map((p) => p.category))];
 
 export default function WritingPage() {
   return (
@@ -67,8 +73,8 @@ export default function WritingPage() {
           Writing
         </h1>
         <p className="text-lg text-[var(--muted)] max-w-2xl">
-          Thoughts on software engineering, design patterns, and building products. 
-          I write about things I&apos;ve learned, often the hard way.
+          Thoughts on software engineering, design patterns, and building products. I write about
+          things I&apos;ve learned, often the hard way.
         </p>
       </header>
 
@@ -91,12 +97,12 @@ export default function WritingPage() {
       {/* Posts List */}
       <div className="space-y-1">
         {posts.map((post, index) => (
-          <article 
+          <article
             key={post.slug}
             className="group animate-fade-in-delay-2"
             style={{ animationDelay: `${0.2 + index * 0.05}s` }}
           >
-            <Link 
+            <Link
               href={`/writing/${post.slug}`}
               className="block p-6 -mx-6 rounded-xl hover:bg-[var(--highlight)] transition-colors"
             >
@@ -110,9 +116,7 @@ export default function WritingPage() {
                   <span className="hidden sm:inline">{post.readTime}</span>
                 </div>
               </div>
-              <p className="text-[var(--muted)] leading-relaxed mb-3">
-                {post.excerpt}
-              </p>
+              <p className="text-[var(--muted)] leading-relaxed mb-3">{post.excerpt}</p>
               <span className="inline-block px-2 py-1 text-xs bg-[var(--highlight)] group-hover:bg-[var(--border)] rounded-md transition-colors">
                 {post.category}
               </span>
@@ -146,4 +150,3 @@ export default function WritingPage() {
     </div>
   );
 }
-
