@@ -4,3 +4,8 @@ export { Card } from "./Card";
 export { Tag } from "./Tag";
 export { RichText } from "./RichText";
 export { ContactIcon } from "./ContactIcon";
+export { ContactLinkCard } from "./ContactLinkCard";
+export { Input } from "./Input";
+export { Textarea } from "./Textarea";
+export { Button } from "./Button";
+export { Alert } from "./Alert";

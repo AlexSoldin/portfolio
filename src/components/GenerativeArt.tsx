@@ -166,18 +166,19 @@ export default function GenerativeArt({
   }, [generateArt]);
 
   return (
-    <div className="art-container inline-block" onClick={generateArt} title="Click to regenerate">
+    <div className="art-container block m-0 p-0" onClick={generateArt} title="Click to regenerate">
       <canvas
         ref={canvasRef}
         width={width}
         height={height}
+        className="block m-0 p-0"
         style={{
-          display: "block",
           maxWidth: "100%",
           height: "auto",
+          display: "block",
         }}
       />
-      <p className="mt-3 text-sm">
+      <p className="mt-3 text-sm m-0">
         <strong>click this art</strong> to regenerate it{" "}
         <span className="text-[var(--accent)] font-bold">[?]</span>
       </p>

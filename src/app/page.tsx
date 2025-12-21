@@ -1,7 +1,6 @@
-import GenerativeArt from "@/components/GenerativeArt";
+import { HeroSection } from "@/components/HeroSection";
 import { SectionHeader, Card, Tag, RichText } from "@/components/ui";
 import { heroContent, skills, getFeaturedProjects, getRecentPosts } from "@/data";
-import Link from "next/link";
 
 export default function Home() {
   const featuredProjects = getFeaturedProjects();
@@ -10,35 +9,14 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
       {/* Hero Section */}
-      <section className="flex flex-col lg:flex-row items-start gap-12 mb-20">
-        <div className="flex-1 order-2 lg:order-1 animate-fade-in">
-          <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-bold leading-tight mb-8">
-            {heroContent.greeting}
-          </h1>
-          <div className="space-y-4 text-base leading-relaxed text-[var(--muted)]">
-            <p className="animate-fade-in-delay-1">
-              <RichText>{heroContent.description}</RichText>
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-4 mt-8 animate-fade-in-delay-2">
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--foreground)] text-[var(--background)] rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              View Projects →
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--foreground)] rounded-full text-sm font-medium hover:bg-[var(--foreground)] hover:text-[var(--background)] transition-colors"
-            >
-              Get in Touch
-            </Link>
-          </div>
-        </div>
-        <div className="order-1 lg:order-2 animate-fade-in-delay-1">
-          <GenerativeArt width={320} height={320} cellSize={40} />
-        </div>
-      </section>
+      <HeroSection
+        title={heroContent.greeting}
+        subtitle={<RichText>{heroContent.description}</RichText>}
+        artWidth={320}
+        artHeight={320}
+        artCellSize={40}
+        className="animate-fade-in"
+      />
 
       {/* What I Do Section */}
       <section className="mb-16 animate-fade-in-delay-2">

@@ -75,7 +75,7 @@ export interface ContactMethod {
   label: string;
   value: string;
   href: string;
-  icon: "email" | "github" | "linkedin" | "twitter";
+  icon: "email" | "github" | "linkedin" | "instagram";
 }
 
 /**
@@ -112,9 +112,5 @@ export interface AboutContent {
 export interface ContactContent {
   title: string;
   subtitle: string;
-  availability: {
-    status: "available" | "busy" | "unavailable";
-    message: string;
-  };
   methods: ContactMethod[];
 }

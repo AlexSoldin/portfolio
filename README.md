@@ -113,6 +113,11 @@ pnpm build
 pnpm start
 ```
 
+## Documentation
+
+- [Styling Guide](./docs/STYLING_GUIDE.md) - Tailwind CSS vs Custom CSS best practices
+- [Component Organization](./docs/COMPONENT_ORGANIZATION.md) - How to structure components, pages, and content
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)

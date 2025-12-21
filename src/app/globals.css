@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+/**
+ * Spacing System
+ * We use a consistent spacing scale based on 16px (1rem) as our default unit.
+ * Tailwind's spacing scale is based on 4px increments:
+ * - spacing-4 = 16px (1rem) - Default spacing
+ * - spacing-8 = 32px (2rem) - Large spacing
+ * - spacing-12 = 48px (3rem) - Extra large spacing
+ * - spacing-16 = 64px (4rem) - Section spacing
+ *
+ * Common usage:
+ * - space-y-4 = 16px vertical spacing between children
+ * - gap-4 = 16px gap between flex/grid items
+ * - p-4 = 16px padding
+ * - m-4 = 16px margin
+ */
+
 :root {
   /* Clean design inspired by meowni.ca */
   --background: #ffffff;
@@ -152,8 +168,17 @@ a:hover {
 /* Generative art canvas */
 .art-container {
   cursor: pointer;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
 }
 
 .art-container:hover {
   opacity: 0.95;
+}
+
+.art-container canvas {
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
 }

@@ -3,8 +3,8 @@ import type { ContactContent, ContactMethod } from "@/types";
 export const contactMethods: ContactMethod[] = [
   {
     label: "Email",
-    value: "hello@alexsoldin.dev",
-    href: "mailto:hello@alexsoldin.dev",
+    value: "alex.soldin@gmail.com",
+    href: "mailto:alex.soldin@gmail.com",
     icon: "email",
   },
   {
@@ -15,26 +15,21 @@ export const contactMethods: ContactMethod[] = [
   },
   {
     label: "LinkedIn",
-    value: "/in/alexsoldin",
-    href: "https://linkedin.com/in/alexsoldin",
+    value: "alexandersoldin",
+    href: "https://www.linkedin.com/in/alexandersoldin/",
     icon: "linkedin",
   },
   {
-    label: "Twitter",
+    label: "Instagram",
     value: "@alexsoldin",
-    href: "https://twitter.com/alexsoldin",
-    icon: "twitter",
+    href: "https://instagram.com/alexsoldin",
+    icon: "instagram",
   },
 ];
 
 export const contactContent: ContactContent = {
   title: "Let's work together",
   subtitle:
-    "I'm always interested in hearing about new projects, opportunities, or just having a conversation about technology and design.",
-  availability: {
-    status: "available",
-    message:
-      "I'm currently open to freelance projects, consulting work, and interesting full-time opportunities. Let's talk!",
-  },
+    "I'm always interested in hearing about new projects, opportunities, or just having a conversation about technology.",
   methods: contactMethods,
 };
