@@ -1,0 +1,423 @@
+# Next.js Portfolio - Cursor Rules
+
+You are an expert in TypeScript, React, Next.js App Router, and Tailwind CSS.
+
+## Project Context
+
+This is a Next.js 16 portfolio website using the App Router, TypeScript, and Tailwind CSS 4.
+
+## Code Style and Structure
+
+### General Principles
+
+- Write concise, readable TypeScript code with accurate examples.
+- Use functional and declarative programming patterns; avoid classes.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., `isLoading`, `hasError`).
+- Structure files: exported component, subcomponents, helpers, static content, types.
+
+### Naming Conventions
+
+- Use lowercase with dashes for directories (e.g., `components/auth-wizard`).
+- Use PascalCase for component files (e.g., `AuthWizard.tsx`).
+- Use camelCase for utility files (e.g., `formatDate.ts`).
+- Favor named exports for components and utilities.
+
+### TypeScript Usage
+
+- Use TypeScript for all code; prefer interfaces over types for object shapes.
+- Avoid enums; use const objects or literal unions instead.
+- Use functional components with TypeScript interfaces for props.
+- Enable strict mode; avoid `any` type.
+
+```typescript
+// ✅ Good: Interface for props
+interface ButtonProps {
+  variant: "primary" | "secondary";
+  size?: "sm" | "md" | "lg";
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+// ❌ Avoid: Enums
+enum ButtonVariant {
+  Primary = "primary",
+  Secondary = "secondary",
+}
+```
+
+## Next.js App Router Best Practices
+
+### File Structure
+
+Follow the [Next.js App Router conventions](https://nextjs.org/docs/app/getting-started/installation):
+
+```
+src/
+├── app/                      # App Router (routes and layouts)
+│   ├── layout.tsx            # Root layout (required)
+│   ├── page.tsx              # Home page
+│   ├── globals.css           # Global styles
+│   ├── loading.tsx           # Loading UI (optional)
+│   ├── error.tsx             # Error UI (optional)
+│   ├── not-found.tsx         # 404 page (optional)
+│   └── [route]/
+│       ├── page.tsx          # Route page
+│       ├── layout.tsx        # Route layout (optional)
+│       └── loading.tsx       # Route loading (optional)
+│
+├── components/               # Reusable UI components
+│   ├── ui/                   # Primitive UI components
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   └── Card.tsx
+│   ├── layout/               # Layout components
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   └── Sidebar.tsx
+│   └── [feature]/            # Feature-specific components
+│       ├── ProjectCard.tsx
+│       └── ContactForm.tsx
+│
+├── lib/                      # Utilities and configurations
+│   ├── utils.ts              # Helper functions
+│   ├── constants.ts          # App constants
+│   └── validations.ts        # Zod schemas (if needed)
+│
+├── hooks/                    # Custom React hooks
+│   ├── useMediaQuery.ts
+│   └── useLocalStorage.ts
+│
+├── types/                    # TypeScript type definitions
+│   ├── index.ts              # Shared types
+│   └── api.ts                # API response types
+│
+└── data/                     # Static data (JSON, content)
+    ├── projects.ts
+    └── posts.ts
+```
+
+### Server vs Client Components
+
+- **Default to Server Components** – they're the default in App Router.
+- **Use Client Components only when needed:**
+  - Event listeners (`onClick`, `onChange`)
+  - Browser APIs (`window`, `localStorage`)
+  - React hooks (`useState`, `useEffect`)
+  - Third-party client libraries
+
+```typescript
+// Server Component (default) - no directive needed
+export default function ProjectList({ projects }: { projects: Project[] }) {
+  return (
+    <ul>
+      {projects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
+      ))}
+    </ul>
+  );
+}
+
+// Client Component - requires directive
+"use client";
+
+import { useState } from "react";
+
+export default function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // ... client-side logic
+}
+```
+
+### Component Patterns
+
+#### Keep Components Small and Focused
+
+Each component should do one thing well. If a component grows beyond ~100 lines, consider splitting it.
+
+```typescript
+// ✅ Good: Small, focused components
+// components/ui/Button.tsx
+interface ButtonProps {
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "sm" | "md" | "lg";
+  children: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  className?: string;
+}
+
+export function Button({
+  variant = "primary",
+  size = "md",
+  children,
+  className,
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+#### Composition Over Configuration
+
+Prefer composable components over heavily configured ones.
+
+```typescript
+// ✅ Good: Composable
+<Card>
+  <CardHeader>
+    <CardTitle>Project Name</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p>Description here...</p>
+  </CardContent>
+  <CardFooter>
+    <Button>View Project</Button>
+  </CardFooter>
+</Card>
+
+// ❌ Avoid: Over-configured
+<Card
+  title="Project Name"
+  description="Description here..."
+  footerContent={<Button>View Project</Button>}
+  showHeader={true}
+  headerVariant="large"
+/>
+```
+
+#### Separate Data from Presentation
+
+Keep data fetching in Server Components; pass data as props to presentational components.
+
+```typescript
+// app/projects/page.tsx (Server Component)
+import { getProjects } from "@/lib/api";
+import { ProjectGrid } from "@/components/ProjectGrid";
+
+export default async function ProjectsPage() {
+  const projects = await getProjects();
+  return <ProjectGrid projects={projects} />;
+}
+
+// components/ProjectGrid.tsx (can be Server or Client)
+interface ProjectGridProps {
+  projects: Project[];
+}
+
+export function ProjectGrid({ projects }: ProjectGridProps) {
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
+      ))}
+    </div>
+  );
+}
+```
+
+## Styling with Tailwind CSS
+
+### Conventions
+
+- Use Tailwind CSS for all styling; avoid inline styles and CSS modules.
+- Use CSS variables defined in `globals.css` for theming.
+- Prefer Tailwind's built-in classes over custom CSS.
+- Use the `cn()` utility for conditional classes (install `clsx` + `tailwind-merge`).
+
+```typescript
+import { cn } from "@/lib/utils";
+
+interface CardProps {
+  className?: string;
+  isHighlighted?: boolean;
+  children: React.ReactNode;
+}
+
+export function Card({ className, isHighlighted, children }: CardProps) {
+  return (
+    <div
+      className={cn(
+        "rounded-xl border border-[var(--border)] bg-[var(--card)] p-6",
+        isHighlighted && "ring-2 ring-[var(--accent)]",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+### Responsive Design
+
+- Use mobile-first approach with Tailwind breakpoints.
+- Common breakpoints: `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px).
+
+```typescript
+<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {/* Responsive grid */}
+</div>
+```
+
+## Performance Best Practices
+
+### Images
+
+Always use `next/image` for automatic optimization:
+
+```typescript
+import Image from "next/image";
+
+<Image
+  src="/profile.jpg"
+  alt="Profile photo"
+  width={400}
+  height={400}
+  priority // Use for above-the-fold images
+/>;
+```
+
+### Fonts
+
+Use `next/font` for automatic font optimization:
+
+```typescript
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+```
+
+### Dynamic Imports
+
+Use dynamic imports for heavy components:
+
+```typescript
+import dynamic from "next/dynamic";
+
+const HeavyChart = dynamic(() => import("@/components/HeavyChart"), {
+  loading: () => <ChartSkeleton />,
+  ssr: false, // Disable SSR if needed
+});
+```
+
+## Metadata and SEO
+
+Use the Metadata API for SEO:
+
+```typescript
+// app/layout.tsx
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Alex Soldin",
+    template: "%s | Alex Soldin",
+  },
+  description: "Portfolio website",
+  openGraph: {
+    title: "Alex Soldin",
+    description: "Portfolio website",
+    type: "website",
+  },
+};
+
+// app/about/page.tsx
+export const metadata: Metadata = {
+  title: "About", // Renders as "About | Alex Soldin"
+};
+```
+
+## Error Handling
+
+### Error Boundaries
+
+Use `error.tsx` for route-level error handling:
+
+```typescript
+"use client";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 py-20">
+      <h2>Something went wrong!</h2>
+      <button onClick={() => reset()}>Try again</button>
+    </div>
+  );
+}
+```
+
+### Loading States
+
+Use `loading.tsx` for route-level loading states:
+
+```typescript
+export default function Loading() {
+  return (
+    <div className="flex items-center justify-center py-20">
+      <div className="animate-spin h-8 w-8 border-4 border-[var(--accent)] border-t-transparent rounded-full" />
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+- Use semantic HTML elements (`header`, `main`, `nav`, `article`, `section`).
+- Ensure interactive elements are keyboard accessible.
+- Add `aria-label` for icon-only buttons.
+- Maintain proper heading hierarchy (`h1` → `h2` → `h3`).
+- Test with screen readers and keyboard navigation.
+
+```typescript
+// ✅ Good: Accessible icon button
+<button aria-label="Close menu" onClick={handleClose}>
+  <XIcon className="h-5 w-5" />
+</button>
+
+// ✅ Good: Semantic structure
+<article>
+  <header>
+    <h2>{post.title}</h2>
+    <time dateTime={post.date}>{formattedDate}</time>
+  </header>
+  <p>{post.excerpt}</p>
+</article>
+```
+
+## Git Workflow
+
+- Write clear, conventional commit messages.
+- Pre-commit hooks run ESLint and Prettier automatically.
+- Run `pnpm validate` before pushing to catch issues early.
+
+## Key Conventions
+
+1. Rely on Next.js App Router for routing and layouts.
+2. Prioritize Server Components; use Client Components only when necessary.
+3. Keep components small, focused, and composable.
+4. Use TypeScript strictly; avoid `any`.
+5. Follow mobile-first responsive design.
+6. Optimize images with `next/image` and fonts with `next/font`.
+7. Use CSS variables for theming; Tailwind for utility classes.
+8. Implement proper error boundaries and loading states.
+
+Refer to the [Next.js documentation](https://nextjs.org/docs) for the latest best practices.
+
