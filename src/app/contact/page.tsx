@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { PageHeader, Card } from "@/components/ui";
+import GenerativeArt from "@/components/GenerativeArt";
 
 export const metadata: Metadata = {
   title: "Contact — Alex Soldin",
@@ -58,21 +60,23 @@ const contactMethods = [
 
 export default function ContactPage() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
-      <header className="mb-12 animate-fade-in">
-        <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-semibold mb-4">
-          Let&apos;s Connect
-        </h1>
-        <p className="text-lg text-[var(--muted)] max-w-2xl">
-          I&apos;m always interested in hearing about new projects, opportunities, or just having a
-          conversation about technology and design.
-        </p>
-      </header>
+    <div className="max-w-3xl mx-auto px-6 py-16">
+      <section className="flex flex-col lg:flex-row items-start gap-12 mb-16">
+        <div className="flex-1 order-2 lg:order-1">
+          <PageHeader
+            title="Let's work together"
+            subtitle="I'm always interested in hearing about new projects, opportunities, or just having a conversation about technology and design."
+          />
+        </div>
+        <div className="order-1 lg:order-2 animate-fade-in-delay-1">
+          <GenerativeArt width={280} height={280} cellSize={35} />
+        </div>
+      </section>
 
       <div className="grid lg:grid-cols-2 gap-12">
         {/* Contact Form */}
         <section className="animate-fade-in-delay-1">
-          <h2 className="font-[family-name:var(--font-playfair)] text-xl font-semibold mb-6">
+          <h2 className="font-[family-name:var(--font-playfair)] text-xl font-bold mb-6">
             Send a Message
           </h2>
           <form className="space-y-5">
@@ -85,7 +89,7 @@ export default function ContactPage() {
                 id="name"
                 name="name"
                 placeholder="Your name"
-                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] transition-all"
+                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20 focus:border-[var(--foreground)] transition-all"
               />
             </div>
             <div>
@@ -97,7 +101,7 @@ export default function ContactPage() {
                 id="email"
                 name="email"
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] transition-all"
+                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20 focus:border-[var(--foreground)] transition-all"
               />
             </div>
             <div>
@@ -109,7 +113,7 @@ export default function ContactPage() {
                 id="subject"
                 name="subject"
                 placeholder="What's this about?"
-                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] transition-all"
+                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20 focus:border-[var(--foreground)] transition-all"
               />
             </div>
             <div>
@@ -121,7 +125,7 @@ export default function ContactPage() {
                 name="message"
                 rows={5}
                 placeholder="Tell me more..."
-                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] transition-all resize-none"
+                className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20 focus:border-[var(--foreground)] transition-all resize-none"
               />
             </div>
             <button
@@ -135,7 +139,7 @@ export default function ContactPage() {
 
         {/* Contact Methods */}
         <section className="animate-fade-in-delay-2">
-          <h2 className="font-[family-name:var(--font-playfair)] text-xl font-semibold mb-6">
+          <h2 className="font-[family-name:var(--font-playfair)] text-xl font-bold mb-6">
             Other Ways to Reach Me
           </h2>
           <div className="space-y-4">
@@ -145,26 +149,27 @@ export default function ContactPage() {
                 href={method.href}
                 target={method.href.startsWith("http") ? "_blank" : undefined}
                 rel={method.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="group flex items-center gap-4 p-4 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:border-[var(--accent)]/30 hover:shadow-md transition-all"
               >
-                <span className="p-3 bg-[var(--highlight)] rounded-lg text-[var(--muted)] group-hover:text-[var(--accent)] transition-colors">
-                  {method.icon}
-                </span>
-                <div>
-                  <p className="text-sm text-[var(--muted)]">{method.label}</p>
-                  <p className="font-medium group-hover:text-[var(--accent)] transition-colors">
-                    {method.value}
-                  </p>
-                </div>
+                <Card className="flex items-center gap-4 group">
+                  <span className="p-3 bg-[var(--highlight)] rounded-lg text-[var(--muted)] group-hover:text-[var(--foreground)] transition-colors">
+                    {method.icon}
+                  </span>
+                  <div>
+                    <p className="text-sm text-[var(--muted)]">{method.label}</p>
+                    <p className="font-medium group-hover:opacity-70 transition-opacity">
+                      {method.value}
+                    </p>
+                  </div>
+                </Card>
               </a>
             ))}
           </div>
 
           {/* Availability Notice */}
-          <div className="mt-8 p-6 bg-[var(--highlight)] border border-[var(--accent)]/20 rounded-xl">
+          <div className="mt-8 p-6 bg-[var(--highlight)] border border-[var(--border)] rounded-xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span className="text-sm font-medium">Available for Work</span>
+              <span className="text-sm font-bold">Available for Work</span>
             </div>
             <p className="text-sm text-[var(--muted)]">
               I&apos;m currently open to freelance projects, consulting work, and interesting

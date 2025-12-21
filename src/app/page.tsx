@@ -1,97 +1,87 @@
 import GenerativeArt from "@/components/GenerativeArt";
+import { SectionHeader, Card, Tag } from "@/components/ui";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
+    <div className="max-w-3xl mx-auto px-6 py-16">
       {/* Hero Section */}
       <section className="flex flex-col lg:flex-row items-start gap-12 mb-20">
-        <div className="flex-1 animate-fade-in">
-          <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-semibold leading-tight mb-6">
-            Alex <br />
-            <span className="text-[var(--accent)]">Soldin</span>
+        <div className="flex-1 order-2 lg:order-1 animate-fade-in">
+          <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-bold leading-tight mb-8">
+            Alex Soldin
           </h1>
-          <p className="text-lg text-[var(--muted)] leading-relaxed mb-6 max-w-xl animate-fade-in-delay-1">
-            I&apos;m a <strong className="text-[var(--foreground)]">creative engineer</strong> who
-            builds delightful web experiences. I specialize in the{" "}
-            <strong className="text-[var(--foreground)]">web platform</strong>, performance
-            optimization, and crafting intuitive user interactions.
-          </p>
-          <p className="text-lg text-[var(--muted)] leading-relaxed mb-8 max-w-xl animate-fade-in-delay-2">
-            Currently focused on building scalable applications with Django, React, and everything
-            in between. I believe great software is at the intersection of engineering excellence
-            and thoughtful design.
-          </p>
-          <div className="flex flex-wrap gap-4 animate-fade-in-delay-3">
+          <div className="space-y-4 text-base leading-relaxed">
+            <p className="animate-fade-in-delay-1">
+              I&apos;m a <strong>creative engineer</strong> who builds delightful web experiences. I
+              can advise your company about the <strong>web platform</strong>, performance, creative
+              user interactions, and usable machine learning.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-4 mt-8 animate-fade-in-delay-2">
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--foreground)] text-[var(--background)] rounded-lg font-medium hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--foreground)] text-[var(--background)] rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
             >
-              View Projects
-              <span>→</span>
+              View Projects →
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--border)] rounded-lg font-medium hover:bg-[var(--border)]/50 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--foreground)] rounded-full text-sm font-medium hover:bg-[var(--foreground)] hover:text-[var(--background)] transition-colors"
             >
               Get in Touch
             </Link>
           </div>
         </div>
-        <div className="animate-fade-in-delay-2 animate-float">
-          <GenerativeArt width={280} height={280} />
+        <div className="order-1 lg:order-2 animate-fade-in-delay-1">
+          <GenerativeArt width={320} height={320} cellSize={40} />
         </div>
       </section>
 
       {/* What I Do Section */}
-      <section className="mb-20 animate-fade-in-delay-3">
-        <h2 className="font-[family-name:var(--font-playfair)] text-2xl font-semibold mb-8">
-          What I Do
-        </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Backend Development",
-              description:
-                "Building robust APIs and scalable systems with Django, PostgreSQL, and modern Python practices.",
-              icon: "⚙️",
-            },
-            {
-              title: "Frontend Engineering",
-              description:
-                "Creating responsive, accessible interfaces with React, TypeScript, and attention to detail.",
-              icon: "🎨",
-            },
-            {
-              title: "System Design",
-              description:
-                "Architecting solutions that balance performance, maintainability, and developer experience.",
-              icon: "📐",
-            },
-          ].map((item, index) => (
-            <div
-              key={item.title}
-              className="p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:shadow-lg hover:border-[var(--accent)]/30 transition-all duration-300"
-              style={{ animationDelay: `${0.4 + index * 0.1}s` }}
-            >
-              <span className="text-2xl mb-4 block">{item.icon}</span>
-              <h3 className="font-semibold mb-2">{item.title}</h3>
-              <p className="text-sm text-[var(--muted)]">{item.description}</p>
-            </div>
-          ))}
+      <section className="mb-16 animate-fade-in-delay-2">
+        <SectionHeader title="What I Do" />
+        <div className="space-y-6">
+          <div>
+            <h3 className="font-bold text-lg mb-3">Engineering</h3>
+            <ul className="list-disc list-inside space-y-2 text-[var(--muted)]">
+              <li>
+                <strong className="text-[var(--foreground)]">prototyping</strong>: build small
+                prototypes while you&apos;re still figuring out your tech
+              </li>
+              <li>
+                <strong className="text-[var(--foreground)]">backend development</strong>: robust
+                APIs and scalable systems with Django, PostgreSQL, and modern Python
+              </li>
+              <li>
+                <strong className="text-[var(--foreground)]">frontend engineering</strong>:
+                responsive, accessible interfaces with React, TypeScript, and attention to detail
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-bold text-lg mb-3">Design & Strategy</h3>
+            <ul className="list-disc list-inside space-y-2 text-[var(--muted)]">
+              <li>
+                <strong className="text-[var(--foreground)]">user experience</strong>: design
+                interactions that are easy to use and intuitive for your users
+              </li>
+              <li>
+                <strong className="text-[var(--foreground)]">system design</strong>: architect
+                solutions that balance performance, maintainability, and developer experience
+              </li>
+              <li>
+                <strong className="text-[var(--foreground)]">advising</strong>: answer technical
+                questions, do code reviews, or offer feedback and suggestions
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 
       {/* Featured Projects Preview */}
-      <section className="mb-20 animate-fade-in-delay-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="font-[family-name:var(--font-playfair)] text-2xl font-semibold">
-            Featured Projects
-          </h2>
-          <Link href="/projects" className="text-sm text-[var(--accent)] hover:underline">
-            View all →
-          </Link>
-        </div>
+      <section className="mb-16 animate-fade-in-delay-3">
+        <SectionHeader title="Projects" href="/projects" />
         <div className="grid sm:grid-cols-2 gap-6">
           {[
             {
@@ -103,46 +93,31 @@ export default function Home() {
             },
             {
               title: "Design System",
-              description:
-                "A comprehensive component library with accessibility-first approach and thorough documentation.",
+              description: "A comprehensive component library with accessibility-first approach.",
               tags: ["TypeScript", "Storybook", "CSS"],
               year: "2024",
             },
           ].map((project) => (
-            <article
-              key={project.title}
-              className="group p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:shadow-lg hover:border-[var(--accent)]/30 transition-all duration-300 cursor-pointer"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-[var(--muted)]">{project.year}</span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2 group-hover:text-[var(--accent)] transition-colors">
+            <Card key={project.title} className="group cursor-pointer">
+              <span className="text-xs text-[var(--muted)]">{project.year}</span>
+              <h3 className="font-bold text-lg mt-1 mb-2 group-hover:opacity-70 transition-opacity">
                 {project.title}
               </h3>
               <p className="text-sm text-[var(--muted)] mb-4">{project.description}</p>
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="px-2 py-1 text-xs bg-[var(--highlight)] rounded-md">
-                    {tag}
-                  </span>
+                  <Tag key={tag}>{tag}</Tag>
                 ))}
               </div>
-            </article>
+            </Card>
           ))}
         </div>
       </section>
 
       {/* Recent Writing Preview */}
       <section className="animate-fade-in-delay-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="font-[family-name:var(--font-playfair)] text-2xl font-semibold">
-            Recent Writing
-          </h2>
-          <Link href="/writing" className="text-sm text-[var(--accent)] hover:underline">
-            Read more →
-          </Link>
-        </div>
-        <div className="space-y-4">
+        <SectionHeader title="Writing" href="/writing" linkText="Read more →" />
+        <div className="space-y-1">
           {[
             {
               title: "Building Scalable Django Applications",
@@ -165,10 +140,10 @@ export default function Home() {
           ].map((post) => (
             <article
               key={post.title}
-              className="group flex items-start justify-between gap-4 p-4 -mx-4 rounded-lg hover:bg-[var(--highlight)] transition-colors cursor-pointer"
+              className="group flex items-start justify-between gap-4 py-4 border-b border-[var(--border)] last:border-0 cursor-pointer"
             >
               <div>
-                <h3 className="font-medium group-hover:text-[var(--accent)] transition-colors">
+                <h3 className="font-medium group-hover:opacity-70 transition-opacity">
                   {post.title}
                 </h3>
                 <p className="text-sm text-[var(--muted)] mt-1">{post.excerpt}</p>
