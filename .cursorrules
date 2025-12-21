@@ -23,6 +23,25 @@ This is a Next.js 16 portfolio website using the App Router, TypeScript, and Tai
 - Use camelCase for utility files (e.g., `formatDate.ts`).
 - Favor named exports for components and utilities.
 
+### Text Capitalization
+
+**CRITICAL**: Use sentence case (only first word capitalized) for all user-facing text, except:
+- The name "Alex Soldin" (always capitalize both words)
+- Proper nouns (e.g., "Django", "React", "TypeScript", "PostgreSQL")
+- Technical terms that are proper nouns (e.g., "API", "CSS", "UI/UX")
+
+**Examples:**
+- ✅ "Send a message" (not "Send a Message")
+- ✅ "About me" (not "About Me")
+- ✅ "What I do" (not "What I Do")
+- ✅ "Stay updated" (not "Stay Updated")
+- ✅ "More projects" (not "More Projects")
+- ✅ "The short version" (not "The Short Version")
+- ✅ "Technical expertise" (not "Technical Expertise")
+- ✅ "Alex Soldin" (always capitalize both words - this is the exception)
+- ✅ "Django REST Framework" (proper noun)
+- ✅ "React & TypeScript" (proper nouns)
+
 ### TypeScript Usage
 
 - Use TypeScript for all code; prefer interfaces over types for object shapes.

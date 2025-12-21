@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
-      <PageHeader title="About Me" subtitle="Engineer, designer, and lifelong learner." />
+      <PageHeader title="About me" subtitle="Engineer, designer, and lifelong learner." />
 
       <div className="prose max-w-none">
         {/* Intro Section */}

@@ -64,7 +64,7 @@ export default function WritingPage() {
       {/* Newsletter CTA */}
       <section className="mt-16 p-8 bg-[var(--highlight)] border border-[var(--border)] rounded-xl animate-fade-in-delay-4">
         <h2 className="font-[family-name:var(--font-playfair)] text-xl font-bold mb-2">
-          Stay Updated
+          Stay updated
         </h2>
         <p className="text-[var(--muted)] mb-6">
           Get notified when I publish new articles. No spam, unsubscribe anytime.

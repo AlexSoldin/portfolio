@@ -81,7 +81,7 @@ export default function ProjectsPage() {
       {/* Other Projects */}
       <section>
         <p className="text-sm font-medium text-[var(--muted)] uppercase tracking-wider mb-6 animate-fade-in-delay-3">
-          More Projects
+          More projects
         </p>
         <div className="grid sm:grid-cols-2 gap-6">
           {otherProjects.map((project, index) => (

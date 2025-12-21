@@ -2,7 +2,7 @@ import type { AboutContent } from "@/types";
 
 export const aboutContent: AboutContent = {
   intro: {
-    title: "The Short Version",
+    title: "The short version",
     paragraphs: [
       "I'm a **creative engineer** with a passion for building things that matter. My work sits at the intersection of engineering excellence and thoughtful design—I believe the best software is both technically robust and delightful to use.",
       "Currently, I'm focused on building scalable web applications, designing intuitive user experiences, and exploring the creative possibilities of code.",
@@ -17,7 +17,7 @@ export const aboutContent: AboutContent = {
     ],
   },
   expertise: {
-    title: "Technical Expertise",
+    title: "Technical expertise",
     categories: [
       {
         title: "Backend & Systems",

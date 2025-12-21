@@ -20,7 +20,7 @@ export default function Home() {
 
       {/* What I Do Section */}
       <section className="mb-16 animate-fade-in-delay-2">
-        <SectionHeader title="What I Do" />
+        <SectionHeader title="What I do" />
         <div className="space-y-6">
           {skills.map((category) => (
             <div key={category.title}>
