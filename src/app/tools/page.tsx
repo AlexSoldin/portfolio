@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui";
+import { ToolsGrid } from "./ToolsGrid";
 
 export const metadata: Metadata = {
-  title: "Tools — Alex Soldin",
+  title: "Tools",
   description: "Useful tools and utilities that I use on a daily basis.",
 };
 
@@ -13,6 +14,8 @@ export default function ToolsPage() {
         title="Tools"
         subtitle="Useful tools and utilities that I use on a daily basis."
       />
+
+      <ToolsGrid />
     </div>
   );
 }

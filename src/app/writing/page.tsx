@@ -4,7 +4,7 @@ import { PageHeader, Tag } from "@/components/ui";
 import { getPublishedPosts, getPostCategories } from "@/data";
 
 export const metadata: Metadata = {
-  title: "Writing — Alex Soldin",
+  title: "Writing",
   description: "Thoughts on software engineering, design, and building better products.",
 };
 

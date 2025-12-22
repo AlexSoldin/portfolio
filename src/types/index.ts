@@ -114,3 +114,14 @@ export interface ContactContent {
   subtitle: string;
   methods: ContactMethod[];
 }
+
+/**
+ * Tool data
+ */
+export interface Tool {
+  id: string;
+  name: string;
+  description: string;
+  category: "productivity" | "coding" | "communication" | "media" | "security" | "other";
+  link?: string;
+}

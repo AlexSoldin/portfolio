@@ -3,7 +3,7 @@ import { PageHeader, SectionHeader, Card, RichText } from "@/components/ui";
 import { aboutContent } from "@/data";
 
 export const metadata: Metadata = {
-  title: "About — Alex Soldin",
+  title: "About",
   description:
     "Learn more about my background, experience, and what drives me as an engineer and designer.",
 };

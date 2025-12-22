@@ -9,3 +9,6 @@ export { Input } from "./Input";
 export { Textarea } from "./Textarea";
 export { Button } from "./Button";
 export { Alert } from "./Alert";
+export { SearchInput } from "./SearchInput";
+export { ToolCard } from "./ToolCard";
+export { CategoryFilter } from "./CategoryFilter";

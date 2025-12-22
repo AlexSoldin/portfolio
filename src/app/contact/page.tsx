@@ -5,6 +5,11 @@ import { HeroSection } from "@/components/HeroSection";
 import { ContactLinkCard, Input, Textarea, Button, Alert } from "@/components/ui";
 import { contactContent } from "@/data";
 
+// export const metadata: Metadata = {
+//   title: "Contact",
+//   description: "Contact me for any questions or opportunities.",
+// };
+
 export default function ContactPage() {
   const { title, subtitle, methods } = contactContent;
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -4,7 +4,7 @@ import { PageHeader, Card, Tag } from "@/components/ui";
 import { getAllProjects } from "@/data";
 
 export const metadata: Metadata = {
-  title: "Projects — Alex Soldin",
+  title: "Projects",
   description:
     "A collection of projects I've built, from full-stack applications to creative experiments.",
 };
