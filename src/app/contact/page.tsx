@@ -97,7 +97,7 @@ export default function ContactPage() {
               placeholder="Tell me more..."
             />
             <Button type="submit" disabled={isSubmitting} fullWidth>
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {isSubmitting ? "Sending..." : "Send message"}
             </Button>
           </form>
         </section>
