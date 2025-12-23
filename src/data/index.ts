@@ -1,7 +1,7 @@
 // Barrel export for all data
 // In the future, these could be replaced with API calls
 
-export { siteConfig, heroContent } from "./site";
+export { heroContent } from "./site";
 export { skills } from "./skills";
 export { projects, getFeaturedProjects, getAllProjects, getProjectById } from "./projects";
 export {

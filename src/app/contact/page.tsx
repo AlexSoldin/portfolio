@@ -1,68 +1,13 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { HeroSection } from "@/components/HeroSection";
 import { ContactLinkCard, Input, Textarea, Button, Alert } from "@/components/ui";
 import { contactContent } from "@/data";
-
-// export const metadata: Metadata = {
-//   title: "Contact",
-//   description: "Contact me for any questions or opportunities.",
-// };
+import { useContactForm } from "@/hooks";
 
 export default function ContactPage() {
   const { title, subtitle, methods } = contactContent;
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: "" });
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      subject: formData.get("subject"),
-      message: formData.get("message"),
-    };
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setSubmitStatus({
-          type: "success",
-          message: result.message || "Message sent successfully!",
-        });
-        e.currentTarget.reset();
-      } else {
-        setSubmitStatus({
-          type: "error",
-          message: result.error || "Failed to send message. Please try again.",
-        });
-      }
-    } catch {
-      setSubmitStatus({
-        type: "error",
-        message: "Network error. Please check your connection and try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">

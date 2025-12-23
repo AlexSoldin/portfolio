@@ -8,17 +8,17 @@ interface GenerativeArtProps {
   cellSize?: number;
 }
 
-// Bauhaus-inspired color palette matching meowni.ca style
+// Exact color palette from meowni.ca generative art
 const COLORS = [
-  "#E63946", // Red
-  "#1D3557", // Dark blue
-  "#F4A261", // Orange/Yellow
-  "#2A9D8F", // Teal
+  "#E53935", // Red (tomato red)
+  "#1565C0", // Dark blue (navy/cobalt)
+  "#42A5F5", // Light blue (sky blue)
+  "#F9A825", // Yellow (golden/mustard)
+  "#00897B", // Teal (dark teal/green)
   "#000000", // Black
-  "#457B9D", // Medium blue
-  "#F1FAEE", // Off-white/cream
-  "#A8DADC", // Light teal
-  "#E9C46A", // Yellow
+  "#FFCDD2", // Light pink (blush/salmon)
+  "#B2DFDB", // Mint (light teal)
+  "#FFFFFF", // White
 ];
 
 type ShapeType = "quarterCircle" | "halfCircle" | "circle" | "leaf" | "empty";

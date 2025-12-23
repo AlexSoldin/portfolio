@@ -106,13 +106,19 @@ export const tools: Tool[] = [
     category: "productivity",
     link: "https://arc.net/gift/76efe70b",
   },
+  {"id": "orbstack",
+    name: "OrbStack",
+    description: "Docker desktop alternative for Mac.",
+    category: "productivity",
+    link: "https://orbstack.com/",
+  },
 ];
 
 /**
  * Get all tools
  */
 export function getAllTools(): Tool[] {
-  return tools;
+  return tools.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**

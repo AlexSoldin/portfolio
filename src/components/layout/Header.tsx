@@ -2,15 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const navItems = [
-  { label: "🏠", href: "/", title: "Home" },
-  { label: "about", href: "/about" },
-  { label: "projects", href: "/projects" },
-  { label: "tools", href: "/tools" },
-  { label: "writing", href: "/writing" },
-  { label: "contact", href: "/contact" },
-];
+import { mainNavigation } from "@/config";
 
 export default function Header() {
   const pathname = usePathname();
@@ -19,7 +11,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-[var(--background)]">
       <nav className="max-w-4xl mx-auto px-6 py-5">
         <ul className="flex items-center gap-6 flex-wrap">
-          {navItems.map((item) => {
+          {mainNavigation.map((item) => {
             const isActive = pathname === item.href;
             return (
               <li key={item.href}>
@@ -41,3 +33,4 @@ export default function Header() {
     </header>
   );
 }
+

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui";
-import { ToolsGrid } from "./ToolsGrid";
+import { ToolsGrid } from "@/components/features/tools";
 
 export const metadata: Metadata = {
   title: "Tools",
