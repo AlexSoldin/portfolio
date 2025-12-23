@@ -11,4 +11,6 @@ export { Button } from "./Button";
 export { Alert } from "./Alert";
 export { SearchInput } from "./SearchInput";
 export { ToolCard } from "./ToolCard";
+export { PostCard } from "./PostCard";
+export { FilterPill } from "./FilterPill";
 export { CategoryFilter } from "./CategoryFilter";
