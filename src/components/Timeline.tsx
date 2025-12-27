@@ -11,48 +11,49 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function Timeline() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const progressLineRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      // Animate cards
-      const cards = gsap.utils.toArray<HTMLElement>(".city-card");
-      cards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+      // Progress line fills as you scroll
+      gsap.to(progressLineRef.current, {
+        height: "100%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 60%",
+          end: "bottom 40%",
+          scrub: 0.5,
+        },
       });
 
-      // Animate scene illustrations
-      const scenes = gsap.utils.toArray<HTMLElement>(".city-scene");
-      scenes.forEach((scene) => {
-        gsap.fromTo(
-          scene,
-          { opacity: 0, scale: 0.5, rotate: -10 },
-          {
-            opacity: 1,
-            scale: 1,
-            rotate: 0,
-            duration: 0.8,
-            ease: "back.out(1.7)",
-            scrollTrigger: {
-              trigger: scene,
-              start: "top 75%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+      // Cards fade in
+      gsap.utils.toArray<HTMLElement>(".city-card").forEach((card) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 50,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      });
+
+      // Scene emojis pop in (slower, more centered)
+      gsap.utils.toArray<HTMLElement>(".city-scene").forEach((scene) => {
+        gsap.from(scene, {
+          opacity: 0,
+          scale: 0.5,
+          duration: 1.0,
+          ease: "back.out(1.4)",
+          scrollTrigger: {
+            trigger: scene,
+            start: "top 75%", // Triggers when scene is more centered
+            toggleActions: "play none none reverse",
+          },
+        });
       });
     },
     { scope: containerRef }
@@ -60,52 +61,40 @@ export function Timeline() {
 
   return (
     <section ref={containerRef} className="relative max-w-4xl mx-auto py-12">
-      {/* Vertical Line */}
-      <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-[var(--accent)] via-[var(--border)] to-[var(--accent)] md:-translate-x-1/2 rounded-full" />
+      {/* Timeline Line */}
+      <div className="timeline-line-bg" />
+      <div ref={progressLineRef} className="timeline-line-progress" />
 
       <div className="space-y-24">
         {cityChapters.map((chapter, index) => {
-          const isLeft = index % 2 === 0;
+          const isLeft = index % 2 === 0; // Alternates left/right on desktop
 
           return (
             <div key={chapter.id} className="relative">
               {/* Dot */}
-              <div
-                className={`absolute left-8 md:left-1/2 w-6 h-6 rounded-full border-4 border-[var(--background)] shadow-lg md:-translate-x-1/2 z-10 ${chapter.color}`}
-              />
+              <div className="timeline-dot" />
 
               {/* Content Row */}
-              <div
-                className={`flex flex-col md:flex-row items-start gap-8 ${
-                  isLeft ? "" : "md:flex-row-reverse"
-                }`}
-              >
-                {/* Spacer for mobile */}
-                <div className="w-16 shrink-0 md:hidden" />
-
-                {/* Card Side */}
+              <div className={`flex ${isLeft ? "md:flex-row" : "md:flex-row-reverse"}`}>
+                {/* Card */}
                 <div
-                  className={`city-card flex-1 md:w-[calc(50%-2rem)] ${
-                    isLeft ? "md:pr-16 md:text-right" : "md:pl-16"
-                  }`}
+                  className={`city-card ml-16 md:ml-0 flex-1 ${isLeft ? "md:pr-16" : "md:pl-16"}`}
                 >
-                  <Card className="p-6 hover:border-[var(--accent)] transition-all duration-300">
-                    {/* Header */}
+                  <Card className="p-6 hover:border-[var(--accent)] transition-colors">
                     <div
                       className={`flex items-center gap-3 mb-4 ${isLeft ? "md:flex-row-reverse" : ""}`}
                     >
                       <span className="text-4xl">{chapter.flag}</span>
-                      <div>
+                      <div className={isLeft ? "md:text-right" : ""}>
                         <h3 className="text-2xl font-bold">{chapter.city}</h3>
-                        <p className="text-sm text-[var(--muted)] font-medium">{chapter.period}</p>
+                        <p className="text-sm text-[var(--muted)]">{chapter.period}</p>
                       </div>
                     </div>
 
-                    {/* Events */}
-                    <ul className={`space-y-3 ${isLeft ? "md:text-left" : ""}`}>
+                    <ul className="space-y-3">
                       {chapter.events.map((event, i) => (
                         <li key={i} className="flex items-start gap-3">
-                          <span className="text-lg shrink-0">{event.emoji}</span>
+                          <span className="text-lg">{event.emoji}</span>
                           <div>
                             <p className="font-medium">{event.activity}</p>
                             {event.description && (
@@ -118,15 +107,13 @@ export function Timeline() {
                   </Card>
                 </div>
 
-                {/* Scene Illustration Side */}
+                {/* Scene Emoji (desktop only) */}
                 <div
-                  className={`city-scene hidden md:flex flex-1 md:w-[calc(50%-2rem)] items-center justify-center ${
-                    isLeft ? "md:pl-16" : "md:pr-16"
-                  }`}
+                  className={`city-scene hidden md:flex flex-1 items-center justify-center ${isLeft ? "md:pl-16" : "md:pr-16"}`}
                 >
-                  <div className="text-[120px] select-none opacity-80 hover:scale-110 transition-transform duration-300">
+                  <span className="text-[120px] opacity-80 hover:scale-110 transition-transform">
                     {chapter.scene}
-                  </div>
+                  </span>
                 </div>
               </div>
             </div>

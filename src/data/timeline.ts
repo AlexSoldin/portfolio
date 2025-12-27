@@ -40,7 +40,7 @@ export const cityChapters: CityChapter[] = [
         activity: "University of Cape Town",
         description: "Electrical and computer engineering",
       },
-      { emoji: "💻", activity: "Internships", description: "12 weeks of vacation work" },
+      //   { emoji: "💻", activity: "Internships", description: "12 weeks of vacation work" },
     ],
   },
   {

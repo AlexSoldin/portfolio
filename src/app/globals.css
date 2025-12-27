@@ -182,3 +182,15 @@ a:hover {
   padding: 0;
   vertical-align: top;
 }
+/* Timeline utility classes */
+.timeline-line-bg {
+  @apply absolute left-[2.125rem] md:left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 bg-[var(--border)] rounded-full;
+}
+
+.timeline-line-progress {
+  @apply absolute left-[2.125rem] md:left-1/2 top-0 w-1 h-0 -translate-x-1/2 bg-[var(--accent)] rounded-full;
+}
+
+.timeline-dot {
+  @apply absolute left-[2.125rem] md:left-1/2 top-1/2 w-6 h-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-[var(--background)] shadow-lg z-10 bg-[var(--accent)];
+}
