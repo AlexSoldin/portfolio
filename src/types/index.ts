@@ -75,7 +75,7 @@ export interface ContactMethod {
   label: string;
   value: string;
   href: string;
-  icon: "email" | "github" | "linkedin" | "instagram";
+  icon: "email" | "github" | "linkedin" | "instagram" | "coffee";
 }
 
 /**

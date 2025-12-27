@@ -1,5 +1,7 @@
 import type { ContactContent, ContactMethod } from "@/types";
 
+// TODO: See if we can move content to an md folder and use markdown to render the content.
+
 export const contactMethods: ContactMethod[] = [
   {
     label: "Email",
@@ -24,6 +26,12 @@ export const contactMethods: ContactMethod[] = [
     value: "@alexsoldin",
     href: "https://instagram.com/alexsoldin",
     icon: "instagram",
+  },
+  {
+    label: "Buy Me a Coffee",
+    value: "Alex Soldin",
+    href: "https://www.buymeacoffee.com/alexsoldini",
+    icon: "coffee",
   },
 ];
 

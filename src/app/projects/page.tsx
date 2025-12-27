@@ -21,6 +21,8 @@ export default function ProjectsPage() {
         subtitle="A collection of things I've built. From production applications to creative experiments, each project represents a problem I found interesting."
       />
 
+      {/* TODO: Bring in GitHub contributions and common repositories added to via API */}
+
       {/* Featured Projects */}
       <section className="mb-16">
         <p className="text-sm font-medium text-[var(--muted)] uppercase tracking-wider mb-6 animate-fade-in-delay-1">

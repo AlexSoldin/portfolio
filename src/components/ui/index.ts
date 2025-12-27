@@ -3,7 +3,7 @@ export { SectionHeader } from "./SectionHeader";
 export { Card } from "./Card";
 export { Tag } from "./Tag";
 export { RichText } from "./RichText";
-export { ContactIcon } from "./ContactIcon";
+export { Icon } from "./Icon";
 export { ContactLinkCard } from "./ContactLinkCard";
 export { Input } from "./Input";
 export { Textarea } from "./Textarea";

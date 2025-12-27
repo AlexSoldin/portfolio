@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ContactMethod } from "@/types";
-import { Card, ContactIcon } from "./";
+import { Card, Icon } from "./";
 
 interface ContactLinkCardProps {
   method: ContactMethod;
@@ -19,7 +19,7 @@ export function ContactLinkCard({ method, className = "" }: ContactLinkCardProps
     >
       <Card className="flex items-center gap-4 group">
         <span className="p-3 bg-[var(--highlight)] rounded-lg text-[var(--muted)] group-hover:text-[var(--accent)] transition-colors">
-          <ContactIcon icon={method.icon} />
+          <Icon icon={method.icon} />
         </span>
         <div>
           <p className="text-sm text-[var(--muted)]">{method.label}</p>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader, SectionHeader, Card, RichText } from "@/components/ui";
 import { aboutContent } from "@/data";
+import { Timeline } from "@/components/Timeline";
 
 export const metadata: Metadata = {
   title: "About",
@@ -12,6 +13,11 @@ export default function AboutPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
       <PageHeader title="About me" subtitle="Engineer, designer, and lifelong learner." />
+
+      {/* Timeline Section */}
+      <section className="mb-10">
+        <Timeline />
+      </section>
 
       <div className="prose max-w-none">
         {/* Intro Section */}
