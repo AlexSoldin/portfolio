@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/HeroSection";
-import { SectionHeader, Card, Tag, RichText } from "@/components/ui";
-import { heroContent, skills, getFeaturedProjects, getRecentPosts } from "@/data";
+import { ValueProp } from "@/components/ValueProp";
+import { Card, SectionHeader, Tag } from "@/components/ui";
+import { getFeaturedProjects, getRecentPosts, heroContent, skills } from "@/data";
 
 export default function Home() {
   const featuredProjects = getFeaturedProjects();
@@ -11,12 +12,14 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSection
         title={heroContent.greeting}
-        subtitle={<RichText>{heroContent.description}</RichText>}
+        description={heroContent.description}
         artWidth={320}
         artHeight={320}
         artCellSize={40}
-        className="animate-fade-in"
       />
+
+      {/* Value Proposition Section */}
+      <ValueProp />
 
       {/* What I Do Section */}
       <section className="mb-16 animate-fade-in-delay-2">

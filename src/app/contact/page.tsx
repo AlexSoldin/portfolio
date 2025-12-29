@@ -13,11 +13,10 @@ export default function ContactPage() {
     <div className="max-w-4xl mx-auto px-6 py-16">
       <HeroSection
         title={title}
-        subtitle={subtitle}
+        description={subtitle}
         artWidth={280}
         artHeight={280}
         artCellSize={35}
-        className="animate-fade-in-delay-1"
       />
 
       <div className="grid lg:grid-cols-2 gap-16">
