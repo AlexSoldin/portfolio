@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Required for Cloudflare Workers deployment
+  // This ensures the app can run in the edge runtime
 };
 
 export default nextConfig;

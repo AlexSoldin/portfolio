@@ -1,11 +1,10 @@
 import { HeroSection } from "@/components/HeroSection";
-import { ValueProp } from "@/components/ValueProp";
-import { Card, SectionHeader, Tag } from "@/components/ui";
-import { getFeaturedProjects, getRecentPosts, heroContent, skills } from "@/data";
+// import { getFeaturedProjects, getRecentPosts, heroContent } from "@/data";
+import { heroContent } from "@/data";
 
 export default function Home() {
-  const featuredProjects = getFeaturedProjects();
-  const recentPosts = getRecentPosts(3);
+  // const featuredProjects = getFeaturedProjects();
+  // const recentPosts = getRecentPosts(3);
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
@@ -19,10 +18,10 @@ export default function Home() {
       />
 
       {/* Value Proposition Section */}
-      <ValueProp />
+      {/* <ValueProp /> */}
 
       {/* What I Do Section */}
-      <section className="mb-16 animate-fade-in-delay-2">
+      {/* <section className="mb-16 animate-fade-in-delay-2">
         <SectionHeader title="What I do" />
         <div className="space-y-6">
           {skills.map((category) => (
@@ -39,10 +38,10 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Featured Projects Preview */}
-      <section className="mb-16 animate-fade-in-delay-3">
+      {/* <section className="mb-16 animate-fade-in-delay-3">
         <SectionHeader title="Projects" href="/projects" />
         <div className="grid sm:grid-cols-2 gap-6">
           {featuredProjects.map((project) => (
@@ -60,10 +59,10 @@ export default function Home() {
             </Card>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Recent Writing Preview */}
-      <section className="animate-fade-in-delay-4">
+      {/* <section className="animate-fade-in-delay-4">
         <SectionHeader title="Writing" href="/writing" linkText="Read more →" />
         <div className="space-y-1">
           {recentPosts.map((post) => (
@@ -81,7 +80,7 @@ export default function Home() {
             </article>
           ))}
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

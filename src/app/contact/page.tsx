@@ -1,13 +1,14 @@
 "use client";
 
 import { HeroSection } from "@/components/HeroSection";
-import { ContactLinkCard, Input, Textarea, Button, Alert } from "@/components/ui";
+import { Alert, Button, ContactLinkCard, Input, Textarea } from "@/components/ui";
 import { contactContent } from "@/data";
 import { useContactForm } from "@/hooks";
 
 export default function ContactPage() {
   const { title, subtitle, methods } = contactContent;
-  const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
+  // const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
+  const { submitStatus, handleSubmit } = useContactForm();
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
@@ -45,8 +46,11 @@ export default function ContactPage() {
               rows={5}
               placeholder="Tell me more..."
             />
-            <Button type="submit" disabled={isSubmitting} fullWidth>
+            {/* <Button type="submit" disabled={isSubmitting} fullWidth>
               {isSubmitting ? "Sending..." : "Send message"}
+            </Button> */}
+            <Button type="submit" disabled fullWidth>
+              Coming soon
             </Button>
           </form>
         </section>
