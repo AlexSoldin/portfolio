@@ -23,7 +23,6 @@ export interface SiteConfig {
  */
 export interface HeroContent {
   greeting: string;
-  tagline: string;
   description: string;
 }
 

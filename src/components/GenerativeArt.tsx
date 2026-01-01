@@ -166,7 +166,12 @@ export default function GenerativeArt({
   }, [generateArt]);
 
   return (
-    <div className="art-container block m-0 p-0" onClick={generateArt} title="Click to regenerate">
+    <div
+      className="art-container inline-block m-0 p-0"
+      onClick={generateArt}
+      title="Click to regenerate"
+      style={{ maxWidth: "100%" }}
+    >
       <canvas
         ref={canvasRef}
         width={width}

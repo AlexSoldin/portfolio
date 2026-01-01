@@ -39,7 +39,7 @@ export function HeroSection({
       </div>
 
       {/* Generative Art - Right Side */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 flex justify-center lg:justify-start">
         <GenerativeArt width={artWidth} height={artHeight} cellSize={artCellSize} />
       </div>
     </section>

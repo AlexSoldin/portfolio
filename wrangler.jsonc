@@ -11,6 +11,12 @@
   // Enable preview URLs for testing deployments
   "preview_urls": true,
 
+  // Custom domain routes
+  "routes": [
+    { "pattern": "soldin.co", "zone_name": "soldin.co" },
+    { "pattern": "www.soldin.co", "zone_name": "soldin.co" },
+  ],
+
   // Static assets binding (required for OpenNext)
   "assets": {
     "binding": "ASSETS",
