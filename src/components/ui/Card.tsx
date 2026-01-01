@@ -2,9 +2,10 @@ interface CardProps {
   children: React.ReactNode;
   className?: string;
   hoverable?: boolean;
+  style?: React.CSSProperties;
 }
 
-export function Card({ children, className = "", hoverable = true }: CardProps) {
+export function Card({ children, className = "", hoverable = true, style }: CardProps) {
   return (
     <div
       className={`
@@ -12,6 +13,7 @@ export function Card({ children, className = "", hoverable = true }: CardProps) 
         ${hoverable ? "hover:shadow-lg hover:border-[var(--muted)]/30 transition-all duration-300" : ""}
         ${className}
       `}
+      style={style}
     >
       {children}
     </div>

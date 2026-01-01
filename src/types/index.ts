@@ -125,3 +125,61 @@ export interface Tool {
   category: "productivity" | "coding" | "communication" | "media" | "security" | "other";
   link?: string;
 }
+
+/**
+ * Room types for floor plan
+ */
+export type RoomType = "living" | "bedroom" | "kitchen" | "bathroom" | "office" | "balcony";
+
+/**
+ * Product icon types
+ */
+export type ProductIcon =
+  | "desk"
+  | "keyboard"
+  | "headphones"
+  | "lamp"
+  | "monitor"
+  | "coffee"
+  | "pan"
+  | "kettle"
+  | "sofa"
+  | "blanket"
+  | "bed"
+  | "speaker"
+  | "bottle"
+  | "towel"
+  | "chair"
+  | "plant"
+  | "laptop"
+  | "code"
+  | "terminal"
+  | "music"
+  | "browser"
+  | "notes"
+  | "calendar"
+  | "chat";
+
+/**
+ * Sub-item for products (e.g., apps on a laptop)
+ */
+export interface ProductChild {
+  id: string;
+  name: string;
+  icon: ProductIcon;
+  description: string;
+}
+
+/**
+ * Product data
+ */
+export interface Product {
+  id: string;
+  name: string;
+  icon: ProductIcon;
+  category: "household" | "accessories" | "tech" | "furniture" | "kitchen" | "other";
+  room: RoomType;
+  useCase: string;
+  whyILikeIt: string;
+  children?: ProductChild[];
+}
