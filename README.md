@@ -102,15 +102,50 @@ git commit -m "docs: update README with new commands"
 
 ## Deployment
 
-The easiest way to deploy is with [Vercel](https://vercel.com):
+This project is configured for **Cloudflare Pages** using the [OpenNext adapter](https://opennext.js.org/).
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js)
+### Cloudflare Scripts
 
-Or build and run manually:
+| Command | Description |
+|---------|-------------|
+| `pnpm cf:build` | Build for Cloudflare Workers |
+| `pnpm cf:dev` | Local development with Workers runtime |
+| `pnpm cf:deploy` | Deploy directly via CLI |
+| `pnpm cf:preview` | Build and preview locally |
+
+### Option 1: Git Integration (Recommended)
+
+1. **Push your code to GitHub**
+
+2. **Connect to Cloudflare Pages:**
+   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com) → Workers & Pages → Create
+   - Select "Pages" → Connect to Git
+   - Select your repository
+
+3. **Configure build settings:**
+
+   | Setting | Value |
+   |---------|-------|
+   | Build command | `pnpm cf:build` |
+   | Build output directory | `.open-next` |
+   | Root directory | _(leave blank)_ |
+
+4. **Add environment variable:**
+
+   | Variable | Value |
+   |----------|-------|
+   | `NODE_VERSION` | `20` |
+
+5. **Deploy** - Cloudflare will auto-deploy on every push to `main`
+
+### Option 2: Direct CLI Deployment
 
 ```bash
-pnpm build
-pnpm start
+# First time: Login to Cloudflare
+pnpm wrangler login
+
+# Build and deploy
+pnpm cf:deploy
 ```
 
 ## Documentation

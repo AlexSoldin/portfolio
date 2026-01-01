@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface GenerativeArtProps {
   width?: number;
@@ -178,9 +178,8 @@ export default function GenerativeArt({
           display: "block",
         }}
       />
-      <p className="mt-3 text-sm m-0">
-        <strong>click this art</strong> to regenerate it{" "}
-        <span className="text-[var(--accent)] font-bold">[?]</span>
+      <p className="mt-3 text-sm m-0 text-center">
+        <strong>Click this art</strong> to regenerate it
       </p>
     </div>
   );

@@ -1,9 +1,9 @@
 import GenerativeArt from "./GenerativeArt";
-import { PageHeader } from "./ui";
+import { TextReveal } from "./TextReveal";
 
 interface HeroSectionProps {
   title: string;
-  subtitle?: string | React.ReactNode;
+  description: string;
   artWidth?: number;
   artHeight?: number;
   artCellSize?: number;
@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 export function HeroSection({
   title,
-  subtitle,
+  description,
   artWidth = 320,
   artHeight = 320,
   artCellSize = 40,
@@ -24,14 +24,18 @@ export function HeroSection({
     >
       {/* Text Content - Left Side */}
       <div className="flex-1">
-        <PageHeader
-          title={title}
-          subtitle={typeof subtitle === "string" ? subtitle : undefined}
-          className="mb-0"
+        <TextReveal
+          text={title}
+          className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-bold leading-none mb-6"
+          duration={1}
         />
-        {subtitle && typeof subtitle !== "string" && (
-          <div className="text-lg text-[var(--muted)] leading-relaxed mt-4">{subtitle}</div>
-        )}
+        <TextReveal
+          text={description}
+          className="text-lg text-[var(--muted)] leading-relaxed"
+          delay={0.5}
+          stagger={0.02}
+          duration={0.8}
+        />
       </div>
 
       {/* Generative Art - Right Side */}

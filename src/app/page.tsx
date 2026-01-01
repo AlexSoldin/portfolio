@@ -1,25 +1,27 @@
 import { HeroSection } from "@/components/HeroSection";
-import { SectionHeader, Card, Tag, RichText } from "@/components/ui";
-import { heroContent, skills, getFeaturedProjects, getRecentPosts } from "@/data";
+// import { getFeaturedProjects, getRecentPosts, heroContent } from "@/data";
+import { heroContent } from "@/data";
 
 export default function Home() {
-  const featuredProjects = getFeaturedProjects();
-  const recentPosts = getRecentPosts(3);
+  // const featuredProjects = getFeaturedProjects();
+  // const recentPosts = getRecentPosts(3);
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
       {/* Hero Section */}
       <HeroSection
         title={heroContent.greeting}
-        subtitle={<RichText>{heroContent.description}</RichText>}
+        description={heroContent.description}
         artWidth={320}
         artHeight={320}
         artCellSize={40}
-        className="animate-fade-in"
       />
 
+      {/* Value Proposition Section */}
+      {/* <ValueProp /> */}
+
       {/* What I Do Section */}
-      <section className="mb-16 animate-fade-in-delay-2">
+      {/* <section className="mb-16 animate-fade-in-delay-2">
         <SectionHeader title="What I do" />
         <div className="space-y-6">
           {skills.map((category) => (
@@ -36,10 +38,10 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Featured Projects Preview */}
-      <section className="mb-16 animate-fade-in-delay-3">
+      {/* <section className="mb-16 animate-fade-in-delay-3">
         <SectionHeader title="Projects" href="/projects" />
         <div className="grid sm:grid-cols-2 gap-6">
           {featuredProjects.map((project) => (
@@ -57,10 +59,10 @@ export default function Home() {
             </Card>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Recent Writing Preview */}
-      <section className="animate-fade-in-delay-4">
+      {/* <section className="animate-fade-in-delay-4">
         <SectionHeader title="Writing" href="/writing" linkText="Read more →" />
         <div className="space-y-1">
           {recentPosts.map((post) => (
@@ -78,7 +80,7 @@ export default function Home() {
             </article>
           ))}
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

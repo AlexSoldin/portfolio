@@ -11,7 +11,7 @@ export const contactMethods: ContactMethod[] = [
   },
   {
     label: "GitHub",
-    value: "@alexsoldin",
+    value: "alexsoldin",
     href: "https://github.com/alexsoldin",
     icon: "github",
   },
@@ -38,6 +38,6 @@ export const contactMethods: ContactMethod[] = [
 export const contactContent: ContactContent = {
   title: "Let's work together",
   subtitle:
-    "I'm always interested in hearing about new projects, opportunities, or just having a conversation about technology.",
+    "I'm always interested in hearing about new projects, opportunities or just having a conversation about technology.",
   methods: contactMethods,
 };
