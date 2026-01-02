@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { cityChapters } from "@/data/timeline";
 import { Card } from "@/components/ui";
+import { cityChapters } from "@/data/timeline";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,7 +60,7 @@ export function Timeline() {
   );
 
   return (
-    <section ref={containerRef} className="relative max-w-4xl mx-auto py-12">
+    <section ref={containerRef} className="relative max-w-4xl mx-auto py-8 sm:py-12 my-8 sm:my-10">
       {/* Timeline Line */}
       <div className="timeline-line-bg" />
       <div ref={progressLineRef} className="timeline-line-progress" />
@@ -80,38 +80,70 @@ export function Timeline() {
                 <div
                   className={`city-card ml-16 md:ml-0 flex-1 ${isLeft ? "md:pr-16" : "md:pl-16"}`}
                 >
-                  <Card className="p-6 hover:border-[var(--accent)] transition-colors">
-                    <div
-                      className={`flex items-center gap-3 mb-4 ${isLeft ? "md:flex-row-reverse" : ""}`}
-                    >
-                      <span className="text-4xl">{chapter.flag}</span>
-                      <div className={isLeft ? "md:text-right" : ""}>
-                        <h3 className="text-2xl font-bold">{chapter.city}</h3>
-                        <p className="text-sm text-[var(--muted)]">{chapter.period}</p>
+                  <Card
+                    hoverable={false}
+                    className="p-5 border border-[var(--border)] transition-all duration-300 hover:border-[var(--accent)] hover:shadow-md group bg-[var(--card)]"
+                  >
+                    <div className="flex flex-col gap-1">
+                      {/* Header Row: Flag + City + Period */}
+                      <div
+                        className={`flex items-center gap-2.5 ${
+                          isLeft ? "md:flex-row-reverse" : ""
+                        }`}
+                      >
+                        <span className="text-2xl filter drop-shadow-sm transition-transform duration-300 group-hover:scale-110">
+                          {chapter.flag}
+                        </span>
+                        <div
+                          className={`flex flex-col ${isLeft ? "md:items-end" : "md:items-start"}`}
+                        >
+                          <div
+                            className={`flex items-baseline gap-2 ${isLeft ? "flex-row-reverse" : "flex-row"}`}
+                          >
+                            <h3 className="text-lg font-bold leading-tight">{chapter.city}</h3>
+                            <span className="text-xs font-mono text-[var(--muted)]">
+                              {chapter.period}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Events (Simplified) */}
+                      <div className="mt-2">
+                        {chapter.events.map((event, i) => (
+                          <div
+                            key={i}
+                            className={`flex items-start gap-2.5 ${
+                              isLeft ? "md:flex-row-reverse md:text-right" : ""
+                            }`}
+                          >
+                            <span className="text-lg leading-relaxed transition-transform duration-300 group-hover:scale-110">
+                              {event.emoji}
+                            </span>
+                            <div>
+                              <p className="text-[var(--foreground)] text-sm font-medium leading-relaxed">
+                                {event.activity}
+                              </p>
+                              {event.description && (
+                                <p className="text-xs text-[var(--muted)] mt-0.5 leading-relaxed">
+                                  {event.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-
-                    <ul className="space-y-3">
-                      {chapter.events.map((event, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="text-lg">{event.emoji}</span>
-                          <div>
-                            <p className="font-medium">{event.activity}</p>
-                            {event.description && (
-                              <p className="text-sm text-[var(--muted)]">{event.description}</p>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
                   </Card>
                 </div>
 
                 {/* Scene Emoji (desktop only) */}
                 <div
-                  className={`city-scene hidden md:flex flex-1 items-center justify-center ${isLeft ? "md:pl-16" : "md:pr-16"}`}
+                  className={`city-scene hidden md:flex flex-1 items-center justify-center ${
+                    isLeft ? "md:pl-16" : "md:pr-16"
+                  }`}
                 >
-                  <span className="text-[120px] opacity-80 hover:scale-110 transition-transform">
+                  <span className="text-[100px] opacity-80 hover:scale-110 transition-transform duration-500 cursor-default">
                     {chapter.scene}
                   </span>
                 </div>

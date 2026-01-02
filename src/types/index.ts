@@ -87,7 +87,8 @@ export interface AboutContent {
   };
   background: {
     title: string;
-    paragraphs: string[];
+    introParagraph: string;
+    outroParagraphs: string[];
   };
   expertise: {
     title: string;
@@ -96,11 +97,12 @@ export interface AboutContent {
       items: string[];
     }[];
   };
-  values: {
+  beyondCode: {
     title: string;
-    items: {
-      title: string;
-      description: string;
+    paragraphs: string[];
+    hobbies: {
+      emoji: string;
+      name: string;
     }[];
   };
 }
