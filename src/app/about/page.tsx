@@ -1,26 +1,22 @@
-import type { Metadata } from "next";
-import { PageHeader, SectionHeader, Card, RichText } from "@/components/ui";
-import { aboutContent } from "@/data";
+import { BeyondCode } from "@/components/features";
 import { Timeline } from "@/components/Timeline";
+import { PageHeader, RichText, SectionHeader } from "@/components/ui";
+import { aboutContent } from "@/data";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn more about my background, experience, and what drives me as an engineer and designer.",
+    "Learn more about my background, experience, and what drives me as a software engineer.",
 };
 
 export default function AboutPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
-      <PageHeader title="About me" subtitle="Engineer, designer, and lifelong learner." />
-
-      {/* Timeline Section */}
-      <section className="mb-10">
-        <Timeline />
-      </section>
+      <PageHeader title="About me" subtitle="Software engineer and lifelong learner." />
 
       <div className="prose max-w-none">
-        {/* Intro Section */}
+        {/* Intro section */}
         <section className="mb-12 animate-fade-in-delay-1">
           <SectionHeader title={aboutContent.intro.title} />
           {aboutContent.intro.paragraphs.map((paragraph, index) => (
@@ -33,18 +29,25 @@ export default function AboutPage() {
           ))}
         </section>
 
-        {/* Background Section */}
+        {/* Background section with timeline */}
         <section className="mb-12 animate-fade-in-delay-2">
           <SectionHeader title={aboutContent.background.title} />
-          {aboutContent.background.paragraphs.map((paragraph, index) => (
+
+          <p className="leading-relaxed mb-4">
+            <RichText>{aboutContent.background.introParagraph}</RichText>
+          </p>
+
+          <Timeline />
+
+          {aboutContent.background.outroParagraphs.map((paragraph, index) => (
             <p key={index} className="text-[var(--muted)] leading-relaxed mb-4">
               <RichText>{paragraph}</RichText>
             </p>
           ))}
         </section>
 
-        {/* Expertise Section */}
-        <section className="mb-12 animate-fade-in-delay-3">
+        {/* Expertise section */}
+        {/* <section className="mb-12 animate-fade-in-delay-3">
           <SectionHeader title={aboutContent.expertise.title} />
           <div className="grid sm:grid-cols-2 gap-8">
             {aboutContent.expertise.categories.map((category) => (
@@ -61,19 +64,17 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
-        {/* Values Section */}
+        {/* Beyond Code section */}
         <section className="animate-fade-in-delay-4">
-          <SectionHeader title={aboutContent.values.title} />
-          <div className="grid sm:grid-cols-3 gap-6">
-            {aboutContent.values.items.map((value) => (
-              <Card key={value.title} hoverable={false}>
-                <h3 className="font-bold mb-2">{value.title}</h3>
-                <p className="text-sm text-[var(--muted)]">{value.description}</p>
-              </Card>
-            ))}
-          </div>
+          <SectionHeader title={aboutContent.beyondCode.title} />
+          {aboutContent.beyondCode.paragraphs.map((paragraph, index) => (
+            <p key={index} className="text-[var(--muted)] leading-relaxed mb-4">
+              <RichText>{paragraph}</RichText>
+            </p>
+          ))}
+          <BeyondCode hobbies={aboutContent.beyondCode.hobbies} />
         </section>
       </div>
     </div>
