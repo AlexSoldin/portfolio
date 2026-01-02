@@ -18,6 +18,7 @@ function Hobby({
   isPaused,
   onHover,
   activeIndex,
+  orbitScale,
 }: {
   hobby: Hobby;
   index: number;
@@ -25,6 +26,7 @@ function Hobby({
   isPaused: boolean;
   onHover: (index: number | null) => void;
   activeIndex: number | null;
+  orbitScale: number;
 }) {
   const elementRef = useRef<HTMLDivElement>(null);
   const angleRef = useRef((index / total) * Math.PI * 2);
@@ -33,7 +35,7 @@ function Hobby({
 
   // Orbital parameters - 2 rings
   const ring = index % 2;
-  const orbitRadius = 120 + ring * 80;
+  const orbitRadius = (120 + ring * 80) * orbitScale;
   const speed = 0.0006 + ring * 0.0002;
   const tilt = 12;
 
@@ -56,7 +58,7 @@ function Hobby({
 
         elementRef.current.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`;
         elementRef.current.style.opacity = String(opacity);
-        elementRef.current.style.zIndex = isActive ? "100" : String(zIndex);
+        elementRef.current.style.zIndex = isActive ? "1000" : String(zIndex);
       }
 
       animationRef.current = requestAnimationFrame(animate);
@@ -108,6 +110,25 @@ function Hobby({
 export function BeyondCode({ hobbies }: BeyondCodeProps) {
   const [isPaused, setIsPaused] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [orbitScale, setOrbitScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = entry.contentRect.width;
+        // Base scale for desktop is around 600px container width
+        // Max scale 1.1, min scale based on width
+        const newScale = Math.min(1.1, Math.max(0.6, width / 600));
+        setOrbitScale(newScale);
+      }
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const handleHover = (index: number | null) => {
     setActiveIndex(index);
@@ -118,20 +139,24 @@ export function BeyondCode({ hobbies }: BeyondCodeProps) {
     <div className="relative mt-8 sm:mt-12">
       {/* Orbital container */}
       <div
-        className="relative w-full h-[400px] sm:h-[500px] flex items-center justify-center"
+        ref={containerRef}
+        className="relative w-full h-[400px] sm:h-[500px] flex items-center justify-center overflow-hidden"
         onMouseLeave={() => handleHover(null)}
       >
         {/* Orbital rings - minimal */}
-        {[0, 1].map((ring) => (
-          <div
-            key={ring}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--border)]/40"
-            style={{
-              width: (120 + ring * 80) * 2,
-              height: (120 + ring * 80) * 2 * Math.cos((12 * Math.PI) / 180),
-            }}
-          />
-        ))}
+        {[0, 1].map((ring) => {
+          const radius = (120 + ring * 80) * orbitScale;
+          return (
+            <div
+              key={ring}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--border)]/40"
+              style={{
+                width: radius * 2,
+                height: radius * 2 * Math.cos((12 * Math.PI) / 180),
+              }}
+            />
+          );
+        })}
 
         {/* Center point - matches Timeline dot */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
@@ -148,6 +173,7 @@ export function BeyondCode({ hobbies }: BeyondCodeProps) {
             isPaused={isPaused}
             onHover={handleHover}
             activeIndex={activeIndex}
+            orbitScale={orbitScale}
           />
         ))}
       </div>

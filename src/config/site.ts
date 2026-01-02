@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   name: "Alex Soldin",
   title: "Alex Soldin",
   description: "",
-  url: "https://alexsoldin.dev",
+  url: "https://soldin.co",
   email: "alex.soldin@gmail.com",
   social: {
     github: "https://github.com/alexsoldin",

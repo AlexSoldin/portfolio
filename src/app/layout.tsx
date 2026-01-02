@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans } from "next/font/google";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import { siteConfig } from "@/config";
+import type { Metadata } from "next";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ["engineer", "designer", "portfolio", "web development", "creative"],
+  keywords: ["engineer", "software", "portfolio", "web development"],
   authors: [{ name: siteConfig.name }],
   openGraph: {
     title: siteConfig.title,
