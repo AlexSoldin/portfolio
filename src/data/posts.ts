@@ -32,16 +32,6 @@ export const posts: Post[] = [
     published: true,
   },
   {
-    slug: "designing-developer-experience",
-    title: "Designing for Developer Experience",
-    excerpt:
-      "What makes an API delightful to use? Exploring the principles of developer-focused design and how to build tools that people love.",
-    date: "Aug 5, 2024",
-    readTime: "7 min read",
-    category: "Design",
-    published: true,
-  },
-  {
     slug: "database-migrations-scale",
     title: "Database Migrations at Scale",
     excerpt:
