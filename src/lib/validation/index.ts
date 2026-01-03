@@ -1,2 +1,1 @@
-export { contactFormSchema, type ContactFormInput } from "./contact";
-
+export { contactFormSchema, type ContactFormData } from "./contact";

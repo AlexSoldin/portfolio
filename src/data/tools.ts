@@ -106,7 +106,8 @@ export const tools: Tool[] = [
     category: "productivity",
     link: "https://arc.net/gift/76efe70b",
   },
-  {"id": "orbstack",
+  {
+    id: "orbstack",
     name: "OrbStack",
     description: "Docker desktop alternative for Mac.",
     category: "productivity",

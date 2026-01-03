@@ -8,4 +8,4 @@ export const contactFormSchema = z.object({
   token: z.string().min(1, "Turnstile token is required"),
 });
 
-export type ContactFormInput = z.infer<typeof contactFormSchema>;
+export type ContactFormData = z.infer<typeof contactFormSchema>;

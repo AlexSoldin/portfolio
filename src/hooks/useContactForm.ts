@@ -23,6 +23,12 @@ interface UseContactFormReturn {
   resetStatus: () => void;
 }
 
+interface ContactApiResponse {
+  success?: boolean;
+  message?: string;
+  error?: string;
+}
+
 export function useContactForm(): UseContactFormReturn {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>({
@@ -67,7 +73,7 @@ export function useContactForm(): UseContactFormReturn {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
+      const result = (await response.json()) as ContactApiResponse;
 
       if (response.ok) {
         setSubmitStatus({
