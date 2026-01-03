@@ -12,16 +12,6 @@ export const posts: Post[] = [
     published: true,
   },
   {
-    slug: "art-of-component-design",
-    title: "The Art of Component Design",
-    excerpt:
-      "Creating reusable, accessible components that developers actually want to use. A deep dive into API design, composition patterns, and building for extensibility.",
-    date: "Nov 28, 2024",
-    readTime: "6 min read",
-    category: "Design Systems",
-    published: true,
-  },
-  {
     slug: "performance-optimization-deep-dive",
     title: "Performance Optimization Deep Dive",
     excerpt:
