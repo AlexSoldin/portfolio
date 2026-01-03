@@ -5,7 +5,7 @@ export const contactFormSchema = z.object({
   email: z.email("Invalid email address"),
   subject: z.string().optional(),
   message: z.string().min(1, "Message is required"),
+  token: z.string().min(1, "Turnstile token is required"),
 });
 
 export type ContactFormInput = z.infer<typeof contactFormSchema>;
-

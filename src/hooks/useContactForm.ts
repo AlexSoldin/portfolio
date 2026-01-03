@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, FormEvent, useCallback } from "react";
 import { API_ENDPOINTS } from "@/config";
+import { FormEvent, useCallback, useState } from "react";
 
 interface SubmitStatus {
   type: "success" | "error" | null;
@@ -13,12 +13,13 @@ interface ContactFormData {
   email: string;
   subject?: string;
   message: string;
+  token: string;
 }
 
 interface UseContactFormReturn {
   isSubmitting: boolean;
   submitStatus: SubmitStatus;
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  handleSubmit: (e: FormEvent<HTMLFormElement>, token: string | null) => Promise<void>;
   resetStatus: () => void;
 }
 
@@ -33,17 +34,28 @@ export function useContactForm(): UseContactFormReturn {
     setSubmitStatus({ type: null, message: "" });
   }, []);
 
-  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>, token: string | null) => {
     e.preventDefault();
+    const form = e.currentTarget;
+
+    if (!token) {
+      setSubmitStatus({
+        type: "error",
+        message: "Please complete the security check.",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const data: ContactFormData = {
       name: formData.get("name") as string,
       email: formData.get("email") as string,
       subject: formData.get("subject") as string | undefined,
       message: formData.get("message") as string,
+      token,
     };
 
     try {
@@ -62,14 +74,15 @@ export function useContactForm(): UseContactFormReturn {
           type: "success",
           message: result.message || "Message sent successfully!",
         });
-        e.currentTarget.reset();
+        form.reset();
       } else {
         setSubmitStatus({
           type: "error",
           message: result.error || "Failed to send message. Please try again.",
         });
       }
-    } catch {
+    } catch (error) {
+      console.error("Form submission error:", error);
       setSubmitStatus({
         type: "error",
         message: "Network error. Please check your connection and try again.",
@@ -81,4 +94,3 @@ export function useContactForm(): UseContactFormReturn {
 
   return { isSubmitting, submitStatus, handleSubmit, resetStatus };
 }
-

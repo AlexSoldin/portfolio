@@ -4,11 +4,21 @@ import { HeroSection } from "@/components/HeroSection";
 import { Alert, Button, ContactLinkCard, Input, Textarea } from "@/components/ui";
 import { contactContent } from "@/data";
 import { useContactForm } from "@/hooks";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useState } from "react";
 
 export default function ContactPage() {
   const { title, subtitle, methods } = contactContent;
   // const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
-  const { submitStatus, handleSubmit } = useContactForm();
+  const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
+  const [token, setToken] = useState<string | null>(null);
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // Append token to formData logic will be needed here or in the hook.
+    // Let's pass the token to the hook's handle submit if we modify it.
+    // Or we can just use a hidden input field for the token!
+    handleSubmit(e, token);
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
@@ -25,7 +35,7 @@ export default function ContactPage() {
           <h2 className="font-[family-name:var(--font-playfair)] text-xl font-bold mb-6">
             Send a message
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={onSubmit} className="space-y-5">
             {submitStatus.type && <Alert type={submitStatus.type} message={submitStatus.message} />}
 
             <Input id="name" name="name" label="Name" required placeholder="Your name" />
@@ -46,11 +56,18 @@ export default function ContactPage() {
               rows={5}
               placeholder="Tell me more..."
             />
-            {/* <Button type="submit" disabled={isSubmitting} fullWidth>
+            <div className="min-h-[65px]">
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
+                onSuccess={(token: string) => setToken(token)}
+                onError={() => setToken(null)}
+                onExpire={() => setToken(null)}
+                options={{ theme: "light" }}
+              />
+            </div>
+
+            <Button type="submit" disabled={isSubmitting || !token} fullWidth>
               {isSubmitting ? "Sending..." : "Send message"}
-            </Button> */}
-            <Button type="submit" disabled fullWidth>
-              Coming soon
             </Button>
           </form>
         </section>
