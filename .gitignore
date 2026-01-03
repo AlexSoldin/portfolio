@@ -49,6 +49,7 @@ next-env.d.ts
 .env.test.local
 .env.production
 .env.production.local
+.dev.vars
 
 # =============================================================================
 # IDE & Editor

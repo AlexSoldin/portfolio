@@ -16,10 +16,15 @@
     "cf:build": "opennextjs-cloudflare build",
     "cf:dev": "opennextjs-cloudflare dev",
     "cf:deploy": "opennextjs-cloudflare deploy",
-    "cf:preview": "opennextjs-cloudflare build && wrangler dev"
+    "cf:preview": "opennextjs-cloudflare build && wrangler dev",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "wrangler d1 migrations apply portfolio --local",
+    "db:migrate:prod": "wrangler d1 migrations apply portfolio --remote"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@marsidev/react-turnstile": "^1.4.1",
+    "drizzle-orm": "^0.45.1",
     "gsap": "^3.14.2",
     "next": "15.5.9",
     "react": "18.3.1",
@@ -27,6 +32,7 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260103.0",
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@eslint/compat": "^2.0.0",
@@ -37,6 +43,7 @@
     "@types/node": "^20",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
+    "drizzle-kit": "^0.31.8",
     "eslint": "^9",
     "eslint-config-next": "15.5.9",
     "eslint-config-prettier": "^10.1.8",

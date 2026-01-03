@@ -4,32 +4,40 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2024-12-01",
   "compatibility_flags": ["nodejs_compat"],
-
   // Enable workers.dev subdomain (portfolio.alex-soldin.workers.dev)
   "workers_dev": true,
-
   // Enable preview URLs for testing deployments
   "preview_urls": true,
-
   // Custom domain routes
   "routes": [
-    { "pattern": "soldin.co", "zone_name": "soldin.co" },
-    { "pattern": "www.soldin.co", "zone_name": "soldin.co" },
+    {
+      "pattern": "soldin.co",
+      "zone_name": "soldin.co",
+    },
+    {
+      "pattern": "www.soldin.co",
+      "zone_name": "soldin.co",
+    },
   ],
-
   // Static assets binding (required for OpenNext)
   "assets": {
     "binding": "ASSETS",
     "directory": ".open-next/assets",
   },
-
   // Enable observability for logs and monitoring
   "observability": {
     "enabled": true,
   },
-
   // Environment variables
   "vars": {
     "NODE_ENV": "production",
   },
+  "d1_databases": [
+    {
+      "binding": "portfolio",
+      "database_name": "portfolio",
+      "database_id": "bd09c8d3-3c28-453b-8296-cf1d41d74026",
+      "migrations_dir": "migrations",
+    },
+  ],
 }
