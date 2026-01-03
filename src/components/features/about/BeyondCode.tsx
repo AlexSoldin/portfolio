@@ -119,9 +119,8 @@ export function BeyondCode({ hobbies }: BeyondCodeProps) {
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const width = entry.contentRect.width;
-        // Base scale for desktop is around 600px container width
-        // Max scale 1.1, min scale based on width
-        const newScale = Math.min(1.1, Math.max(0.6, width / 600));
+        // Increase minimum scale and adjust base width for more generous scaling
+        const newScale = Math.min(1.1, Math.max(0.75, width / 500));
         setOrbitScale(newScale);
       }
     });
@@ -140,7 +139,7 @@ export function BeyondCode({ hobbies }: BeyondCodeProps) {
       {/* Orbital container */}
       <div
         ref={containerRef}
-        className="relative w-full h-[400px] sm:h-[500px] flex items-center justify-center overflow-hidden"
+        className="relative w-full h-[450px] sm:h-[500px] flex items-center justify-center overflow-hidden"
         onMouseLeave={() => handleHover(null)}
       >
         {/* Orbital rings - minimal */}

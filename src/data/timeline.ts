@@ -25,7 +25,7 @@ export const cityChapters: CityChapter[] = [
   {
     id: "2",
     city: "Cape Town",
-    period: "2016–2020",
+    period: "2017–2020",
     flag: "🇿🇦",
     scene: "🏔️",
     events: [
@@ -39,7 +39,7 @@ export const cityChapters: CityChapter[] = [
   {
     id: "3",
     city: "Johannesburg",
-    period: "2020–2022",
+    period: "2021–2022",
     flag: "🇿🇦",
     scene: "🌆",
     events: [
