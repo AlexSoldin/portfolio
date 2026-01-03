@@ -31,16 +31,6 @@ export const posts: Post[] = [
     category: "Python",
     published: true,
   },
-  {
-    slug: "database-migrations-scale",
-    title: "Database Migrations at Scale",
-    excerpt:
-      "Strategies for safely evolving database schemas in production systems with zero downtime. Learned the hard way so you don't have to.",
-    date: "Jul 18, 2024",
-    readTime: "9 min read",
-    category: "Engineering",
-    published: true,
-  },
 ];
 
 // Helper functions that could later become API calls
