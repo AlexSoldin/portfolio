@@ -25,9 +25,9 @@ export default function ContactPage() {
       <HeroSection
         title={title}
         description={subtitle}
-        artWidth={280}
-        artHeight={280}
-        artCellSize={35}
+        artWidth={320}
+        artHeight={320}
+        artCellSize={40}
       />
 
       <div className="grid lg:grid-cols-2 gap-16">
@@ -56,13 +56,13 @@ export default function ContactPage() {
               rows={5}
               placeholder="Tell me more..."
             />
-            <div className="min-h-[65px]">
+            <div className="min-h-[65px] -mt-2">
               <Turnstile
                 siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
                 onSuccess={(token: string) => setToken(token)}
                 onError={() => setToken(null)}
                 onExpire={() => setToken(null)}
-                options={{ theme: "light" }}
+                options={{ theme: "dark", size: "flexible" }}
               />
             </div>
 
