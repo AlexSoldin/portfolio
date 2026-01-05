@@ -116,9 +116,7 @@ export interface ContactContent {
   methods: ContactMethod[];
 }
 
-/**
- * Tool data
- */
+// Tool data
 export interface Tool {
   id: string;
   name: string;
@@ -126,3 +124,5 @@ export interface Tool {
   category: "productivity" | "coding" | "communication" | "media" | "security" | "other";
   link?: string;
 }
+
+export * from "./art";

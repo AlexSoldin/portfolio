@@ -1,170 +1,68 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { drawFullGrid, generateCellConfig } from "@/lib";
+import { CellConfig, GridState } from "@/types";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface GenerativeArtProps {
   width?: number;
   height?: number;
-  cellSize?: number;
 }
 
-// Exact color palette from meowni.ca generative art
-const COLORS = [
-  "#E53935", // Red (tomato red)
-  "#1565C0", // Dark blue (navy/cobalt)
-  "#42A5F5", // Light blue (sky blue)
-  "#F9A825", // Yellow (golden/mustard)
-  "#00897B", // Teal (dark teal/green)
-  "#000000", // Black
-  "#FFCDD2", // Light pink (blush/salmon)
-  "#B2DFDB", // Mint (light teal)
-  "#FFFFFF", // White
-];
-
-type ShapeType = "quarterCircle" | "halfCircle" | "circle" | "leaf" | "empty";
-
-interface CellConfig {
-  shape: ShapeType;
-  rotation: number;
-  color: string;
-  bgColor: string;
-}
-
-// Helper function to generate cell configuration
-function generateCellConfig(): CellConfig {
-  const shapes: ShapeType[] = ["quarterCircle", "halfCircle", "circle", "leaf", "empty"];
-  const weights = [0.35, 0.25, 0.15, 0.15, 0.1];
-
-  // Weighted random selection
-  const random = Math.random();
-  let cumulative = 0;
-  let selectedShape: ShapeType = "quarterCircle";
-
-  for (let i = 0; i < shapes.length; i++) {
-    cumulative += weights[i];
-    if (random < cumulative) {
-      selectedShape = shapes[i];
-      break;
-    }
-  }
-
-  const rotations = [0, 90, 180, 270];
-  const rotation = rotations[Math.floor(Math.random() * rotations.length)];
-
-  // Pick two different colors
-  const colorIndex1 = Math.floor(Math.random() * COLORS.length);
-  let colorIndex2 = Math.floor(Math.random() * COLORS.length);
-  while (colorIndex2 === colorIndex1) {
-    colorIndex2 = Math.floor(Math.random() * COLORS.length);
-  }
-
-  return {
-    shape: selectedShape,
-    rotation,
-    color: COLORS[colorIndex1],
-    bgColor: Math.random() > 0.7 ? COLORS[colorIndex2] : "#FFFFFF",
-  };
-}
-
-// Helper function to draw a cell
-function drawCell(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  size: number,
-  config: CellConfig
-) {
-  const { shape, rotation, color, bgColor } = config;
-  const centerX = x + size / 2;
-  const centerY = y + size / 2;
-
-  // Draw background
-  ctx.fillStyle = bgColor;
-  ctx.fillRect(x, y, size, size);
-
-  ctx.save();
-  ctx.translate(centerX, centerY);
-  ctx.rotate((rotation * Math.PI) / 180);
-  ctx.translate(-centerX, -centerY);
-
-  ctx.fillStyle = color;
-
-  switch (shape) {
-    case "quarterCircle":
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.arc(x, y, size, 0, Math.PI / 2);
-      ctx.lineTo(x, y);
-      ctx.closePath();
-      ctx.fill();
-      break;
-
-    case "halfCircle":
-      ctx.beginPath();
-      ctx.arc(x + size / 2, y, size / 2, 0, Math.PI);
-      ctx.closePath();
-      ctx.fill();
-      break;
-
-    case "circle":
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, size * 0.35, 0, Math.PI * 2);
-      ctx.fill();
-      break;
-
-    case "leaf":
-      ctx.beginPath();
-      ctx.moveTo(x, y + size);
-      ctx.arc(x, y + size, size, -Math.PI / 2, 0);
-      ctx.arc(x + size, y, size, Math.PI / 2, Math.PI);
-      ctx.closePath();
-      ctx.fill();
-      break;
-
-    case "empty":
-      break;
-  }
-
-  ctx.restore();
-}
+// Resolution for downloaded images. 12 = 3840px (4K), 20 = 6400px (6K+)
+const EXPORT_SCALE = 20;
 
 export default function GenerativeArt({ width = 320, height = 320 }: GenerativeArtProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [gridState, setGridState] = useState<GridState | null>(null);
 
   const generateArt = useCallback(() => {
+    const sizes = [40, 64, 80];
+    const cellSize = sizes[Math.floor(Math.random() * sizes.length)];
+    const cols = Math.ceil(width / cellSize);
+    const rows = Math.ceil(height / cellSize);
+
+    const cells: CellConfig[] = [];
+    for (let i = 0; i < rows * cols; i++) {
+      cells.push(generateCellConfig());
+    }
+
+    setGridState({ cellSize, cells });
+  }, [width, height]);
+
+  // Effect to draw to the on-screen canvas whenever gridState changes
+  useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !gridState) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Handle HiDPI/Retina scaling
     const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
+    // We don't need ctx.scale if we pass the scale into the helper
+    drawFullGrid(ctx, width, height, gridState, dpr);
+  }, [width, height, gridState]);
 
-    // Pick a random grid density: Constrained range for consistency
-    const sizes = [40, 64, 80];
-    const randomizedCellSize = sizes[Math.floor(Math.random() * sizes.length)];
+  const handleDownload = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!gridState) return;
 
-    // Clear canvas with white background
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, width, height);
+    const offscreen = document.createElement("canvas");
+    offscreen.width = width * EXPORT_SCALE;
+    offscreen.height = height * EXPORT_SCALE;
+    const ctx = offscreen.getContext("2d");
 
-    const cols = Math.ceil(width / randomizedCellSize);
-    const rows = Math.ceil(height / randomizedCellSize);
-
-    // Generate grid of shapes
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const x = col * randomizedCellSize;
-        const y = row * randomizedCellSize;
-        const config = generateCellConfig();
-        drawCell(ctx, x, y, randomizedCellSize, config);
-      }
+    if (ctx) {
+      drawFullGrid(ctx, width, height, gridState, EXPORT_SCALE);
+      const dataUrl = offscreen.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = `generative-art-${Date.now()}.png`;
+      link.href = dataUrl;
+      link.click();
     }
-  }, [width, height]);
+  };
 
   useEffect(() => {
     generateArt();
@@ -172,7 +70,7 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
 
   return (
     <div
-      className="art-container inline-block m-0 p-0"
+      className="art-container relative group inline-block m-0 p-0 cursor-pointer"
       onClick={generateArt}
       title="Click to regenerate"
       style={{ maxWidth: "100%" }}
@@ -187,8 +85,32 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
           display: "block",
         }}
       />
-      <p className="mt-3 text-sm m-0 text-center">
-        <strong>Click this art</strong> to regenerate it
+
+      {/* Download Button Overlay */}
+      <button
+        onClick={handleDownload}
+        className="absolute bottom-10 right-2 p-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-[var(--border)] rounded-full opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-200 lg:hover:scale-110 active:scale-95 shadow-lg z-10"
+        title="Download"
+        aria-label="Download"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+      </button>
+
+      <p className="mt-3 text-sm m-0 text-center opacity-60">
+        <strong>Click</strong> art to rotate
       </p>
     </div>
   );
