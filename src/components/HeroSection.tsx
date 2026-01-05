@@ -15,7 +15,6 @@ export function HeroSection({
   description,
   artWidth = 320,
   artHeight = 320,
-  artCellSize = 40,
   className = "",
 }: HeroSectionProps) {
   return (
@@ -40,7 +39,7 @@ export function HeroSection({
 
       {/* Generative Art - Right Side */}
       <div className="flex-shrink-0 flex justify-center lg:justify-start">
-        <GenerativeArt width={artWidth} height={artHeight} cellSize={artCellSize} />
+        <GenerativeArt width={artWidth} height={artHeight} />
       </div>
     </section>
   );

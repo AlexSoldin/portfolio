@@ -14,7 +14,6 @@ export default function Home() {
         description={heroContent.description}
         artWidth={320}
         artHeight={320}
-        artCellSize={40}
       />
 
       {/* Value Proposition Section */}

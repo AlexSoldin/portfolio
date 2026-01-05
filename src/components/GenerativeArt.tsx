@@ -128,11 +128,7 @@ function drawCell(
   ctx.restore();
 }
 
-export default function GenerativeArt({
-  width = 320,
-  height = 320,
-  cellSize = 40,
-}: GenerativeArtProps) {
+export default function GenerativeArt({ width = 320, height = 320 }: GenerativeArtProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const generateArt = useCallback(() => {
@@ -142,24 +138,33 @@ export default function GenerativeArt({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Handle HiDPI/Retina scaling
+    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.scale(dpr, dpr);
+
+    // Pick a random grid density: Constrained range for consistency
+    const sizes = [40, 64, 80];
+    const randomizedCellSize = sizes[Math.floor(Math.random() * sizes.length)];
+
     // Clear canvas with white background
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, width, height);
 
-    const cols = Math.ceil(width / cellSize);
-    const rows = Math.ceil(height / cellSize);
+    const cols = Math.ceil(width / randomizedCellSize);
+    const rows = Math.ceil(height / randomizedCellSize);
 
     // Generate grid of shapes
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const x = col * cellSize;
-        const y = row * cellSize;
-
+        const x = col * randomizedCellSize;
+        const y = row * randomizedCellSize;
         const config = generateCellConfig();
-        drawCell(ctx, x, y, cellSize, config);
+        drawCell(ctx, x, y, randomizedCellSize, config);
       }
     }
-  }, [width, height, cellSize]);
+  }, [width, height]);
 
   useEffect(() => {
     generateArt();
@@ -174,12 +179,11 @@ export default function GenerativeArt({
     >
       <canvas
         ref={canvasRef}
-        width={width}
-        height={height}
         className="block m-0 p-0"
         style={{
+          width: `${width}px`,
+          height: `${height}px`,
           maxWidth: "100%",
-          height: "auto",
           display: "block",
         }}
       />
