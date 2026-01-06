@@ -14,10 +14,10 @@ export function FilterPill({
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 text-sm rounded-full border transition-colors ${
+      className={`px-4 py-2 text-sm rounded-full border transition-all duration-300 cursor-pointer ${
         isActive
-          ? "bg-[var(--foreground)] text-[var(--background)] border-[var(--foreground)]"
-          : "border-[var(--border)] hover:border-[var(--foreground)]"
+          ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm"
+          : "bg-[var(--card)] border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]"
       } ${className}`}
     >
       {children}

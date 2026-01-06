@@ -1,4 +1,4 @@
-import { BeyondCode } from "@/components/features";
+import { AboutOrbitSection } from "@/components/features/about";
 import { Timeline } from "@/components/Timeline";
 import { PageHeader, RichText, SectionHeader } from "@/components/ui";
 import { aboutContent } from "@/data";
@@ -46,35 +46,13 @@ export default function AboutPage() {
           ))}
         </section>
 
-        {/* Expertise section */}
-        {/* <section className="mb-12 animate-fade-in-delay-3">
-          <SectionHeader title={aboutContent.expertise.title} />
-          <div className="grid sm:grid-cols-2 gap-8">
-            {aboutContent.expertise.categories.map((category) => (
-              <div key={category.title}>
-                <h3 className="font-bold mb-3">{category.title}</h3>
-                <ul className="space-y-2 text-[var(--muted)]">
-                  {category.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section> */}
-
-        {/* Beyond Code section */}
+        {/* Orbit section */}
         <section className="animate-fade-in-delay-4">
-          <SectionHeader title={aboutContent.beyondCode.title} />
-          {aboutContent.beyondCode.paragraphs.map((paragraph, index) => (
-            <p key={index} className="text-[var(--muted)] leading-relaxed mb-4">
-              <RichText>{paragraph}</RichText>
-            </p>
-          ))}
-          <BeyondCode hobbies={aboutContent.beyondCode.hobbies} />
+          <SectionHeader title={aboutContent.orbit.title} />
+          <AboutOrbitSection
+            paragraphs={aboutContent.orbit.paragraphs}
+            categories={aboutContent.orbit.categories}
+          />
         </section>
       </div>
     </div>

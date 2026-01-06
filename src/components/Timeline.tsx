@@ -82,7 +82,7 @@ export function Timeline() {
                 >
                   <Card
                     hoverable={false}
-                    className="p-5 border border-[var(--border)] transition-all duration-300 hover:border-[var(--accent)] hover:shadow-md group bg-[var(--card)]"
+                    className="p-5 border border-[var(--border)] group bg-[var(--card)]"
                   >
                     <div className="flex flex-col gap-1">
                       {/* Header Row: Flag + City + Period */}
@@ -91,9 +91,7 @@ export function Timeline() {
                           isLeft ? "md:flex-row-reverse" : ""
                         }`}
                       >
-                        <span className="text-2xl filter drop-shadow-sm transition-transform duration-300 group-hover:scale-110">
-                          {chapter.flag}
-                        </span>
+                        <span className="text-2xl filter drop-shadow-sm">{chapter.flag}</span>
                         <div
                           className={`flex flex-col ${isLeft ? "md:items-end" : "md:items-start"}`}
                         >
@@ -117,9 +115,7 @@ export function Timeline() {
                               isLeft ? "md:flex-row-reverse md:text-right" : ""
                             }`}
                           >
-                            <span className="text-lg leading-relaxed transition-transform duration-300 group-hover:scale-110">
-                              {event.emoji}
-                            </span>
+                            <span className="text-lg leading-relaxed">{event.emoji}</span>
                             <div>
                               <p className="text-[var(--foreground)] text-sm font-medium leading-relaxed">
                                 {event.activity}
@@ -143,9 +139,7 @@ export function Timeline() {
                     isLeft ? "md:pl-16" : "md:pr-16"
                   }`}
                 >
-                  <span className="text-[100px] opacity-80 hover:scale-110 transition-transform duration-500 cursor-default">
-                    {chapter.scene}
-                  </span>
+                  <span className="text-[100px] opacity-80 cursor-default">{chapter.scene}</span>
                 </div>
               </div>
             </div>

@@ -20,72 +20,43 @@ export const aboutContent: AboutContent = {
       "Being observant has become central to how I work. I pay close attention to how systems behave, where processes break down, and where small details create unnecessary friction. Over time, I’ve learned that consistent structure and care for those details are what separate systems that function from systems that last.",
     ],
   },
-  expertise: {
-    title: "Technical expertise",
+  orbit: {
+    title: "In my orbit",
+    paragraphs: [
+      "I'm always picking up new skills and exploring different interests. Here's what I'm working with lately and what keeps me busy when I'm away from the keyboard.",
+    ],
     categories: [
       {
-        title: "Backend & Systems",
+        id: "work-with",
+        title: "What I work with",
         items: [
-          "Python & Django",
-          "PostgreSQL & Database Design",
-          "REST APIs & GraphQL",
-          "Celery & Background Tasks",
+          { emoji: "🐍", name: "Python" },
+          { emoji: "🚀", name: "Django" },
+          { emoji: "🐘", name: "PostgreSQL" },
+          { emoji: "🏗️", name: "Terraform" },
+          { emoji: "☁️", name: "Google Cloud" },
+          { emoji: "🔥", name: "Firebase" },
+          { emoji: "⚙️", name: "GitHub Actions" },
+          { emoji: "🎯", name: "Sentry" },
+          { emoji: "⚖️", name: "Jira" },
+          { emoji: "🎨", name: "Figma" },
         ],
       },
       {
-        title: "Frontend & Design",
+        id: "into",
+        title: "What I'm into",
         items: [
-          "React & TypeScript",
-          "Next.js & Modern Frameworks",
-          "CSS & Tailwind",
-          "UI/UX Design Principles",
+          { emoji: "♟️", name: "Chess" },
+          { emoji: "🔢", name: "Sudoku" },
+          { emoji: "🧩", name: "Puzzles" },
+          { emoji: "🎮", name: "Gaming" },
+          { emoji: "🧘", name: "Pilates" },
+          { emoji: "🍳", name: "Cooking" },
+          { emoji: "🥐", name: "Baking" },
+          { emoji: "☕", name: "Coffee" },
+          { emoji: "🌍", name: "Traveling" },
+          { emoji: "📚", name: "Reading" },
         ],
-      },
-    ],
-  },
-  beyondCode: {
-    title: "Beyond code",
-    paragraphs: ["When I'm not coding, you can usually find me doing one of the following."],
-    hobbies: [
-      {
-        emoji: "♟️",
-        name: "Chess",
-      },
-      {
-        emoji: "🔢",
-        name: "Sudoku",
-      },
-      {
-        emoji: "🧩",
-        name: "Puzzles",
-      },
-      {
-        emoji: "🎮",
-        name: "PlayStation 5",
-      },
-      {
-        emoji: "🧘",
-        name: "Pilates",
-      },
-      {
-        emoji: "🍳",
-        name: "Cooking",
-      },
-      {
-        emoji: "🥐",
-        name: "Baking",
-      },
-      {
-        emoji: "☕",
-        name: "Coffee",
-      },
-      {
-        emoji: "🌍",
-        name: "Traveling",
-      },
-      {
-        emoji: "📚",
-        name: "Reading",
       },
     ],
   },

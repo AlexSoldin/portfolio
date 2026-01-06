@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { createPortal } from "react-dom";
 import type { Tool } from "@/types";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface CategoryFilterProps {
   categories: Tool["category"][];
@@ -113,7 +113,7 @@ export function CategoryFilter({
           ref={buttonRef}
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full md:w-auto px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 focus:border-[var(--accent)] transition-all flex items-center justify-between gap-2 min-w-[180px]"
+          className="w-full md:w-auto px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 focus:border-[var(--accent)] transition-all flex items-center justify-between gap-2 min-w-[180px] cursor-pointer"
         >
           <span className="text-sm">{displayText}</span>
           <svg

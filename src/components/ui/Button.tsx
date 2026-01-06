@@ -11,7 +11,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "px-6 py-3 rounded-lg font-medium transition-opacity disabled:opacity-50 disabled:cursor-not-allowed";
+    "px-6 py-3 rounded-lg font-medium transition-opacity disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
   const variantClasses =
     variant === "primary"
       ? "bg-[var(--foreground)] text-[var(--background)] hover:opacity-90"

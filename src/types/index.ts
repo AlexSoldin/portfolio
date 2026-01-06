@@ -90,21 +90,20 @@ export interface AboutContent {
     introParagraph: string;
     outroParagraphs: string[];
   };
-  expertise: {
-    title: string;
-    categories: {
-      title: string;
-      items: string[];
-    }[];
-  };
-  beyondCode: {
+  orbit: {
     title: string;
     paragraphs: string[];
-    hobbies: {
-      emoji: string;
-      name: string;
+    categories: {
+      id: string;
+      title: string;
+      items: OrbitItem[];
     }[];
   };
+}
+
+export interface OrbitItem {
+  emoji: string;
+  name: string;
 }
 
 /**
