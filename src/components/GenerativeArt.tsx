@@ -77,7 +77,7 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
     >
       <canvas
         ref={canvasRef}
-        className="block m-0 p-0"
+        className="block m-0 p-0 rounded-xl"
         style={{
           width: `${width}px`,
           height: `${height}px`,
