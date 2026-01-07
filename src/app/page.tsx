@@ -1,5 +1,5 @@
+import { BusinessCardGenerator } from "@/components/BusinessCardGenerator";
 import { HeroSection } from "@/components/HeroSection";
-import { ValueProp } from "@/components/ValueProp";
 // import { getFeaturedProjects, getRecentPosts, heroContent } from "@/data";
 import { heroContent } from "@/data";
 
@@ -17,8 +17,11 @@ export default function Home() {
         artHeight={320}
       />
 
+      {/* Business Card Generator */}
+      <BusinessCardGenerator />
+
       {/* Value Proposition Section */}
-      <ValueProp />
+      {/* <ValueProp /> */}
 
       {/* What I Do Section */}
       {/* <section className="mb-16 animate-fade-in-delay-2">

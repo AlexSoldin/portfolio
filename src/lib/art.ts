@@ -1,5 +1,11 @@
 import { CellConfig, GridState, ShapeType } from "@/types/art";
 
+export interface BusinessCardText {
+  name: string;
+  role: string;
+  contact?: string;
+}
+
 // Exact color palette from meowni.ca generative art
 export const ART_COLORS = [
   "#E53935", // Red (tomato red)
@@ -131,4 +137,64 @@ export function drawFullGrid(
     const col = index % cols;
     drawCell(ctx, col * cellSize * scale, row * cellSize * scale, cellSize * scale, config);
   });
+}
+
+export function drawBusinessCard(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  state: GridState,
+  text: BusinessCardText,
+  scale: number = 1
+) {
+  // 1. Draw the generative art background
+  drawFullGrid(ctx, width, height, state, scale);
+
+  // 2. Draw the "Glass" card overlay
+  const cardWidth = width * 0.8 * scale;
+  const cardHeight = height * 0.45 * scale;
+  const cardX = (width * scale - cardWidth) / 2;
+  const cardY = (height * scale - cardHeight) / 2;
+  const radius = 12 * scale;
+
+  ctx.save();
+
+  // Shadow for the card
+  ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+  ctx.shadowBlur = 20 * scale;
+  ctx.shadowOffsetY = 10 * scale;
+
+  // Background of the text card - Force Light Mode
+  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+
+  // Rounded rectangle path
+  ctx.beginPath();
+  ctx.roundRect(cardX, cardY, cardWidth, cardHeight, radius);
+  ctx.fill();
+
+  ctx.restore();
+
+  // 3. Draw Text
+  const textColor = "#000000";
+  const mutedColor = "rgba(0, 0, 0, 0.6)";
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Name
+  // Note: Using system fonts as fallback, assuming 'Inter' or 'Playfair' is loaded on page
+  ctx.font = `bold ${32 * scale}px "Playfair Display", serif`;
+  ctx.fillStyle = textColor;
+  ctx.fillText(text.name, (width * scale) / 2, cardY + cardHeight * 0.4);
+
+  // Role
+  ctx.font = `${14 * scale}px "Inter", sans-serif`;
+  ctx.fillStyle = mutedColor;
+  ctx.globalAlpha = 0.8;
+  ctx.fillText(text.role.toUpperCase(), (width * scale) / 2, cardY + cardHeight * 0.65);
+
+  if (text.contact) {
+    ctx.font = `${12 * scale}px "Inter", sans-serif`;
+    ctx.fillText(text.contact, (width * scale) / 2, cardY + cardHeight * 0.82);
+  }
 }
