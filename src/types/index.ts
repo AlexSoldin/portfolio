@@ -22,8 +22,16 @@ export interface SiteConfig {
  * Hero section content
  */
 export interface HeroContent {
-  greeting: string;
-  description: string;
+  title: string;
+  subtitle: string;
+}
+
+/**
+ * Value Proposition section content
+ */
+export interface ValuePropContent {
+  title: string;
+  description: string[];
 }
 
 /**

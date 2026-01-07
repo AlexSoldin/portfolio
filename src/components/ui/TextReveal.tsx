@@ -3,7 +3,10 @@
 import { parseTextToWords } from "@/lib/text";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface TextRevealProps {
   text: string;
@@ -37,6 +40,11 @@ export function TextReveal({
           delay,
           stagger,
           ease: "power4.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
         }
       );
     },

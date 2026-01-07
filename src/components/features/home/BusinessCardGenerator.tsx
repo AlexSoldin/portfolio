@@ -1,9 +1,9 @@
 "use client";
 
+import { Input } from "@/components/ui/Input";
 import { BusinessCardText, drawBusinessCard, generateCellConfig } from "@/lib/art";
 import { CellConfig, GridState } from "@/types/art";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "./ui/Input";
 
 const EXPORT_SCALE = 20;
 
