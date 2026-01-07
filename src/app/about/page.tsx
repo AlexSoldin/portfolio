@@ -1,5 +1,5 @@
 import { AboutOrbitSection } from "@/components/features/about";
-import { Timeline } from "@/components/Timeline";
+import { Timeline } from "@/components/features/about/Timeline";
 import { PageHeader, RichText, SectionHeader } from "@/components/ui";
 import { aboutContent } from "@/data";
 import type { Metadata } from "next";

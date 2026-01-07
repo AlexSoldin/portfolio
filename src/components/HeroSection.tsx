@@ -1,5 +1,5 @@
 import GenerativeArt from "./GenerativeArt";
-import { TextReveal } from "./TextReveal";
+import { TextReveal } from "./ui";
 
 interface HeroSectionProps {
   title: string;

@@ -55,7 +55,7 @@ next-env.d.ts
 # IDE & Editor
 # =============================================================================
 # VS Code - keep settings.json and extensions.json for team consistency
-# .vscode/
+.vscode/
 
 # JetBrains (WebStorm, IntelliJ)
 .idea/

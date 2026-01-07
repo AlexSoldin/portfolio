@@ -110,7 +110,7 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
       </button>
 
       <p className="mt-3 text-sm m-0 text-center opacity-60">
-        <strong>Click</strong> art to rotate
+        <strong>Click</strong> art to regenerate
       </p>
     </div>
   );

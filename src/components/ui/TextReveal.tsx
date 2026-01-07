@@ -1,5 +1,6 @@
 "use client";
 
+import { parseTextToWords } from "@/lib/text";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
@@ -11,57 +12,6 @@ interface TextRevealProps {
   stagger?: number;
   duration?: number;
   once?: boolean;
-}
-
-interface Word {
-  text: string;
-  isBold: boolean;
-}
-
-// Parse text with **bold** or *bold* markdown into words with formatting
-function parseTextToWords(text: string): Word[] {
-  const words: Word[] = [];
-  // Match bold patterns and capture them with their content
-  const regex = /\*\*(.+?)\*\*|\*(.+?)\*/g;
-  let lastIndex = 0;
-  let match;
-
-  while ((match = regex.exec(text)) !== null) {
-    // Add normal words before this match
-    if (match.index > lastIndex) {
-      const normalText = text.slice(lastIndex, match.index);
-      normalText
-        .split(" ")
-        .filter(Boolean)
-        .forEach((word) => {
-          words.push({ text: word, isBold: false });
-        });
-    }
-
-    // Add bold words (group 1 for **, group 2 for *)
-    const boldText = match[1] || match[2];
-    boldText
-      .split(" ")
-      .filter(Boolean)
-      .forEach((word) => {
-        words.push({ text: word, isBold: true });
-      });
-
-    lastIndex = regex.lastIndex;
-  }
-
-  // Add remaining normal words
-  if (lastIndex < text.length) {
-    text
-      .slice(lastIndex)
-      .split(" ")
-      .filter(Boolean)
-      .forEach((word) => {
-        words.push({ text: word, isBold: false });
-      });
-  }
-
-  return words;
 }
 
 export function TextReveal({
