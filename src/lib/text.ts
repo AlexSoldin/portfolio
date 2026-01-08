@@ -7,6 +7,7 @@ export interface Word {
  * Parse text with **bold** or *bold* markdown into words with formatting
  */
 export function parseTextToWords(text: string): Word[] {
+  if (!text) return [];
   const words: Word[] = [];
   // Match bold patterns and capture them with their content
   const regex = /\*\*(.+?)\*\*|\*(.+?)\*/g;
