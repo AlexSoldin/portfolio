@@ -75,39 +75,51 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
       title="Click to regenerate"
       style={{ maxWidth: "100%" }}
     >
-      <canvas
-        ref={canvasRef}
-        className="block m-0 p-0 rounded-xl"
-        style={{
-          width: `${width}px`,
-          height: `${height}px`,
-          maxWidth: "100%",
-          display: "block",
-        }}
-      />
-
-      {/* Download Button Overlay */}
-      <button
-        onClick={handleDownload}
-        className="absolute bottom-10 right-2 p-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-[var(--border)] rounded-full opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-200 lg:hover:scale-110 active:scale-95 shadow-lg z-10"
-        title="Download"
-        aria-label="Download"
+      <div
+        className="relative rounded-xl overflow-hidden bg-[var(--highlight)]"
+        style={{ width: width, height: height }}
       >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <canvas
+          ref={canvasRef}
+          className={`block m-0 p-0 rounded-xl transition-opacity duration-500 ${gridState ? "opacity-100" : "opacity-0"}`}
+          style={{
+            width: `${width}px`,
+            height: `${height}px`,
+            maxWidth: "100%",
+            display: "block",
+          }}
+        />
+
+        {/* Loading Skeleton */}
+        {!gridState && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-8 h-8 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+
+        {/* Download Button Overlay */}
+        <button
+          onClick={handleDownload}
+          className="absolute bottom-10 right-2 p-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-[var(--border)] rounded-full opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-200 lg:hover:scale-110 active:scale-95 shadow-lg z-10"
+          title="Download"
+          aria-label="Download"
         >
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="7 10 12 15 17 10" />
-          <line x1="12" y1="15" x2="12" y2="3" />
-        </svg>
-      </button>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </button>
+      </div>
 
       <p className="mt-3 text-sm m-0 text-center opacity-60">
         <strong>Click</strong> art to regenerate

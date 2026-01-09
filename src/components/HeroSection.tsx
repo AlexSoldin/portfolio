@@ -3,7 +3,7 @@ import { TextReveal } from "./ui";
 
 interface HeroSectionProps {
   title: string;
-  description: string;
+  subtitle: string;
   artWidth?: number;
   artHeight?: number;
   artCellSize?: number;
@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 export function HeroSection({
   title,
-  description,
+  subtitle,
   artWidth = 320,
   artHeight = 320,
   className = "",
@@ -29,7 +29,7 @@ export function HeroSection({
           duration={1}
         />
         <TextReveal
-          text={description}
+          text={subtitle}
           className="text-lg text-[var(--muted)] leading-relaxed"
           delay={0.5}
           stagger={0.02}

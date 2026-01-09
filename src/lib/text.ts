@@ -1,15 +1,17 @@
 export interface Word {
   text: string;
   isBold: boolean;
+  isAccent?: boolean;
 }
 
 /**
- * Parse text with **bold** or *bold* markdown into words with formatting
+ * Parse text with **bold**, *bold*, or ^accent^ markdown into words with formatting
  */
 export function parseTextToWords(text: string): Word[] {
+  if (!text) return [];
   const words: Word[] = [];
-  // Match bold patterns and capture them with their content
-  const regex = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+  // Match bold patterns (** or *) and accent pattern (^)
+  const regex = /\*\*(.+?)\*\*|\*(.+?)\*|\^(.+?)\^/g;
   let lastIndex = 0;
   let match;
 
@@ -25,13 +27,15 @@ export function parseTextToWords(text: string): Word[] {
         });
     }
 
-    // Add bold words (group 1 for **, group 2 for *)
-    const boldText = match[1] || match[2];
-    boldText
+    // Determine which formatting was matched
+    const isAccent = !!match[3];
+    const formattingText = match[1] || match[2] || match[3];
+
+    formattingText
       .split(" ")
       .filter(Boolean)
       .forEach((word) => {
-        words.push({ text: word, isBold: true });
+        words.push({ text: word, isBold: !isAccent, isAccent });
       });
 
     lastIndex = regex.lastIndex;
