@@ -14,6 +14,7 @@ export interface SiteConfig {
   social: {
     github?: string;
     linkedin?: string;
+    twitter?: string;
     instagram?: string;
   };
 }
@@ -82,7 +83,7 @@ export interface ContactMethod {
   label: string;
   value: string;
   href: string;
-  icon: "email" | "github" | "linkedin" | "instagram" | "coffee";
+  icon: "email" | "github" | "linkedin" | "twitter" | "instagram" | "coffee";
 }
 
 /**

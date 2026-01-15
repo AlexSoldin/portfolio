@@ -9,5 +9,7 @@ export const siteConfig: SiteConfig = {
   social: {
     github: "https://github.com/alexsoldin",
     linkedin: "https://www.linkedin.com/in/alexandersoldin/",
+    twitter: "https://twitter.com/alexsoldin",
+    instagram: "https://instagram.com/alexsoldin",
   },
 };
