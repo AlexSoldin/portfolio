@@ -22,8 +22,14 @@ export const contactMethods: ContactMethod[] = [
     icon: "linkedin",
   },
   {
+    label: "Twitter",
+    value: "alexsoldin",
+    href: "https://twitter.com/alexsoldin",
+    icon: "twitter",
+  },
+  {
     label: "Instagram",
-    value: "@alexsoldin",
+    value: "alexsoldin",
     href: "https://instagram.com/alexsoldin",
     icon: "instagram",
   },

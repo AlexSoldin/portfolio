@@ -31,6 +31,26 @@ export default function Footer() {
                 LinkedIn
               </a>
             )}
+            {siteConfig.social.twitter && (
+              <a
+                href={siteConfig.social.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--foreground)] transition-colors"
+              >
+                Twitter
+              </a>
+            )}
+            {siteConfig.social.instagram && (
+              <a
+                href={siteConfig.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--foreground)] transition-colors"
+              >
+                Instagram
+              </a>
+            )}
           </div>
         </div>
       </div>
