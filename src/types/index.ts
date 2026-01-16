@@ -49,34 +49,6 @@ export interface SkillItem {
 }
 
 /**
- * Project data
- */
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  longDescription?: string;
-  tags: string[];
-  year: string;
-  link?: string;
-  github?: string;
-  featured: boolean;
-}
-
-/**
- * Blog post / writing
- */
-export interface Post {
-  slug: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  readTime: string;
-  category: string;
-  published: boolean;
-}
-
-/**
  * Contact method
  */
 export interface ContactMethod {
@@ -122,15 +94,6 @@ export interface ContactContent {
   title: string;
   subtitle: string;
   methods: ContactMethod[];
-}
-
-// Tool data
-export interface Tool {
-  id: string;
-  name: string;
-  description: string;
-  category: "productivity" | "coding" | "communication" | "media" | "security" | "other";
-  link?: string;
 }
 
 export * from "./art";
