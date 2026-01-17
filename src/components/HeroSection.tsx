@@ -6,7 +6,6 @@ interface HeroSectionProps {
   subtitle: string;
   artWidth?: number;
   artHeight?: number;
-  artCellSize?: number;
   className?: string;
 }
 

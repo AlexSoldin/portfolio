@@ -14,7 +14,6 @@ interface TextRevealProps {
   delay?: number;
   stagger?: number;
   duration?: number;
-  once?: boolean;
 }
 
 export function TextReveal({
@@ -53,19 +52,21 @@ export function TextReveal({
 
   const words = parseTextToWords(text);
 
+  function renderWord(word: { text: string; isAccent?: boolean; isBold?: boolean }) {
+    if (word.isAccent) {
+      return <span className="text-[var(--accent)]">{word.text}</span>;
+    }
+    if (word.isBold) {
+      return <strong className="font-semibold text-[var(--foreground)]">{word.text}</strong>;
+    }
+    return word.text;
+  }
+
   return (
     <div ref={containerRef} className={`flex flex-wrap gap-x-[0.3em] overflow-hidden ${className}`}>
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden pb-[0.1em]">
-          <span className="reveal-word inline-block translate-y-full">
-            {word.isAccent ? (
-              <span className="text-[var(--accent)]">{word.text}</span>
-            ) : word.isBold ? (
-              <strong className="font-semibold text-[var(--foreground)]">{word.text}</strong>
-            ) : (
-              word.text
-            )}
-          </span>
+          <span className="reveal-word inline-block translate-y-full">{renderWord(word)}</span>
         </span>
       ))}
     </div>
