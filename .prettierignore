@@ -28,3 +28,6 @@ yarn.lock
 *.md
 LICENSE
 
+# GitHub workflows (must match main branch exactly for Claude review)
+.github/
+
