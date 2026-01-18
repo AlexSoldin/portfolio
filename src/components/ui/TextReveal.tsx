@@ -14,6 +14,8 @@ interface TextRevealProps {
   delay?: number;
   stagger?: number;
   duration?: number;
+  /** Play animation immediately without waiting for scroll trigger */
+  immediate?: boolean;
 }
 
 export function TextReveal({
@@ -22,6 +24,7 @@ export function TextReveal({
   delay = 0,
   stagger = 0.05,
   duration = 0.8,
+  immediate = false,
 }: TextRevealProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -39,11 +42,15 @@ export function TextReveal({
           delay,
           stagger,
           ease: "power4.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
+          ...(immediate
+            ? {}
+            : {
+                scrollTrigger: {
+                  trigger: containerRef.current,
+                  start: "top 85%",
+                  toggleActions: "play none none reverse",
+                },
+              }),
         }
       );
     },
