@@ -78,13 +78,19 @@ export function TextReveal({
       ref={containerRef}
       className={`flex flex-wrap gap-x-[0.3em] overflow-hidden whitespace-normal ${className}`}
     >
-      {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden pb-[0.1em]">
-          <span className="reveal-word inline-block will-change-transform" style={{ opacity: 0 }}>
-            {renderWord(word)}
+      {words.map((word, i) => {
+        const isPunctuation = /^[.,!?;:]/.test(word.text);
+        return (
+          <span
+            key={i}
+            className={`inline-block overflow-hidden pb-[0.1em] ${isPunctuation && i > 0 ? "-ml-[0.3em]" : ""}`}
+          >
+            <span className="reveal-word inline-block will-change-transform" style={{ opacity: 0 }}>
+              {renderWord(word)}
+            </span>
           </span>
-        </span>
-      ))}
+        );
+      })}
     </div>
   );
 }

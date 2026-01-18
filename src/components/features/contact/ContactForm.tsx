@@ -2,39 +2,28 @@
 
 import { Alert, Button, Input, Textarea } from "@/components/ui";
 import { useContactForm } from "@/hooks";
-import { useGSAP } from "@gsap/react";
 import { Turnstile } from "@marsidev/react-turnstile";
-import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function ContactForm() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
   const [token, setToken] = useState<string | null>(null);
+  const [mountTurnstile, setMountTurnstile] = useState(false);
 
-  useGSAP(
-    () => {
-      gsap.fromTo(
-        containerRef.current,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          delay: 0.1,
-        }
-      );
-    },
-    { scope: containerRef }
-  );
+  // Defer Turnstile loading to prevent blocking main thread during initial animations
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMountTurnstile(true);
+    }, 2000); // Wait for hero animations to complete
+    return () => clearTimeout(timer);
+  }, []);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     handleSubmit(e, token);
   };
 
   return (
-    <section ref={containerRef} className="opacity-0">
+    <section>
       <h2 className="font-[family-name:var(--font-playfair)] text-xl font-bold mb-6">
         Send a message
       </h2>
@@ -59,19 +48,20 @@ export function ContactForm() {
           rows={5}
           placeholder="Tell me more..."
         />
-        <div className="min-h-[65px] -mt-2">
+
+        <Button type="submit" disabled={isSubmitting || !token} fullWidth>
+          {isSubmitting ? "Sending..." : "Send message"}
+        </Button>
+
+        {mountTurnstile && (
           <Turnstile
             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
             onSuccess={(token: string) => setToken(token)}
             onError={() => setToken(null)}
             onExpire={() => setToken(null)}
-            options={{ theme: "dark", size: "flexible" }}
+            options={{ theme: "dark", size: "invisible" }}
           />
-        </div>
-
-        <Button type="submit" disabled={isSubmitting || !token} fullWidth>
-          {isSubmitting ? "Sending..." : "Send message"}
-        </Button>
+        )}
       </form>
     </section>
   );

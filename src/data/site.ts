@@ -3,7 +3,7 @@ import type { HeroContent, ValuePropContent } from "@/types";
 export const heroContent: HeroContent = {
   title: "Alex Soldin",
   subtitle:
-    "I'm an **electrical and computer engineer** working across backend development, infrastructure, and automation. Based in **Amsterdam.**",
+    "I'm an **electrical and computer engineer** working across backend development, infrastructure, and automation. Based in **Amsterdam**.",
 };
 
 export const valuePropContent: ValuePropContent = {
