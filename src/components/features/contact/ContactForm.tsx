@@ -2,19 +2,39 @@
 
 import { Alert, Button, Input, Textarea } from "@/components/ui";
 import { useContactForm } from "@/hooks";
+import { useGSAP } from "@gsap/react";
 import { Turnstile } from "@marsidev/react-turnstile";
-import { useState } from "react";
+import gsap from "gsap";
+import { useRef, useState } from "react";
 
 export function ContactForm() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { isSubmitting, submitStatus, handleSubmit } = useContactForm();
   const [token, setToken] = useState<string | null>(null);
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.1,
+        }
+      );
+    },
+    { scope: containerRef }
+  );
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     handleSubmit(e, token);
   };
 
   return (
-    <section className="animate-fade-in-delay-1">
+    <section ref={containerRef} className="opacity-0">
       <h2 className="font-[family-name:var(--font-playfair)] text-xl font-bold mb-6">
         Send a message
       </h2>

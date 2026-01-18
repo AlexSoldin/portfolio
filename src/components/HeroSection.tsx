@@ -1,3 +1,5 @@
+"use client";
+
 import GenerativeArt from "./GenerativeArt";
 import { TextReveal } from "./ui";
 
@@ -25,20 +27,20 @@ export function HeroSection({
         <TextReveal
           text={title}
           className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-bold leading-none mb-6"
+          delay={0.2}
           duration={1}
-          immediate
+          stagger={0.05}
         />
         <TextReveal
           text={subtitle}
           className="text-lg text-[var(--muted)] leading-relaxed"
-          delay={0.5}
-          stagger={0.02}
+          delay={0.6}
           duration={0.8}
-          immediate
+          stagger={0.02}
         />
       </div>
 
-      {/* Generative Art - Right Side */}
+      {/* Generative Art - Left/Bottom Side on mobile, Right on Desktop */}
       <div className="flex-shrink-0 flex justify-center lg:justify-start">
         <GenerativeArt width={artWidth} height={artHeight} />
       </div>
