@@ -5,6 +5,9 @@ import { BusinessCardText, drawBusinessCard, generateCellConfig } from "@/lib/ar
 import { CellConfig, GridState } from "@/types/art";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+const CARD_WIDTH = 600;
+const CARD_HEIGHT = 342;
+const CELL_SIZE = 60;
 const EXPORT_SCALE = 20;
 
 export function BusinessCardGenerator() {
@@ -19,18 +22,15 @@ export function BusinessCardGenerator() {
   });
 
   const shuffleArt = useCallback(() => {
-    const width = 600;
-    const height = 342;
-    const cellSize = 60;
-    const cols = Math.ceil(width / cellSize);
-    const rows = Math.ceil(height / cellSize);
+    const cols = Math.ceil(CARD_WIDTH / CELL_SIZE);
+    const rows = Math.ceil(CARD_HEIGHT / CELL_SIZE);
 
     const cells: CellConfig[] = [];
     for (let i = 0; i < rows * cols; i++) {
       cells.push(generateCellConfig());
     }
 
-    setGridState({ cellSize, cells });
+    setGridState({ cellSize: CELL_SIZE, cells });
   }, []);
 
   useEffect(() => {
@@ -44,32 +44,23 @@ export function BusinessCardGenerator() {
     if (!ctx) return;
 
     const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    const width = 600;
-    const height = 342;
 
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    // Handled by CSS
-    // canvas.style.width = "100%";
-    // canvas.style.height = "auto";
-    // canvas.style.aspectRatio = "600/342";
-
-    drawBusinessCard(ctx, width, height, gridState, cardText, dpr);
+    canvas.width = CARD_WIDTH * dpr;
+    canvas.height = CARD_HEIGHT * dpr;
+    drawBusinessCard(ctx, CARD_WIDTH, CARD_HEIGHT, gridState, cardText, dpr);
   }, [gridState, cardText]);
 
   const handleDownload = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent shuffle when clicking download
+    e.stopPropagation();
     if (!gridState) return;
 
-    const baseWidth = 600;
-    const baseHeight = 342;
     const offscreen = document.createElement("canvas");
-    offscreen.width = baseWidth * EXPORT_SCALE;
-    offscreen.height = baseHeight * EXPORT_SCALE;
+    offscreen.width = CARD_WIDTH * EXPORT_SCALE;
+    offscreen.height = CARD_HEIGHT * EXPORT_SCALE;
     const ctx = offscreen.getContext("2d");
 
     if (ctx) {
-      drawBusinessCard(ctx, baseWidth, baseHeight, gridState, cardText, EXPORT_SCALE);
+      drawBusinessCard(ctx, CARD_WIDTH, CARD_HEIGHT, gridState, cardText, EXPORT_SCALE);
       const link = document.createElement("a");
       link.download = `digital-card-${cardText.name.replace(/\s+/g, "-").toLowerCase()}.png`;
       link.href = offscreen.toDataURL("image/png");
@@ -90,7 +81,6 @@ export function BusinessCardGenerator() {
         </div>
 
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
-          {/* Inputs - Left Column */}
           <div className="w-full lg:w-1/3 space-y-4">
             <Input
               id="card-name"
@@ -118,10 +108,10 @@ export function BusinessCardGenerator() {
             />
           </div>
 
-          {/* Preview - Right Column */}
           <div className="w-full lg:w-2/3">
             <div
-              className="relative group rounded-xl overflow-hidden shadow-2xl cursor-pointer transition-transform hover:scale-[1.01] duration-500 bg-[var(--highlight)] aspect-[600/342]"
+              className="relative group rounded-xl overflow-hidden shadow-2xl cursor-pointer transition-transform hover:scale-[1.01] duration-500 bg-[var(--highlight)]"
+              style={{ aspectRatio: `${CARD_WIDTH}/${CARD_HEIGHT}` }}
               onClick={shuffleArt}
               title="Click to regenerate pattern"
             >
@@ -130,14 +120,12 @@ export function BusinessCardGenerator() {
                 className={`w-full h-full block bg-white transition-opacity duration-500 ${gridState ? "opacity-100" : "opacity-0"}`}
               />
 
-              {/* Loading Skeleton */}
               {!gridState && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-8 h-8 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
                 </div>
               )}
 
-              {/* Download Button - Appearing on Hover like GenerativeArt */}
               <button
                 onClick={handleDownload}
                 className="absolute bottom-6 right-6 p-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-[var(--border)] rounded-full opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300 transform translate-y-4 lg:group-hover:translate-y-0 hover:scale-110 active:scale-95 shadow-lg z-10"

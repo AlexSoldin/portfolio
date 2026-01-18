@@ -30,7 +30,6 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
     setGridState({ cellSize, cells });
   }, [width, height]);
 
-  // Effect to draw to the on-screen canvas whenever gridState changes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !gridState) return;
@@ -41,7 +40,6 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
     const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    // We don't need ctx.scale if we pass the scale into the helper
     drawFullGrid(ctx, width, height, gridState, dpr);
   }, [width, height, gridState]);
 
@@ -84,14 +82,12 @@ export default function GenerativeArt({ width = 320, height = 320 }: GenerativeA
           className={`block w-full h-full transition-opacity duration-500 ${gridState ? "opacity-100" : "opacity-0"}`}
         />
 
-        {/* Loading Skeleton */}
         {!gridState && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-8 h-8 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
           </div>
         )}
 
-        {/* Download Button Overlay */}
         <button
           onClick={handleDownload}
           className="absolute bottom-6 right-6 p-3 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-[var(--border)] rounded-full opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300 transform translate-y-4 lg:group-hover:translate-y-0 hover:scale-110 active:scale-95 shadow-lg z-10"
