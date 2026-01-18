@@ -26,6 +26,7 @@ export function HeroSection({
           text={title}
           className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl font-bold leading-none mb-6"
           duration={1}
+          immediate
         />
         <TextReveal
           text={subtitle}
@@ -33,6 +34,7 @@ export function HeroSection({
           delay={0.5}
           stagger={0.02}
           duration={0.8}
+          immediate
         />
       </div>
 
