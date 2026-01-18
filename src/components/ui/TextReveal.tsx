@@ -14,8 +14,6 @@ interface TextRevealProps {
   delay?: number;
   stagger?: number;
   duration?: number;
-  /** Play animation immediately without waiting for scroll trigger */
-  immediate?: boolean;
 }
 
 export function TextReveal({
@@ -24,37 +22,43 @@ export function TextReveal({
   delay = 0,
   stagger = 0.05,
   duration = 0.8,
-  immediate = false,
 }: TextRevealProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const words = containerRef.current?.querySelectorAll(".reveal-word");
-      if (!words) return;
+      if (!words || words.length === 0) return;
 
-      gsap.fromTo(
+      const animation = gsap.fromTo(
         words,
-        { y: "100%" },
+        { y: "110%", opacity: 0 },
         {
           y: "0%",
+          opacity: 1,
           duration,
           delay,
           stagger,
           ease: "power4.out",
-          ...(immediate
-            ? {}
-            : {
-                scrollTrigger: {
-                  trigger: containerRef.current,
-                  start: "top 85%",
-                  toggleActions: "play none none reverse",
-                },
-              }),
+          paused: true,
         }
       );
+
+      const trigger = ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top 98%",
+        onEnter: () => animation.play(),
+        onRefresh: (self) => {
+          if (self.progress > 0) animation.play();
+        },
+      });
+
+      // Manual check for hero elements already in view
+      if (trigger.progress > 0) {
+        animation.play();
+      }
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [text, delay, stagger, duration] }
   );
 
   const words = parseTextToWords(text);
@@ -70,10 +74,15 @@ export function TextReveal({
   }
 
   return (
-    <div ref={containerRef} className={`flex flex-wrap gap-x-[0.3em] overflow-hidden ${className}`}>
+    <div
+      ref={containerRef}
+      className={`flex flex-wrap gap-x-[0.3em] overflow-hidden whitespace-normal ${className}`}
+    >
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden pb-[0.1em]">
-          <span className="reveal-word inline-block translate-y-full">{renderWord(word)}</span>
+          <span className="reveal-word inline-block will-change-transform" style={{ opacity: 0 }}>
+            {renderWord(word)}
+          </span>
         </span>
       ))}
     </div>
