@@ -3,10 +3,11 @@ node_modules
 .pnpm-store
 
 # Build outputs
+dist
+.astro
 .next
 out
 build
-dist
 
 # Cache
 .cache

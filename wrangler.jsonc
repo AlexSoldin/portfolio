@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
-  "main": ".open-next/worker.js",
+  "main": "dist/_worker.js",
   "compatibility_date": "2024-12-01",
   "compatibility_flags": ["nodejs_compat"],
   // Enable workers.dev subdomain (portfolio.alex-soldin.workers.dev)
@@ -12,32 +12,38 @@
   "routes": [
     {
       "pattern": "soldin.co",
-      "zone_name": "soldin.co",
+      "zone_name": "soldin.co"
     },
     {
       "pattern": "www.soldin.co",
-      "zone_name": "soldin.co",
-    },
+      "zone_name": "soldin.co"
+    }
   ],
-  // Static assets binding (required for OpenNext)
+  // Static assets binding (Astro output)
   "assets": {
     "binding": "ASSETS",
-    "directory": ".open-next/assets",
+    "directory": "dist"
   },
   // Enable observability for logs and monitoring
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
   // Environment variables
   "vars": {
-    "NODE_ENV": "production",
+    "NODE_ENV": "production"
   },
   "d1_databases": [
     {
       "binding": "portfolio",
       "database_name": "portfolio",
       "database_id": "bd09c8d3-3c28-453b-8296-cf1d41d74026",
-      "migrations_dir": "migrations",
-    },
+      "migrations_dir": "migrations"
+    }
   ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  ]
 }
