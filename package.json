@@ -15,8 +15,9 @@
     "type-check": "astro check && tsc --noEmit",
     "validate": "pnpm lint && pnpm type-check && pnpm format:check",
     "prepare": "husky",
-    "cf:deploy": "astro build && wrangler deploy",
-    "cf:preview": "astro build && wrangler dev",
+    "cf:build": "pnpm build",
+    "cf:deploy": "pnpm build && wrangler deploy",
+    "cf:preview": "pnpm build && wrangler dev",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "wrangler d1 migrations apply portfolio --local",
     "db:migrate:prod": "wrangler d1 migrations apply portfolio --remote"
