@@ -1,0 +1,33 @@
+---
+const year = new Date().getFullYear();
+
+const socials = [
+  { name: "GitHub", href: "https://github.com/alexsoldin" },
+  { name: "LinkedIn", href: "https://linkedin.com/in/alexsoldin" },
+  { name: "Twitter", href: "https://twitter.com/alexsoldin" },
+  { name: "Instagram", href: "https://instagram.com/alexsoldin" },
+];
+---
+
+<footer class="py-12 mt-20 border-t border-[var(--border)]">
+  <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="text-[var(--muted)] text-sm">
+      &copy; {year} Alex Soldin - rebuilding with Astro
+    </div>
+
+    <div class="flex gap-6">
+      {
+        socials.map((social) => (
+          <a
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors text-sm font-medium"
+          >
+            {social.name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</footer>
