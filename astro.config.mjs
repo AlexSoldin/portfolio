@@ -18,6 +18,11 @@ export default defineConfig({
     resolve: {
       alias: {
         "@": "/src",
+        // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
+        // Without this, MessageChannel from node:worker_threads needs to be polyfilled.
+        ...(process.env.NODE_ENV === "production" && {
+          "react-dom/server": "react-dom/server.edge",
+        }),
       },
     },
     css: {
