@@ -8,9 +8,9 @@ export function RotatingBadge({
   icon = "code",
 }: RotatingBadgeProps) {
   return (
-    <div className="w-24 h-24 border border-black/10 rounded-full flex items-center justify-center relative">
+    <div className="w-24 h-24 border border-[var(--border)] rounded-full flex items-center justify-center relative">
       <svg
-        className="w-full h-full absolute inset-0 text-black/80 animate-spin-slow"
+        className="w-full h-full absolute inset-0 text-[var(--foreground)] opacity-80 animate-spin-slow"
         viewBox="0 0 100 100"
       >
         <defs>
@@ -30,8 +30,8 @@ export function RotatingBadge({
           </textPath>
         </text>
       </svg>
-      <div className="w-16 h-16 rounded-full border border-black/20 flex items-center justify-center bg-white/10 backdrop-blur-sm">
-        <span className="material-symbols-outlined text-2xl">{icon}</span>
+      <div className="w-16 h-16 rounded-full border border-[var(--border)] flex items-center justify-center bg-[var(--foreground)]/5 backdrop-blur-sm">
+        <span className="material-symbols-outlined text-2xl text-[var(--foreground)]">{icon}</span>
       </div>
     </div>
   );

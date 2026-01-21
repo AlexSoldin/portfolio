@@ -1,5 +1,6 @@
 ---
 import { RotatingBadge } from "@/components/features/home/RotatingBadge";
+import ThemeToggle from "@/components/ui/ThemeToggle.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const year = new Date().getFullYear();
@@ -24,13 +25,17 @@ const socials = [
         <span class="text-xs font-mono text-[var(--muted)] pl-5">Software engineer</span>
         <span class="text-xs font-mono text-[var(--muted)] pl-5">Amsterdam, NL</span>
       </div>
-      <!-- <a
-        href="/contact"
-        class="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--foreground)] hover:opacity-60 transition-opacity"
-      >
-        <span>Get in touch</span>
-        <span class="material-symbols-outlined text-base">arrow_outward</span>
-      </a> -->
+
+      <div class="flex items-center gap-6">
+        <ThemeToggle />
+        <!-- <a
+          href="/contact"
+          class="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--foreground)] hover:opacity-60 transition-opacity"
+        >
+          <span>Get in touch</span>
+          <span class="material-symbols-outlined text-base">arrow_outward</span>
+        </a> -->
+      </div>
     </header>
 
     <!-- Main Content -->

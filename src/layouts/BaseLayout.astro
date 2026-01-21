@@ -25,6 +25,11 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
 
+    <script is:inline>
+      const theme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", theme);
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
