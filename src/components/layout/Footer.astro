@@ -5,29 +5,34 @@ const socials = [
   { name: "GitHub", href: "https://github.com/alexsoldin" },
   { name: "LinkedIn", href: "https://linkedin.com/in/alexsoldin" },
   { name: "Twitter", href: "https://twitter.com/alexsoldin" },
-  { name: "Instagram", href: "https://instagram.com/alexsoldin" },
+  { name: "Instagram", href: "https://instagram.com/alexandersoldin" },
 ];
 ---
 
-<footer class="py-12 mt-20 border-t border-[var(--border)]">
-  <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-    <div class="text-[var(--muted)] text-sm">
-      &copy; {year} Alex Soldin - rebuilding with Astro
+<footer class="w-full mt-auto p-8 md:p-12">
+  <nav
+    class="flex flex-col md:flex-row w-full items-center justify-between border-t border-[var(--border)] pt-8 gap-6 md:gap-0"
+  >
+    <div class="text-xs font-mono text-[var(--muted)]">
+      <span>&copy; {year} Alex Soldin</span>
+      <span class="mx-2">-</span>
+      <span>rebuilding in Astro</span>
     </div>
-
-    <div class="flex gap-6">
+    <div
+      class="flex items-center gap-8 text-xs font-mono uppercase tracking-wider text-[var(--muted)]"
+    >
       {
         socials.map((social) => (
           <a
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors text-sm font-medium"
+            class="hover:text-[var(--foreground)] transition-colors"
           >
             {social.name}
           </a>
         ))
       }
     </div>
-  </div>
+  </nav>
 </footer>
