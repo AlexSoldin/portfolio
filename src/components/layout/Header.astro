@@ -1,0 +1,51 @@
+---
+
+---
+
+<header class="fixed top-0 left-0 w-full p-8 md:p-12 flex justify-between items-start z-40">
+  <div class="flex flex-col gap-1">
+    <div class="flex items-center gap-2 font-mono text-sm uppercase tracking-tighter">
+      <button
+        id="theme-toggle-square"
+        class="w-3 h-3 bg-[var(--foreground)] cursor-pointer hover:opacity-80 transition-opacity"
+        aria-label="Toggle theme"
+      >
+      </button>
+      <a href="/" class="font-bold">Alex Soldin</a>
+    </div>
+    <p class="text-[10px] opacity-60 uppercase tracking-widest leading-relaxed pl-5">
+      Software engineer<br />Amsterdam, NL
+    </p>
+  </div>
+
+  <nav class="flex items-center gap-6">
+    <slot name="nav" />
+  </nav>
+</header>
+
+<script>
+  function getTheme() {
+    return (
+      localStorage.getItem("theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+    );
+  }
+
+  function setTheme(theme: string) {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }
+
+  // Handle square toggle click
+  const squareToggle = document.getElementById("theme-toggle-square");
+  squareToggle?.addEventListener("click", () => {
+    const currentTheme = getTheme();
+    const nextTheme = currentTheme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+  });
+
+  // Re-apply theme on navigation (for Astro transitions if enabled)
+  document.addEventListener("astro:after-swap", () => {
+    setTheme(getTheme());
+  });
+</script>
