@@ -36,7 +36,6 @@
     localStorage.setItem("theme", theme);
   }
 
-  // Handle square toggle click
   const squareToggle = document.getElementById("theme-toggle-square");
   squareToggle?.addEventListener("click", () => {
     const currentTheme = getTheme();
@@ -44,7 +43,6 @@
     setTheme(nextTheme);
   });
 
-  // Re-apply theme on navigation (for Astro transitions if enabled)
   document.addEventListener("astro:after-swap", () => {
     setTheme(getTheme());
   });
