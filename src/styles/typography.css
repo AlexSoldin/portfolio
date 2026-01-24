@@ -1,0 +1,34 @@
+/* Typography Utilities */
+
+/* Label styles - small uppercase text */
+.text-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.text-label-sm {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Tab label style */
+.text-tab {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Interactive text utilities */
+.hover-text-accent {
+  cursor: default;
+  transition: color 0.3s;
+}
+
+.hover-text-accent:hover {
+  color: var(--foreground);
+}

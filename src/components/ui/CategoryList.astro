@@ -1,0 +1,16 @@
+---
+interface Props {
+  title: string;
+  items: readonly string[];
+  titleSize?: "text-2xl" | "text-3xl";
+}
+
+const { title, items, titleSize = "text-3xl" } = Astro.props;
+---
+
+<div class="space-y-4">
+  <h5 class:list={["font-serif italic text-(--foreground) opacity-40", titleSize]}>{title}</h5>
+  <ul class="text-label-sm text-(--muted) space-y-3">
+    {items.map((item) => <li class="hover-text-accent">{item}</li>)}
+  </ul>
+</div>

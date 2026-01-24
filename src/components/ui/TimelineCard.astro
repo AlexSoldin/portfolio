@@ -1,0 +1,29 @@
+---
+interface Props {
+  period: string;
+  location: string;
+  organization: string;
+  role: string;
+  isActive?: boolean;
+}
+
+const { period, location, organization, role, isActive = false } = Astro.props;
+---
+
+<div
+  class="group cursor-default relative pl-6 border-l border-(--border) hover:border-(--foreground) transition-colors"
+>
+  <span class="text-label-sm text-(--muted) mb-2 block">{period}</span>
+  <h4
+    class:list={[
+      "font-serif italic text-3xl mb-1",
+      isActive
+        ? "text-(--foreground)"
+        : "text-(--muted) group-hover:text-(--foreground) transition-colors duration-300",
+    ]}
+  >
+    {location}
+  </h4>
+  <p class="text-label-sm text-(--muted)">{organization}</p>
+  <p class="font-sans text-xs text-(--muted)/80 mt-1">{role}</p>
+</div>

@@ -1,0 +1,73 @@
+---
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import TabLabel from "@/components/ui/TabLabel.astro";
+---
+
+<section class="py-16 md:py-24">
+  <input checked class="hidden" id="tab-intro" name="story-tabs" type="radio" />
+  <input class="hidden" id="tab-background" name="story-tabs" type="radio" />
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="lg:col-span-12">
+      <SectionHeader title="The Story" navClass="story-tabs">
+        <TabLabel for="tab-intro" label="Intro" />
+        <TabLabel for="tab-background" label="Background" />
+      </SectionHeader>
+    </div>
+
+    <div class="lg:col-span-9 lg:col-start-4 max-w-3xl story-content">
+      <div class="tab-content space-y-8" id="content-intro">
+        <p class="text-xl md:text-2xl font-light leading-relaxed text-(--foreground)/90">
+          I am a software engineer who loves building <span class="font-normal"
+            >systems that work</span
+          > — and keep working. My focus is on backend architecture, infrastructure and the kind of technical
+          operations that help companies scale smoothly. However, I am up for any challenge that comes
+          my way.
+        </p>
+        <p class="text-xl md:text-2xl font-light leading-relaxed text-(--foreground)/90">
+          I believe the best engineering balances technical excellence with practical impact and I'm
+          drawn to work that sits at the intersection of code, product and business.
+        </p>
+        <p class="text-xl md:text-2xl font-light leading-relaxed text-(--foreground)/90">
+          Currently based in <span class="font-normal">Amsterdam</span>, I'm helping scale the
+          engineering team and infrastructure at <span class="font-normal">Coolset</span>. I thrive
+          in environments where I can build end-to-end solutions, collaborate across teams and solve
+          problems that matter.
+        </p>
+      </div>
+
+      <div class="tab-content space-y-8" id="content-background">
+        <div class="prose dark:prose-invert prose-lg max-w-none font-light">
+          <p class="mb-6 leading-relaxed text-lg text-(--foreground)/80">
+            I started coding while at school in Johannesburg. Choosing information technology, and
+            later electrical and computer engineering at university, were educated guesses that
+            turned out to be the right ones. I've always enjoyed maths and puzzles, especially
+            problems where patterns emerge and logic leads to elegant solutions. Engineering gave me
+            a way to apply that way of thinking to real-world problems.
+          </p>
+          <p class="mb-6 leading-relaxed text-lg text-(--foreground)/80">
+            What drew me to software was the immediacy of building something useful. Seeing an idea
+            turn into a working system is deeply satisfying, and that feeling only grows at scale.
+            Automating repetitive work or designing systems that simply work saves real time and
+            creates genuine value. The most rewarding part is turning frustration into solutions
+            that feel clear, reliable, and easy to use.
+          </p>
+          <p class="mb-6 leading-relaxed text-lg text-(--foreground)/80">
+            Engineering isn't just about technology. Meaningful progress happens when people feel
+            supported through change. I focus on empathy and clear communication, especially when
+            working across disciplines or bridging technical and non-technical teams. By listening
+            closely and understanding what teams actually need, I aim to design solutions that fit
+            naturally into how they work. Trust, collaboration, and shared understanding are as
+            critical to good systems as the code itself.
+          </p>
+          <p class="leading-relaxed text-lg text-(--foreground)/80">
+            Being observant has become central to how I work. I pay close attention to how systems
+            behave, where processes break down, and where small details create unnecessary friction.
+            Over time, I've learned that consistent structure and care for those details are what
+            separate systems that function from systems that last.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

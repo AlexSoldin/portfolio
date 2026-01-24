@@ -1,50 +1,32 @@
 ---
+import BackButton from "@/components/ui/BackButton.astro";
+import PageHero from "@/components/ui/PageHero.astro";
+import SectionLabel from "@/components/ui/SectionLabel.astro";
+import { socials } from "@/data/socials";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const title = "Alex Soldin";
-
-const socials = [
-  { name: "GitHub", href: "https://github.com/alexsoldin" },
-  { name: "LinkedIn", href: "https://linkedin.com/in/alexandersoldin" },
-  { name: "X", href: "https://x.com/alexsoldin" },
-  { name: "Instagram", href: "https://instagram.com/alexsoldin" },
-  { name: "Buy me a coffee", href: "https://buymeacoffee.com/alexsoldini" },
-];
 ---
 
 <BaseLayout title={title} showFooter={true}>
-  <a
-    slot="nav"
-    class="text-[10px] uppercase tracking-widest hover-underline flex items-center gap-1 group"
-    href="/"
-  >
-    <span
-      class="material-symbols-outlined text-sm transform group-hover:-translate-x-1 transition-transform"
-      >west</span
-    >
-    Back to home
-  </a>
+  <BackButton slot="nav" />
 
-  <main class="relative z-10 flex-1 flex flex-col justify-center items-center px-6 pt-16 pb-16">
-    <div class="w-full max-w-5xl space-y-16">
-      <h1
-        class="text-center md:text-left text-6xl md:text-9xl font-serif italic leading-[0.9] tracking-tight text-[var(--foreground)]"
-      >
-        Get in touch.
-      </h1>
+  <main class="relative z-10 flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+    <div class="w-full max-w-5xl mx-auto">
+      <PageHero title="Get in touch." showBorder={false} />
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12 border-t border-[var(--border)]">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12 border-t border-(--border)">
         <div>
-          <p class="text-[10px] uppercase tracking-[0.2em] mb-4 opacity-50">Email</p>
+          <SectionLabel text="Email" />
           <a
-            class="text-2xl md:text-3xl font-serif italic hover:text-[var(--muted)] transition-colors"
+            class="text-2xl md:text-3xl font-serif italic hover:text-(--muted) transition-colors"
             href="mailto:alex.soldin@gmail.com"
           >
             alex.soldin@gmail.com
           </a>
         </div>
         <div>
-          <p class="text-[10px] uppercase tracking-[0.2em] mb-4 opacity-50">Social presence</p>
+          <SectionLabel text="Social presence" />
           <ul class="space-y-2 uppercase text-[11px] tracking-widest">
             {
               socials.map((social) => (

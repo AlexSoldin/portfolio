@@ -13,7 +13,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <div class="relative w-full flex flex-col items-center">
         <!-- Quote/Headline -->
         <h1
-          class="font-serif text-4xl md:text-6xl lg:text-7xl italic leading-tight text-[var(--foreground)] z-20 max-w-2xl"
+          class="font-serif text-4xl md:text-6xl lg:text-7xl italic leading-tight text-(--foreground) z-20 max-w-2xl"
         >
           First, understand the problem. Then, build what matters.
         </h1>
@@ -23,19 +23,23 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           class="mt-8 relative w-full max-w-md aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-sm shadow-xl group"
         >
           <div
-            class="w-full h-full bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-out bg-[var(--muted)]/20"
+            class="w-full h-full bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-out bg-(--muted)/20"
             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKXaD1-Ebr8wJSU3RyCGH_e6rCZjnjB6yyNu77eV3294_IHEUoreGO9469X1DGbGaIfJvyNTRuJvsLEXnELOyYY4YNq9bJHmrvceCRfRw5U7XxRMa6xuh7A1UF5enmn8NGiPE1_zlZDVxMwe9RuaCEsXZy38ZEMvJ-dk-TTPzUNqbjHL9wlNMqHzIwZN63Nh-V3XEC7lJF85X4Rsr2WZui0WDrynSuB0M8qrCPWF7atP-4J9uX1Xiv6hImWSygID50SXuBY3iQaHk');"
           >
           </div>
           <div
-            class="absolute inset-0 bg-[var(--background)] mix-blend-color opacity-20 pointer-events-none"
+            class="absolute inset-0 bg-(--background) mix-blend-color opacity-20 pointer-events-none"
           >
           </div>
         </div>
 
         <div
-          class="mt-8 font-mono text-xs uppercase tracking-widest text-[var(--foreground)] flex gap-8"
+          class="mt-8 font-mono text-xs uppercase tracking-widest text-(--foreground) flex gap-8"
         >
+          <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/about">
+            <span class="material-symbols-outlined text-base">north_east</span>
+            About
+          </a>
           <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/contact">
             <span class="material-symbols-outlined text-base">north_east</span>
             Get in touch

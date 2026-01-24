@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./typography.css";
 
 @theme {
   --font-sans: "Manrope", system-ui, sans-serif;
@@ -109,4 +110,17 @@ body {
 .hover-underline:hover::after {
   transform: scaleX(1);
   transform-origin: bottom left;
+}
+
+/* Theme Toggle */
+#theme-toggle-switch {
+  background-color: color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+#theme-toggle-switch:hover {
+  background-color: color-mix(in srgb, var(--foreground) 15%, transparent);
+}
+
+[data-theme="dark"] #toggle-thumb {
+  transform: translateX(1.25rem);
 }

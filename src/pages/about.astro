@@ -1,0 +1,22 @@
+---
+import AboutBackground from "@/components/features/about/AboutBackground.astro";
+import AboutOrbit from "@/components/features/about/AboutOrbit.astro";
+import BackButton from "@/components/ui/BackButton.astro";
+import PageHero from "@/components/ui/PageHero.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import "@/styles/features/about.css";
+
+const title = "Alex Soldin";
+---
+
+<BaseLayout title={title} showFooter={true}>
+  <BackButton slot="nav" />
+
+  <main class="relative z-10 flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+    <div class="w-full max-w-5xl mx-auto">
+      <PageHero title="About me" />
+      <AboutBackground />
+      <AboutOrbit />
+    </div>
+  </main>
+</BaseLayout>

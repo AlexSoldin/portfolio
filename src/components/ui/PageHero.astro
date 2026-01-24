@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  showBorder?: boolean;
+}
+
+const { title, showBorder = true } = Astro.props;
+---
+
+<section
+  class:list={[
+    "pt-16 pb-16 md:pt-24 md:pb-20 flex flex-col justify-center",
+    showBorder && "border-b border-(--border)/50",
+  ]}
+>
+  <h1
+    class="text-left text-6xl md:text-9xl font-serif italic leading-[0.9] tracking-tight text-(--foreground)"
+  >
+    {title}
+  </h1>
+</section>

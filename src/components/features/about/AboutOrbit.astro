@@ -1,0 +1,51 @@
+---
+import CategoryList from "@/components/ui/CategoryList.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import TabLabel from "@/components/ui/TabLabel.astro";
+import TimelineCard from "@/components/ui/TimelineCard.astro";
+import { interests, locations, toolkit } from "@/data/about";
+---
+
+<section class="py-16 md:py-24 min-h-[500px]">
+  <input checked class="hidden" id="tab-locations" name="orbit-tabs" type="radio" />
+  <input class="hidden" id="tab-interests" name="orbit-tabs" type="radio" />
+  <input class="hidden" id="tab-toolkit" name="orbit-tabs" type="radio" />
+
+  <div class="flex flex-col w-full">
+    <SectionHeader title="The Finer Details" navClass="orbit-tabs" class="mb-16 lg:mb-20">
+      <TabLabel for="tab-locations" label="Locations" />
+      <TabLabel for="tab-interests" label="Interests" />
+      <TabLabel for="tab-toolkit" label="Tools" />
+    </SectionHeader>
+
+    <!-- Locations -->
+    <div class="tab-content grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="content-locations">
+      {
+        locations.map((loc) => (
+          <TimelineCard
+            period={loc.period}
+            location={loc.location}
+            organization={loc.organization}
+            role={loc.role}
+            isActive={loc.isActive}
+          />
+        ))
+      }
+    </div>
+
+    <!-- Interests -->
+    <div class="tab-content grid-cols-2 md:grid-cols-3 gap-y-12 gap-x-8" id="content-interests">
+      <CategoryList title="Body" items={interests.body} />
+      <CategoryList title="Craft" items={interests.craft} />
+      <CategoryList title="Mind" items={interests.mind} />
+    </div>
+
+    <!-- Tools -->
+    <div class="tab-content grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-8" id="content-toolkit">
+      <CategoryList title="Build" items={toolkit.build} titleSize="text-2xl" />
+      <CategoryList title="Ship" items={toolkit.ship} titleSize="text-2xl" />
+      <CategoryList title="Run" items={toolkit.run} titleSize="text-2xl" />
+      <CategoryList title="Coordinate" items={toolkit.coordinate} titleSize="text-2xl" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+/* Tabbed Content Styles */
+.tab-content {
+  display: none;
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Story tab content min-height to reduce jump between tabs */
+.story-content {
+  min-height: 320px;
+}
+
+@media (min-width: 768px) {
+  .story-content {
+    min-height: 280px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Story Tab Logic - Content Display */
+#tab-intro:checked ~ div #content-intro,
+#tab-background:checked ~ div #content-background {
+  display: block;
+}
+
+/* Story Tab Logic - Selected State */
+#tab-intro:checked ~ div .story-tabs label[for="tab-intro"],
+#tab-background:checked ~ div .story-tabs label[for="tab-background"] {
+  color: var(--foreground);
+  border-bottom-color: var(--foreground);
+}
+
+/* Orbit Tab Logic - Content Display */
+#tab-toolkit:checked ~ div #content-toolkit,
+#tab-interests:checked ~ div #content-interests,
+#tab-locations:checked ~ div #content-locations {
+  display: grid;
+}
+
+/* Orbit Tab Logic - Selected State */
+#tab-toolkit:checked ~ div .orbit-tabs label[for="tab-toolkit"],
+#tab-interests:checked ~ div .orbit-tabs label[for="tab-interests"],
+#tab-locations:checked ~ div .orbit-tabs label[for="tab-locations"] {
+  color: var(--foreground);
+  border-bottom-color: var(--foreground);
+}
