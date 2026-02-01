@@ -1,13 +1,13 @@
 # Portfolio
 
-A personal portfolio website built with [Next.js 16](https://nextjs.org), TypeScript, and Tailwind CSS.
+A personal portfolio website built with [Astro 5](https://astro.build), TypeScript, and Tailwind CSS, deployed to Cloudflare Workers.
 
-## System Requirements
+## System requirements
 
 - **Node.js**: 18.0.0 or later (recommended: 20.9+)
 - **pnpm**: 8.0.0 or later
 
-## Quick Start
+## Quick start
 
 ```bash
 # Install dependencies
@@ -17,19 +17,19 @@ pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the app.
+Open [http://localhost:4321](http://localhost:4321) to view the app.
 
-## Available Scripts
+## Available scripts
 
 ### Development
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Start development server with Turbopack |
+| `pnpm dev` | Start Astro development server |
 | `pnpm build` | Build for production |
-| `pnpm start` | Start production server |
+| `pnpm preview` | Preview production build locally |
 
-### Code Quality
+### Code quality
 
 | Command | Description |
 |---------|-------------|
@@ -40,39 +40,59 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 | `pnpm type-check` | Run TypeScript type checking |
 | `pnpm validate` | Run all checks (lint + types + format) |
 
-## Project Structure
+## Project structure
 
 ```
 src/
-├── app/                    # App Router pages and layouts
-│   ├── layout.tsx          # Root layout (HTML, fonts, global providers)
-│   ├── page.tsx            # Home page (/)
-│   ├── globals.css         # Global styles and CSS variables
-│   ├── about/
-│   │   └── page.tsx        # About page (/about)
-│   ├── projects/
-│   │   └── page.tsx        # Projects page (/projects)
-│   ├── writing/
-│   │   └── page.tsx        # Writing/blog page (/writing)
-│   └── contact/
-│       └── page.tsx        # Contact page (/contact)
-├── components/             # Reusable UI components
-│   ├── Header.tsx          # Site navigation
-│   ├── Footer.tsx          # Site footer
-│   └── GenerativeArt.tsx   # Interactive canvas art
-└── lib/                    # Utilities and helpers (future)
+├── pages/                      # Astro pages (file-based routing)
+│   ├── index.astro             # Home page (/)
+│   ├── about.astro             # About page (/about)
+│   └── contact.astro           # Contact page (/contact)
+│
+├── layouts/                    # Astro layouts
+│   └── BaseLayout.astro        # Root layout (HTML, fonts, global styles)
+│
+├── components/                 # All components
+│   ├── ui/                     # Primitive UI components (.astro)
+│   │   ├── BackButton.astro
+│   │   ├── CategoryList.astro
+│   │   ├── PageHero.astro
+│   │   ├── SectionHeader.astro
+│   │   ├── SectionLabel.astro
+│   │   ├── TabLabel.astro
+│   │   └── TimelineCard.astro
+│   ├── layout/                 # Layout components
+│   │   ├── Header.astro
+│   │   └── Footer.astro
+│   └── features/               # Feature-specific components
+│       ├── home/               # Home page components
+│       │   └── RotatingBadge.tsx
+│       └── about/              # About page components
+│           ├── AboutBackground.astro
+│           └── AboutOrbit.astro
+│
+├── styles/                     # Global CSS
+│   ├── globals.css             # CSS variables and base styles
+│   └── typography.css          # Typography styles
+│
+├── data/                       # Static data & content
+│   ├── about.ts                # About page data
+│   └── socials.ts              # Social links
+│
+└── env.d.ts                    # TypeScript environment definitions
 ```
 
-## Tech Stack
+## Tech stack
 
-- **Framework**: [Next.js 16](https://nextjs.org) (App Router)
-- **Language**: TypeScript
+- **Framework**: [Astro 5](https://astro.build) with React islands
+- **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS 4
 - **Fonts**: Playfair Display + DM Sans (Google Fonts)
 - **Linting**: ESLint 9 + Prettier
-- **Git Hooks**: Husky + lint-staged + commitlint
+- **Git hooks**: Husky + lint-staged + commitlint
+- **Deployment**: Cloudflare Workers
 
-## Commit Convention
+## Commit convention
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/). Commit messages must follow this format:
 
@@ -102,18 +122,17 @@ git commit -m "docs: update README with new commands"
 
 ## Deployment
 
-This project is configured for **Cloudflare Pages** using the [OpenNext adapter](https://opennext.js.org/).
+This project is deployed to **Cloudflare Workers** using the [@astrojs/cloudflare](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) adapter.
 
-### Cloudflare Scripts
+### Cloudflare scripts
 
 | Command | Description |
 |---------|-------------|
 | `pnpm cf:build` | Build for Cloudflare Workers |
-| `pnpm cf:dev` | Local development with Workers runtime |
-| `pnpm cf:deploy` | Deploy directly via CLI |
-| `pnpm cf:preview` | Build and preview locally |
+| `pnpm cf:deploy` | Build and deploy via Wrangler CLI |
+| `pnpm cf:preview` | Build and preview locally with Wrangler |
 
-### Option 1: Git Integration (Recommended)
+### Option 1: Git integration (recommended)
 
 1. **Push your code to GitHub**
 
@@ -126,8 +145,8 @@ This project is configured for **Cloudflare Pages** using the [OpenNext adapter]
 
    | Setting | Value |
    |---------|-------|
-   | Build command | `pnpm cf:build` |
-   | Build output directory | `.open-next` |
+   | Build command | `pnpm build` |
+   | Build output directory | `dist` |
    | Root directory | _(leave blank)_ |
 
 4. **Add environment variable:**
@@ -138,7 +157,7 @@ This project is configured for **Cloudflare Pages** using the [OpenNext adapter]
 
 5. **Deploy** - Cloudflare will auto-deploy on every push to `main`
 
-### Option 2: Direct CLI Deployment
+### Option 2: Direct CLI deployment
 
 ```bash
 # First time: Login to Cloudflare
@@ -150,12 +169,12 @@ pnpm cf:deploy
 
 ## Documentation
 
-- [Styling Guide](./docs/STYLING_GUIDE.md) - Tailwind CSS vs Custom CSS best practices
+- [Styling Guide](./docs/STYLING_GUIDE.md) - Tailwind CSS best practices
 - [Component Organization](./docs/COMPONENT_ORGANIZATION.md) - How to structure components, pages, and content
 
-## Learn More
+## Learn more
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Next.js App Router](https://nextjs.org/docs/app)
+- [Astro Documentation](https://docs.astro.build)
+- [Astro + React](https://docs.astro.build/en/guides/integrations-guide/react/)
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [TypeScript](https://www.typescriptlang.org/docs)
