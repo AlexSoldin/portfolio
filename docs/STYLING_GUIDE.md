@@ -1,164 +1,267 @@
-# Styling Guide: Tailwind CSS vs Custom CSS
+# Styling Guide: Tailwind CSS Best Practices
 
-## Why Tailwind CSS? (Best Practice for Next.js)
+## Why Tailwind CSS?
 
-**Tailwind CSS is the recommended approach for Next.js** because:
+**Tailwind CSS is the recommended approach for Astro** because:
 
-### ✅ Advantages
+### Advantages
 
 1. **Performance**: Only CSS you use is included in the final bundle (tree-shaking)
 2. **Consistency**: Enforces design system through utility classes
-3. **Developer Experience**: No context switching between files, see styles inline
+3. **Developer experience**: No context switching between files, see styles inline
 4. **Maintainability**: Styles are co-located with components
-5. **Responsive Design**: Built-in breakpoints (`sm:`, `md:`, `lg:`)
-6. **Next.js Integration**: Works seamlessly with App Router and Server Components
+5. **Responsive design**: Built-in breakpoints (`sm:`, `md:`, `lg:`)
+6. **Astro integration**: Works seamlessly with both Astro and React components
 
 ### When to Use Custom CSS
 
 Use custom CSS files for:
 
-1. **Complex Animations**: Keyframe animations, transitions
-2. **Global Styles**: Base resets, typography scales
-3. **CSS Variables**: Theme tokens (like we do in `globals.css`)
-4. **Third-party Overrides**: Styling external libraries
-5. **Complex Selectors**: Pseudo-elements, nth-child patterns
+1. **Complex animations**: Keyframe animations, transitions
+2. **Global styles**: Base resets, typography scales
+3. **CSS variables**: Theme tokens (like we do in `globals.css`)
+4. **Third-party overrides**: Styling external libraries
+5. **Complex selectors**: Pseudo-elements, nth-child patterns
 
 ## Current Approach (Hybrid)
 
 We use a **hybrid approach** which is best practice:
 
 ```css
-/* globals.css - CSS Variables & Global Styles */
+/* globals.css - CSS variables & global styles */
 :root {
   --accent: #059669;
   --foreground: #000000;
   /* ... */
 }
+```
 
-/* Components - Tailwind Utilities */
-<button className="bg-[var(--accent)] px-4 py-2">
+```astro
+<!-- Components - Tailwind utilities -->
+<button class="bg-[var(--accent)] px-4 py-2">
+  Click me
+</button>
 ```
 
 This gives us:
-- ✅ Design tokens in CSS (easy to theme)
-- ✅ Utility classes for layout/styling
-- ✅ Best of both worlds
+- Design tokens in CSS (easy to theme)
+- Utility classes for layout/styling
+- Best of both worlds
 
-## Component Organization Best Practices
-
-### Current Structure (Good!)
+## Directory Structure
 
 ```
 src/
-├── app/                    # Routes (Server Components by default)
-│   ├── page.tsx           # Home page
-│   ├── about/
-│   │   └── page.tsx       # About page
-│   └── layout.tsx         # Root layout
+├── styles/                 # Global CSS
+│   ├── globals.css         # CSS variables, base styles
+│   └── typography.css      # Typography styles
 │
-├── components/            # Reusable components
-│   ├── ui/                # Primitive UI components (Button, Input, etc.)
-│   ├── Header.tsx         # Layout components
-│   ├── Footer.tsx
-│   └── HeroSection.tsx   # Feature components
+├── pages/                  # Astro pages
+│   └── *.astro
 │
-├── data/                  # Static data & content
-│   ├── projects.ts
-│   └── posts.ts
+├── layouts/                # Page layouts
+│   └── BaseLayout.astro
 │
-├── types/                 # TypeScript definitions
-│   └── index.ts
+├── components/             # Components
+│   ├── ui/                 # Primitive components (.astro)
+│   ├── layout/             # Header, Footer (.astro)
+│   └── features/           # Feature components (.astro/.tsx)
 │
-└── lib/                   # Utilities
-    └── spacing.ts
+└── data/                   # Static data
 ```
-
-### Component Categories
-
-1. **UI Components** (`components/ui/`)
-   - Primitive, reusable building blocks
-   - Examples: Button, Input, Card, Tag
-   - Should be style-agnostic (accept className)
-
-2. **Layout Components** (`components/`)
-   - Site-wide layout pieces
-   - Examples: Header, Footer, HeroSection
-   - Can have specific styling
-
-3. **Feature Components** (`components/`)
-   - Domain-specific components
-   - Examples: ProjectCard, ContactForm
-   - Business logic + presentation
-
-4. **Page Components** (`app/*/page.tsx`)
-   - Route handlers
-   - Should be mostly Server Components
-   - Compose other components
 
 ## Styling Patterns
 
 ### Pattern 1: Utility Classes (Most Common)
 
-```tsx
-// ✅ Good: Simple, readable, maintainable
-<button className="px-4 py-2 bg-[var(--accent)] rounded-lg hover:opacity-90">
+```astro
+<!-- ✅ Good: Simple, readable, maintainable -->
+<button class="px-4 py-2 bg-[var(--accent)] rounded-lg hover:opacity-90">
   Click me
 </button>
 ```
 
-### Pattern 2: Component Variants (For Reusable Components)
+### Pattern 2: Conditional Classes with `class:list`
 
-```tsx
-// ✅ Good: Encapsulate variants in component
-export function Button({ variant = "primary", ...props }) {
-  const variants = {
-    primary: "bg-[var(--accent)] text-white",
-    secondary: "bg-transparent border border-[var(--border)]"
-  };
-  return <button className={variants[variant]} {...props} />;
+Astro's `class:list` directive handles conditional classes cleanly:
+
+```astro
+---
+interface Props {
+  variant?: "primary" | "secondary";
+  disabled?: boolean;
 }
+
+const { variant = "primary", disabled = false } = Astro.props;
+---
+
+<button
+  class:list={[
+    "px-4 py-2 rounded-lg transition-colors",
+    {
+      "bg-[var(--accent)] text-white": variant === "primary",
+      "bg-transparent border border-[var(--border)]": variant === "secondary",
+      "opacity-50 cursor-not-allowed": disabled,
+    },
+  ]}
+  disabled={disabled}
+>
+  <slot />
+</button>
 ```
 
-### Pattern 3: CSS Modules (For Complex Components)
+### Pattern 3: Component Variants
 
-```tsx
-// Use when: Complex component with many styles
-// components/ComplexChart.module.css
-.chart { /* ... */ }
-.bar { /* ... */ }
+Encapsulate variants in a component for reuse:
 
-// components/ComplexChart.tsx
-import styles from './ComplexChart.module.css';
+```astro
+---
+// components/ui/Button.astro
+interface Props {
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "sm" | "md" | "lg";
+  class?: string;
+}
+
+const { variant = "primary", size = "md", class: className } = Astro.props;
+
+const variants = {
+  primary: "bg-[var(--accent)] text-white hover:opacity-90",
+  secondary: "bg-transparent border border-[var(--border)] hover:bg-[var(--muted)]",
+  ghost: "bg-transparent hover:bg-[var(--muted)]",
+};
+
+const sizes = {
+  sm: "px-3 py-1.5 text-sm",
+  md: "px-4 py-2",
+  lg: "px-6 py-3 text-lg",
+};
+---
+
+<button class:list={["rounded-lg transition-colors", variants[variant], sizes[size], className]}>
+  <slot />
+</button>
 ```
 
-### Pattern 4: CSS Variables (For Theming)
+### Pattern 4: CSS Variables for Theming
+
+Define tokens in `globals.css`:
 
 ```css
-/* globals.css */
+/* styles/globals.css */
 :root {
   --accent: #059669;
+  --foreground: #000000;
+  --background: #ffffff;
+  --muted: #f4f4f5;
+  --border: #e4e4e7;
 }
+```
 
-/* Component */
-<div className="bg-[var(--accent)]">
+Use in components:
+
+```astro
+<div class="bg-[var(--background)] text-[var(--foreground)] border-[var(--border)]">
+  Content
+</div>
+```
+
+### Pattern 5: Scoped Styles (Astro-specific)
+
+For complex one-off styles, use Astro's scoped `<style>` tags:
+
+```astro
+---
+// Component logic
+---
+
+<div class="card">
+  <slot />
+</div>
+
+<style>
+  .card {
+    /* These styles are automatically scoped to this component */
+    background: linear-gradient(135deg, var(--accent), var(--muted));
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+```
+
+## Responsive Design
+
+Use mobile-first approach with Tailwind breakpoints:
+
+```astro
+<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <!-- 1 column on mobile, 2 on sm, 3 on lg -->
+</div>
+
+<h1 class="text-2xl md:text-4xl lg:text-5xl">
+  <!-- Responsive typography -->
+</h1>
+```
+
+**Breakpoints:**
+- `sm:` - 640px and up
+- `md:` - 768px and up
+- `lg:` - 1024px and up
+- `xl:` - 1280px and up
+- `2xl:` - 1536px and up
+
+## React Components
+
+For React islands, use standard className:
+
+```tsx
+// components/features/home/Counter.tsx
+import { useState } from "react";
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button
+      className="px-4 py-2 bg-[var(--accent)] text-white rounded-lg hover:opacity-90"
+      onClick={() => setCount(c => c + 1)}
+    >
+      Count: {count}
+    </button>
+  );
+}
 ```
 
 ## Best Practices Summary
 
 1. **Default to Tailwind utilities** for layout, spacing, colors
 2. **Use CSS variables** for theme tokens (colors, fonts)
-3. **Use custom CSS** for complex animations or global resets
-4. **Keep components small** - if styles get complex, consider CSS modules
-5. **Compose components** - don't repeat className strings
-6. **Use design tokens** - reference CSS variables, not hardcoded values
+3. **Use `class:list`** for conditional classes in Astro
+4. **Use scoped `<style>`** for complex animations or one-off styles
+5. **Keep components small** - if styles get complex, consider extracting a component
+6. **Compose components** - don't repeat className strings across files
+7. **Use design tokens** - reference CSS variables, not hardcoded values
+8. **Mobile-first** - start with mobile styles, add breakpoints for larger screens
 
-## Migration Path (If Needed)
+## Anti-patterns to Avoid
 
-If you want to move some styles to CSS:
+```astro
+<!-- ❌ Avoid: Inline styles -->
+<div style="padding: 16px; background: #059669;">
 
-1. **Create component-specific CSS** (e.g., `Button.module.css`)
-2. **Extract repeated patterns** to CSS classes
-3. **Keep utilities for one-off styles**
+<!-- ❌ Avoid: Hardcoded colors (use CSS variables) -->
+<div class="bg-[#059669]">
 
-But honestly, **your current approach is solid** - Tailwind + CSS variables is the sweet spot for Next.js!
+<!-- ❌ Avoid: Duplicating long class strings -->
+<!-- Instead, create a reusable component -->
 
+<!-- ✅ Good: Use CSS variables -->
+<div class="bg-[var(--accent)]">
+
+<!-- ✅ Good: Create a component for repeated patterns -->
+<Button variant="primary">Click me</Button>
+```

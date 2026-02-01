@@ -4,46 +4,42 @@
 
 ```
 src/
-├── app/                          # Next.js App Router
-│   ├── layout.tsx                # Root layout (fonts, providers)
-│   ├── page.tsx                  # Home page
-│   ├── globals.css               # Global styles & CSS variables
-│   ├── about/page.tsx            # Route pages
-│   ├── projects/page.tsx
-│   ├── writing/page.tsx
-│   ├── contact/page.tsx
-│   └── api/                      # API routes
-│       └── contact/route.ts
+├── pages/                        # Astro file-based routing
+│   ├── index.astro               # Home page (/)
+│   ├── about.astro               # About page (/about)
+│   └── contact.astro             # Contact page (/contact)
 │
-├── components/                    # All React components
-│   ├── ui/                       # Primitive UI components
-│   │   ├── Button.tsx
-│   │   ├── Input.tsx
-│   │   ├── Card.tsx
-│   │   ├── PageHeader.tsx
-│   │   ├── SectionHeader.tsx
-│   │   ├── ContactLinkCard.tsx
-│   │   └── index.ts              # Barrel export
-│   │
-│   ├── Header.tsx                # Layout components
-│   ├── Footer.tsx
-│   ├── HeroSection.tsx           # Feature components
-│   └── GenerativeArt.tsx
+├── layouts/                      # Page layouts
+│   └── BaseLayout.astro          # Root layout (HTML, fonts, meta)
+│
+├── components/                   # All components
+│   ├── ui/                       # Primitive UI components (.astro)
+│   │   ├── BackButton.astro
+│   │   ├── CategoryList.astro
+│   │   ├── PageHero.astro
+│   │   ├── SectionHeader.astro
+│   │   ├── SectionLabel.astro
+│   │   ├── TabLabel.astro
+│   │   └── TimelineCard.astro
+│   ├── layout/                   # Layout components
+│   │   ├── Header.astro
+│   │   └── Footer.astro
+│   └── features/                 # Feature-specific components
+│       ├── home/                 # Home page components
+│       │   └── RotatingBadge.tsx
+│       └── about/                # About page components
+│           ├── AboutBackground.astro
+│           └── AboutOrbit.astro
+│
+├── styles/                       # Global CSS
+│   ├── globals.css               # CSS variables & base styles
+│   └── typography.css            # Typography styles
 │
 ├── data/                         # Static data & content
-│   ├── site.ts                   # Site configuration
-│   ├── projects.ts               # Project data
-│   ├── posts.ts                  # Blog post data
-│   ├── about.ts                  # About page content
-│   ├── contact.ts                # Contact data
-│   └── index.ts                  # Barrel export
+│   ├── about.ts                  # About page data
+│   └── socials.ts                # Social links
 │
-├── types/                        # TypeScript type definitions
-│   └── index.ts                  # All shared types
-│
-└── lib/                          # Utilities & helpers
-    ├── spacing.ts                # Spacing constants
-    └── utils.ts                  # Helper functions (future)
+└── env.d.ts                      # TypeScript environment
 ```
 
 ## Component Categories
@@ -53,119 +49,173 @@ src/
 **Purpose**: Primitive, reusable building blocks
 
 **Characteristics**:
-- Style-agnostic (accept `className` prop)
+- All `.astro` files (no JavaScript shipped)
+- Style-agnostic (accept `class` prop)
 - No business logic
 - Highly reusable
-- Examples: Button, Input, Card, Tag
+- Examples: SectionHeader, PageHero, Card
 
 **Example**:
-```tsx
-// components/ui/Button.tsx
-export function Button({ variant, className, ...props }) {
-  return <button className={cn(buttonVariants(variant), className)} {...props} />;
+```astro
+---
+// components/ui/Button.astro
+interface Props {
+  variant?: "primary" | "secondary";
+  class?: string;
 }
+
+const { variant = "primary", class: className } = Astro.props;
+
+const variants = {
+  primary: "bg-[var(--accent)] text-white",
+  secondary: "bg-transparent border border-[var(--border)]",
+};
+---
+
+<button class:list={["px-4 py-2 rounded-lg", variants[variant], className]}>
+  <slot />
+</button>
 ```
 
-### 2. Layout Components (`components/`)
+### 2. Layout Components (`components/layout/`)
 
 **Purpose**: Site-wide layout pieces
 
 **Characteristics**:
 - Used across multiple pages
 - Can have specific styling
-- Examples: Header, Footer, HeroSection
+- Examples: Header, Footer
 
 **Example**:
-```tsx
-// components/Header.tsx
-export default function Header() {
-  return <nav>...</nav>;
-}
+```astro
+---
+// components/layout/Header.astro
+import { navLinks } from "@/data/navigation";
+---
+
+<header>
+  <nav>
+    {navLinks.map(link => (
+      <a href={link.href}>{link.label}</a>
+    ))}
+  </nav>
+</header>
 ```
 
-### 3. Feature Components (`components/`)
+### 3. Feature Components (`components/features/`)
 
-**Purpose**: Domain-specific, reusable components
+**Purpose**: Page-specific or domain-specific components
 
 **Characteristics**:
+- Organized by page/feature (e.g., `home/`, `about/`)
+- Can be `.astro` (static) or `.tsx` (interactive)
 - Business logic + presentation
-- Used in specific contexts
-- Examples: GenerativeArt, ContactLinkCard
+- Examples: HeroSection, Timeline, AboutOrbit
 
-### 4. Page Components (`app/*/page.tsx`)
+**When to use React (.tsx)**:
+- Needs `useState`, `useEffect`, or other hooks
+- Has `onClick` or other event handlers
+- Uses third-party React libraries (GSAP, etc.)
+- Requires client-side DOM manipulation
 
-**Purpose**: Route handlers (Server Components by default)
+### 4. Page Components (`pages/*.astro`)
+
+**Purpose**: Route handlers
 
 **Characteristics**:
+- File-based routing (e.g., `about.astro` → `/about`)
 - Compose other components
-- Fetch data (Server Components)
+- Wrap content in layouts
 - Minimal styling (delegate to components)
 
 **Example**:
-```tsx
-// app/projects/page.tsx
-import { getAllProjects } from "@/data";
-import { PageHeader, Card } from "@/components/ui";
+```astro
+---
+// pages/about.astro
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/ui/PageHero.astro";
+import { aboutData } from "@/data/about";
+---
 
-export default function ProjectsPage() {
-  const projects = getAllProjects();
-  return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
-      <PageHeader title="Projects" />
-      {/* ... */}
-    </div>
-  );
+<BaseLayout title="About | Alex Soldin">
+  <main>
+    <PageHero title={aboutData.title} subtitle={aboutData.subtitle} />
+    <!-- Page content -->
+  </main>
+</BaseLayout>
+```
+
+### 5. Layouts (`layouts/`)
+
+**Purpose**: Wrap pages with common structure
+
+**Characteristics**:
+- Define HTML document structure
+- Include global styles and scripts
+- Use `<slot />` for page content
+- Handle meta tags and SEO
+
+**Example**:
+```astro
+---
+// layouts/BaseLayout.astro
+interface Props {
+  title: string;
+  description?: string;
 }
+
+const { title, description } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
 ```
 
 ## Naming Conventions
 
 ### Files
-- **Components**: PascalCase (`Button.tsx`, `HeroSection.tsx`)
+- **Astro components**: PascalCase (`Button.astro`, `HeroSection.astro`)
+- **React components**: PascalCase (`Counter.tsx`, `Timeline.tsx`)
 - **Utilities**: camelCase (`formatDate.ts`, `spacing.ts`)
-- **Types**: camelCase (`index.ts` - contains interfaces/types)
-- **Data**: camelCase (`projects.ts`, `site.ts`)
+- **Data files**: camelCase (`projects.ts`, `socials.ts`)
 
-### Components
-- **Default export**: For page components and main components
-- **Named export**: For UI components and utilities
+### Exports
+- **Named exports preferred** for reusable components
+- **Default exports** are optional (Astro imports work with either)
 
-```tsx
-// ✅ Default export (main component)
-export default function Header() { }
-
-// ✅ Named export (reusable component)
-export function Button() { }
+```astro
+---
+// Both work in Astro:
+import Button from "@/components/ui/Button.astro";
+import { Button } from "@/components/ui/Button.astro";
+---
 ```
 
 ## Import Patterns
-
-### Barrel Exports
-
-Use `index.ts` files to create clean imports:
-
-```tsx
-// components/ui/index.ts
-export { Button } from "./Button";
-export { Input } from "./Input";
-export { Card } from "./Card";
-
-// Usage
-import { Button, Input, Card } from "@/components/ui";
-```
 
 ### Path Aliases
 
 Use `@/` prefix for clean imports:
 
-```tsx
+```astro
+---
 // ✅ Good
-import { Button } from "@/components/ui";
-import { getAllProjects } from "@/data";
-import type { Project } from "@/types";
+import Button from "@/components/ui/Button.astro";
+import { aboutData } from "@/data/about";
 
 // ❌ Avoid
-import { Button } from "../../components/ui/Button";
+import Button from "../../components/ui/Button.astro";
+---
 ```
 
 ## Data Organization
@@ -176,48 +226,54 @@ import { Button } from "../../components/ui/Button";
 - Easy to migrate to CMS/API later
 - Type-safe with TypeScript
 
-```tsx
-// data/projects.ts
-export const projects: Project[] = [ /* ... */ ];
-export function getFeaturedProjects() { /* ... */ }
+```typescript
+// data/socials.ts
+export interface Social {
+  name: string;
+  url: string;
+  icon: string;
+}
 
-// app/projects/page.tsx
-import { getAllProjects } from "@/data";
+export const socials: Social[] = [
+  { name: "GitHub", url: "https://github.com/...", icon: "github" },
+  { name: "LinkedIn", url: "https://linkedin.com/...", icon: "linkedin" },
+];
 ```
 
-### Types (`types/`)
+```astro
+---
+// pages/contact.astro
+import { socials } from "@/data/socials";
+---
 
-- Centralized type definitions
-- Shared across components and data
-- Single source of truth
+<ul>
+  {socials.map(social => (
+    <li>
+      <a href={social.url}>{social.name}</a>
+    </li>
+  ))}
+</ul>
+```
 
 ## Best Practices
 
-1. **One component per file** (except related subcomponents)
-2. **Co-locate related files** (component + types + styles if needed)
-3. **Use barrel exports** for clean imports
+1. **Default to Astro components** (no JS shipped unless needed)
+2. **Use React only for interactivity** (hooks, event handlers, animations)
+3. **One component per file** (except related subcomponents)
 4. **Keep components small** (~100 lines max)
 5. **Separate data from presentation**
-6. **Default to Server Components** (use `"use client"` only when needed)
+6. **Use slots for composition** in Astro components
 7. **Use TypeScript interfaces** for props
-8. **Compose components** rather than creating mega-components
+8. **Organize features by page** in `features/` directory
 
-## Migration to API/Database
+## Astro vs React Decision Guide
 
-When ready to move from static data to API:
-
-1. **Create API routes** in `app/api/`
-2. **Replace data imports** with API calls
-3. **Components stay the same** (they just receive props)
-4. **Types remain unchanged**
-
-```tsx
-// Before (static)
-import { getAllProjects } from "@/data";
-const projects = getAllProjects();
-
-// After (API)
-const response = await fetch("/api/projects");
-const projects = await response.json();
-```
-
+| Need | Use |
+|------|-----|
+| Static content | `.astro` |
+| Click handlers | `.tsx` + `client:load` |
+| Form with `useState` | `.tsx` + `client:load` |
+| GSAP animations | `.tsx` + `client:load` |
+| Conditional styling | `.astro` (computed in frontmatter) |
+| Responsive layout | `.astro` (CSS/Tailwind) |
+| API data fetching | `.astro` (in frontmatter) |
