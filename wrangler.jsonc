@@ -32,12 +32,4 @@
   "vars": {
     "NODE_ENV": "production",
   },
-  "d1_databases": [
-    {
-      "binding": "portfolio",
-      "database_name": "portfolio",
-      "database_id": "bd09c8d3-3c28-453b-8296-cf1d41d74026",
-      "migrations_dir": "migrations",
-    },
-  ],
 }

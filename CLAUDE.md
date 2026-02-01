@@ -17,11 +17,6 @@ pnpm format           # Format with Prettier
 pnpm type-check       # TypeScript validation (astro check + tsc)
 pnpm validate         # Run all checks (lint + type-check + format:check)
 
-# Database (Drizzle + Cloudflare D1)
-pnpm db:generate      # Generate Drizzle migrations
-pnpm db:migrate       # Apply migrations locally
-pnpm db:migrate:prod  # Apply migrations to production
-
 # Cloudflare deployment
 pnpm cf:deploy        # Build and deploy via Wrangler CLI
 pnpm cf:preview       # Build and preview with Wrangler
@@ -31,26 +26,22 @@ pnpm cf:preview       # Build and preview with Wrangler
 
 This is an Astro 5 portfolio site with React islands, deployed to Cloudflare Workers.
 
-**Tech stack:** Astro 5, React 18, TypeScript (strict), Tailwind CSS 4, GSAP for animations, Drizzle ORM with Cloudflare D1 (SQLite), Turnstile for bot protection.
+**Tech stack:** Astro 5, React 18, TypeScript (strict), Tailwind CSS 4, GSAP for animations.
 
 ### Source Structure
 
 ```
 src/
-├── pages/         # Astro pages and API routes
+├── pages/         # Astro pages
 ├── layouts/       # Astro layouts (BaseLayout.astro)
 ├── components/
 │   ├── ui/        # UI components (.astro for static, .tsx for React islands)
 │   ├── layout/    # Header.astro, Footer.astro
-│   └── features/  # Feature-specific React islands (home/, about/, contact/)
+│   └── features/  # Feature-specific React islands (home/, about/)
 ├── styles/        # Global CSS (globals.css)
-├── lib/           # Utilities, helpers, validation schemas
-├── hooks/         # Custom React hooks
-├── services/      # Business logic (contact form, Turnstile verification)
 ├── config/        # Site config, navigation, constants
 ├── data/          # Static content (projects, posts, tools, skills)
-├── types/         # TypeScript definitions
-└── db/            # Drizzle schema (contact_requests table)
+└── types/         # TypeScript definitions
 ```
 
 ### Key Patterns
@@ -59,7 +50,6 @@ src/
 - **React islands** - use `client:load` or `client:visible` directives for interactive components
 - **GSAP animations** - React islands using `@gsap/react` with proper scope refs
 - **GenerativeArt** - canvas-based procedural art, React island
-- **Contact form** - React island with custom `useContactForm` hook, Turnstile integration, Zod validation, D1 storage
 
 ### React Islands (client-side components)
 
@@ -71,7 +61,6 @@ src/
 - `Timeline.tsx` - GSAP scroll animation
 - `AboutOrbitSection.tsx` - tab filtering with orbital visualization
 - `AboutOrbit.tsx` - orbital animation
-- `ContactForm.tsx` - form with Turnstile
 
 ## Conventions
 
