@@ -16,19 +16,19 @@
     "validate": "pnpm lint && pnpm type-check && pnpm format:check",
     "prepare": "husky",
     "cf:build": "pnpm build",
-    "cf:deploy": "pnpm build && wrangler deploy",
-    "cf:preview": "pnpm build && wrangler dev"
+    "cf:deploy": "pnpm build && wrangler deploy --config dist/server/wrangler.json",
+    "cf:preview": "pnpm build && wrangler dev --config dist/server/wrangler.json"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/cloudflare": "^12.6.12",
-    "@astrojs/react": "^4.4.2",
-    "astro": "^5.16.11",
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/cloudflare": "^13.1.10",
+    "@astrojs/react": "^5.0.3",
+    "astro": "^6.1.8",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260120.0",
+    "@cloudflare/workers-types": "^4.20260418.1",
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
     "@eslint/compat": "^2.0.1",
@@ -48,7 +48,7 @@
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.53.1",
-    "wrangler": "^4.59.3"
+    "wrangler": "^4.83.0"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,astro}": [

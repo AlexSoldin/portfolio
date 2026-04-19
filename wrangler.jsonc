@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
-  "main": "dist/_worker.js/index.js",
   "compatibility_date": "2024-12-01",
   "compatibility_flags": ["nodejs_compat_v2"],
   // Enable workers.dev subdomain (portfolio.alex-soldin.workers.dev)
