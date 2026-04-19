@@ -3,7 +3,7 @@ export const locations = [
     period: "2023 — Present",
     location: "Amsterdam",
     organization: "Coolset",
-    role: "Software engineer",
+    role: "Founding engineer",
     isActive: true,
   },
   {
@@ -31,15 +31,15 @@ export const locations = [
 
 export const interests = {
   body: ["Pilates", "Squash", "Traveling"],
-  craft: ["Cooking and baking", "Gaming", "Specialty coffee"],
+  craft: ["Cooking and baking", "Gaming", "Photography", "Specialty coffee"],
   mind: ["Chess", "Puzzles", "Sudoku"],
 } as const;
 
 export const toolkit = {
-  build: ["Python", "Django", "Celery", "PostgreSQL"],
-  ship: ["Terraform", "Cloudflare", "GitHub Actions", "n8n", "Zapier"],
+  build: ["Python", "Django", "Celery", "PostgreSQL", "Astro"],
+  ship: ["Terraform", "Cloudflare", "GitHub Actions", "n8n"],
   run: ["Google Cloud", "Firebase", "Sentry"],
-  coordinate: ["Jira", "Linear", "Notion", "Slack"],
+  coordinate: ["Linear", "Notion", "Slack"],
 } as const;
 
 export type Location = (typeof locations)[number];
