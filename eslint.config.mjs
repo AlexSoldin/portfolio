@@ -1,6 +1,7 @@
 import js from "@eslint/js";
 import prettier from "eslint-config-prettier";
 import eslintPluginAstro from "eslint-plugin-astro";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 
 const eslintConfig = [
@@ -24,6 +25,14 @@ const eslintConfig = [
       "*.config.js",
       "*.config.mjs",
     ],
+  },
+
+  // Node scripts (CLI utilities, build scripts)
+  {
+    files: ["scripts/**/*.{js,mjs,cjs}"],
+    languageOptions: {
+      globals: globals.node,
+    },
   },
 
   // Custom rules for TypeScript files

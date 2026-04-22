@@ -1,8 +1,10 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
+  site: "https://soldin.co",
   output: "server",
   server: {
     port: 3000,
@@ -13,7 +15,7 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  integrations: [react()],
+  integrations: [react(), sitemap()],
   vite: {
     resolve: {
       alias: {
