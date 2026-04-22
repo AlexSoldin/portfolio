@@ -17,6 +17,9 @@ const index = JSON.parse(await readFile(indexPath, "utf8"));
 for (const skill of index.skills) {
   const pathname = new URL(skill.url).pathname;
   const filePath = resolve(publicDir, `.${pathname}`);
+  if (!filePath.startsWith(`${publicDir}/`)) {
+    throw new Error(`Resolved skill path escapes publicDir: ${filePath}`);
+  }
   const content = await readFile(filePath);
   skill.sha256 = createHash("sha256").update(content).digest("hex");
 }
