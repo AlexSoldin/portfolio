@@ -1,7 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
 
 const HOMEPAGE_LINK_HEADER = [
-  '</.well-known/agent-skills/index.json>; rel="https://agentskills.io/rel/index"',
+  '</.well-known/agent-skills/index.json>; rel="describedby"; type="application/json"',
   '</sitemap-index.xml>; rel="sitemap"; type="application/xml"',
 ].join(", ");
 
