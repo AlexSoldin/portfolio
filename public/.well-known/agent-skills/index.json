@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agentskills.io/schema/v0.2.0.json",
+  "skills": [
+    {
+      "name": "about-alex-soldin",
+      "type": "document",
+      "description": "Background, role, interests, and current toolkit.",
+      "url": "https://soldin.co/.well-known/agent-skills/about/SKILL.md",
+      "sha256": "b38776425395b8440e073f4c3ab0330303c4dc0b6ed761ea42196c66ddcd9fff"
+    },
+    {
+      "name": "contact-alex-soldin",
+      "type": "document",
+      "description": "Ways to reach Alex Soldin.",
+      "url": "https://soldin.co/.well-known/agent-skills/contact/SKILL.md",
+      "sha256": "e9b3e1c1fd65d6edeb6cae5d2c19fc7cee19b975de2720f0f733e0872e0e46ed"
+    }
+  ]
+}

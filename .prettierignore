@@ -21,9 +21,10 @@ yarn.lock
 # Environment
 .env*
 
-# IDE
+# IDE / tooling
 .idea
 .vscode
+.serena
 
 # Other
 *.md

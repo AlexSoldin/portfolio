@@ -167,6 +167,22 @@ pnpm wrangler login
 pnpm cf:deploy
 ```
 
+## Agent readiness
+
+The site publishes the discovery documents and response headers AI agents look for (measured by [isitagentready.com](https://isitagentready.com/soldin.co)).
+
+| File / header | Purpose |
+|---------------|---------|
+| `public/robots.txt` | Crawl rules, explicit AI-crawler entries, and [Content Signals](https://contentsignals.org/) — allow search/ai-input, disallow ai-train |
+| `public/.well-known/agent-skills/index.json` (+ `about/`, `contact/` `SKILL.md`) | Agent Skills Discovery index ([RFC v0.2.0](https://github.com/cloudflare/agent-skills-discovery-rfc)) |
+| `@astrojs/sitemap` | Auto-generated `/sitemap-index.xml`, referenced from `robots.txt` |
+| `src/middleware.ts` | Adds RFC 8288 `Link` response headers on the homepage |
+| Cloudflare zone setting | [Markdown for Agents](https://developers.cloudflare.com/fundamentals/reference/markdown-for-agents/) — enable once in the `soldin.co` zone dashboard (no repo artifact) |
+
+After editing any `SKILL.md`, run `pnpm skills:digest` to refresh the `sha256` fields in `index.json` (also runs automatically as part of `pnpm build`).
+
+**Intentionally skipped** (not applicable to a content-only portfolio): API catalog, OAuth/OIDC discovery, OAuth Protected Resource Metadata, MCP Server Card, WebMCP. Revisit if the site grows to expose public APIs or an MCP server.
+
 ## Documentation
 
 - [Styling Guide](./docs/STYLING_GUIDE.md) - Tailwind CSS best practices
