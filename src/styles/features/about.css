@@ -85,3 +85,13 @@
   color: var(--foreground);
   border-bottom-color: var(--foreground);
 }
+
+/* Keyboard focus: radios are visually hidden, so ring the matching label */
+#tab-intro:focus-visible ~ div label[for="tab-intro"],
+#tab-background:focus-visible ~ div label[for="tab-background"],
+#tab-locations:focus-visible ~ div label[for="tab-locations"],
+#tab-interests:focus-visible ~ div label[for="tab-interests"],
+#tab-toolkit:focus-visible ~ div label[for="tab-toolkit"] {
+  outline: 1px solid var(--foreground);
+  outline-offset: 4px;
+}
