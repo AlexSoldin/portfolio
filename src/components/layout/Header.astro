@@ -46,7 +46,14 @@
   toggleSwitch?.addEventListener("click", () => {
     const currentTheme = getTheme();
     const nextTheme = currentTheme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Crossfade the palette swap where supported; otherwise switch instantly
+    if (!document.startViewTransition || prefersReducedMotion) {
+      setTheme(nextTheme);
+      return;
+    }
+    document.startViewTransition(() => setTheme(nextTheme));
   });
 
   // Initial set

@@ -172,6 +172,16 @@ body {
   animation-timing-function: ease;
 }
 
+/* Theme toggle thumb keeps sliding during the theme crossfade */
+#toggle-thumb {
+  view-transition-name: theme-thumb;
+}
+
+::view-transition-group(theme-thumb) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--ease-in-out);
+}
+
 /* Reduced motion: keep opacity/colour feedback, drop movement */
 @media (prefers-reduced-motion: reduce) {
   .animate-spin-slow {

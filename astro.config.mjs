@@ -20,7 +20,7 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: "Manrope",
       cssVariable: "--font-manrope",
-      weights: [300, 400],
+      weights: ["300 400"],
       fallbacks: ["system-ui", "sans-serif"],
     },
     {
