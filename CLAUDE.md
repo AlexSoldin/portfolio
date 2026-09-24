@@ -24,43 +24,38 @@ pnpm cf:preview       # Build and preview with Wrangler
 
 ## Architecture
 
-This is an Astro 5 portfolio site with React islands, deployed to Cloudflare Workers.
+This is an Astro 6 portfolio site deployed to Cloudflare Workers. It ships no client framework: every component is `.astro`, and the only client JS is the small inlined theme toggle script in `Header.astro`.
 
-**Tech stack:** Astro 5, React 18, TypeScript (strict), Tailwind CSS 4, GSAP for animations.
+**Tech stack:** Astro 6, TypeScript (strict), Tailwind CSS 4, plain CSS for motion.
 
 ### Source Structure
 
 ```
 src/
-├── pages/         # Astro pages
-├── layouts/       # Astro layouts (BaseLayout.astro)
+├── pages/         # Astro pages (index, about, contact)
+├── layouts/       # BaseLayout.astro
 ├── components/
-│   ├── ui/        # UI components (.astro for static, .tsx for React islands)
+│   ├── ui/        # Shared Astro components (Icon, PageHero, TabLabel, ...)
 │   ├── layout/    # Header.astro, Footer.astro
-│   └── features/  # Feature-specific React islands (home/, about/)
-├── styles/        # Global CSS (globals.css)
-├── config/        # Site config, navigation, constants
-├── data/          # Static content (projects, posts, tools, skills)
-└── types/         # TypeScript definitions
+│   └── features/  # Feature-specific components (home/, about/)
+├── styles/        # globals.css, typography.css, features/*.css
+└── data/          # Static content (about, socials)
 ```
 
 ### Key Patterns
 
-- **Astro components by default** - use React only for interactive features
-- **React islands** - use `client:load` or `client:visible` directives for interactive components
-- **GSAP animations** - React islands using `@gsap/react` with proper scope refs
-- **GenerativeArt** - canvas-based procedural art, React island
+- **Astro only** - no React/UI framework. Reach for an island only if a feature genuinely needs client state, and add the integration back deliberately.
+- **Fonts** - self-hosted via Astro's `fonts` config in `astro.config.mjs`, loaded with `<Font />` in `BaseLayout.astro`. Load only the weights actually used.
+- **Icons** - inline SVG through `components/ui/Icon.astro`; add new paths to its `paths` map. No icon fonts.
+- **Tabs** - the About page tabs are CSS-only (visually hidden radios + `:checked` sibling selectors in `styles/features/about.css`).
+- **Page transitions** - native cross-document view transitions (`@view-transition` in `globals.css`); the theme switch uses `document.startViewTransition`.
 
-### React Islands (client-side components)
+### Motion
 
-- `HeroSection.tsx` - contains GenerativeArt and TextReveal
-- `GenerativeArt.tsx` - canvas-based procedural art
-- `TextReveal.tsx` - GSAP text animation
-- `ValueProp.tsx` - GSAP scroll animation
-- `BusinessCardGenerator.tsx` - canvas-based card generator
-- `Timeline.tsx` - GSAP scroll animation
-- `AboutOrbitSection.tsx` - tab filtering with orbital visualization
-- `AboutOrbit.tsx` - orbital animation
+- Use the tokens in `globals.css`: `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` for enter/exit, `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` for on-screen movement, plain `ease` for colour/hover.
+- UI animations stay under 300ms; animate `transform`/`opacity` only; never `transition: all`.
+- Gate custom-CSS hover effects with `@media (hover: hover) and (pointer: fine)` (Tailwind v4 `hover:` already does this).
+- Every movement needs a `prefers-reduced-motion` fallback (fade instead of move, not nothing).
 
 ## Conventions
 
