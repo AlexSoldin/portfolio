@@ -26,9 +26,11 @@
 /* Interactive text utilities */
 .hover-text-accent {
   cursor: default;
-  transition: color 0.3s;
+  transition: color 200ms ease;
 }
 
-.hover-text-accent:hover {
-  color: var(--foreground);
+@media (hover: hover) and (pointer: fine) {
+  .hover-text-accent:hover {
+    color: var(--foreground);
+  }
 }

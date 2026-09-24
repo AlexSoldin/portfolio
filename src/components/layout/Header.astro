@@ -6,14 +6,11 @@
   <div class="flex flex-col gap-6">
     <button
       id="theme-toggle-switch"
-      class="w-10 h-5 bg-(--foreground)/10 rounded-full p-1 relative transition-all duration-300 cursor-pointer group"
-      aria-label="Toggle theme"
+      class="w-10 h-5 rounded-full p-1 relative cursor-pointer"
+      aria-label="Dark mode"
+      aria-pressed="false"
     >
-      <div
-        id="toggle-thumb"
-        class="w-3 h-3 bg-(--foreground) rounded-full transition-transform duration-300 ease-in-out"
-      >
-      </div>
+      <div id="toggle-thumb" class="w-3 h-3 bg-(--foreground) rounded-full"></div>
     </button>
 
     <div class="flex flex-col">
@@ -40,6 +37,9 @@
   function setTheme(theme: string) {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
+    document
+      .getElementById("theme-toggle-switch")
+      ?.setAttribute("aria-pressed", String(theme === "dark"));
   }
 
   const toggleSwitch = document.getElementById("theme-toggle-switch");
