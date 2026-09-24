@@ -1,5 +1,6 @@
 ---
-import { RotatingBadge } from "@/components/features/home/RotatingBadge";
+import RotatingBadge from "@/components/features/home/RotatingBadge.astro";
+import Icon from "@/components/ui/Icon.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
@@ -7,7 +8,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pt-16 pb-16">
     <div class="flex flex-col items-center gap-8 md:gap-12 w-full max-w-4xl mx-auto text-center">
       <!-- Rotating Badge -->
-      <RotatingBadge client:load />
+      <RotatingBadge />
 
       <!-- Hero Content -->
       <div class="relative w-full flex flex-col items-center">
@@ -37,11 +38,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           class="mt-8 font-mono text-xs uppercase tracking-widest text-(--foreground) flex gap-8"
         >
           <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/about">
-            <span class="material-symbols-outlined text-base">north_east</span>
+            <Icon name="arrow-north-east" />
             About
           </a>
           <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/contact">
-            <span class="material-symbols-outlined text-base">north_east</span>
+            <Icon name="arrow-north-east" />
             Get in touch
           </a>
         </div>

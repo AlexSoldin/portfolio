@@ -2,7 +2,7 @@
 
 ---
 
-<header class="w-full p-8 md:p-12 flex justify-between items-start z-40">
+<header class="site-header w-full p-8 md:p-12 flex justify-between items-start z-40">
   <div class="flex flex-col gap-6">
     <button
       id="theme-toggle-switch"
@@ -47,10 +47,6 @@
     const currentTheme = getTheme();
     const nextTheme = currentTheme === "light" ? "dark" : "light";
     setTheme(nextTheme);
-  });
-
-  document.addEventListener("astro:after-swap", () => {
-    setTheme(getTheme());
   });
 
   // Initial set

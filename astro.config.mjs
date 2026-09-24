@@ -1,7 +1,6 @@
 import cloudflare from "@astrojs/cloudflare";
-import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 
 export default defineConfig({
   site: "https://soldin.co",
@@ -15,16 +14,35 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  integrations: [react(), sitemap()],
+  integrations: [sitemap()],
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: "Manrope",
+      cssVariable: "--font-manrope",
+      weights: [300, 400],
+      fallbacks: ["system-ui", "sans-serif"],
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Instrument Serif",
+      cssVariable: "--font-instrument-serif",
+      weights: [400],
+      styles: ["normal", "italic"],
+      fallbacks: ["serif"],
+    },
+    {
+      provider: fontProviders.google(),
+      name: "JetBrains Mono",
+      cssVariable: "--font-jetbrains-mono",
+      weights: [400, 700],
+      fallbacks: ["monospace"],
+    },
+  ],
   vite: {
     resolve: {
       alias: {
         "@": "/src",
-        // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
-        // Without this, MessageChannel from node:worker_threads needs to be polyfilled.
-        ...(process.env.NODE_ENV === "production" && {
-          "react-dom/server": "react-dom/server.edge",
-        }),
       },
     },
     css: {

@@ -2,9 +2,9 @@
 @import "./typography.css";
 
 @theme {
-  --font-sans: "Manrope", system-ui, sans-serif;
-  --font-serif: "Instrument Serif", serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-jetbrains-mono);
 
   --color-background: #f2f0ea;
   --color-foreground: #1a1a1a;
@@ -155,6 +155,21 @@ body {
 
 [data-theme="dark"] #toggle-thumb {
   transform: translateX(1.25rem);
+}
+
+/* Cross-document page transitions (no JS): header stays put, content crossfades */
+@view-transition {
+  navigation: auto;
+}
+
+.site-header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: ease;
 }
 
 /* Reduced motion: keep opacity/colour feedback, drop movement */
