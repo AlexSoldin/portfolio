@@ -4,12 +4,12 @@ import TabLabel from "@/components/ui/TabLabel.astro";
 ---
 
 <section class="py-16 md:py-24">
-  <input checked class="hidden" id="tab-intro" name="story-tabs" type="radio" />
-  <input class="hidden" id="tab-background" name="story-tabs" type="radio" />
+  <input checked class="sr-only" id="tab-intro" name="story-tabs" type="radio" />
+  <input class="sr-only" id="tab-background" name="story-tabs" type="radio" />
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
     <div class="lg:col-span-12">
-      <SectionHeader title="The Story" navClass="story-tabs">
+      <SectionHeader title="The story" navClass="story-tabs">
         <TabLabel for="tab-intro" label="Intro" />
         <TabLabel for="tab-background" label="Background" />
       </SectionHeader>
@@ -37,7 +37,7 @@ import TabLabel from "@/components/ui/TabLabel.astro";
       </div>
 
       <div class="tab-content space-y-8" id="content-background">
-        <div class="prose dark:prose-invert prose-lg max-w-none font-light">
+        <div class="font-light">
           <p class="mb-6 leading-relaxed text-lg text-(--foreground)/80">
             I started coding while at school in Johannesburg. Choosing information technology, and
             later electrical and computer engineering at university, were educated guesses that

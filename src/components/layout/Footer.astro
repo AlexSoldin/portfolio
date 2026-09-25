@@ -1,12 +1,7 @@
 ---
-const year = new Date().getFullYear();
+import { socials } from "@/data/socials";
 
-const socials = [
-  { name: "GitHub", href: "https://github.com/alexsoldin" },
-  { name: "LinkedIn", href: "https://linkedin.com/in/alexsoldin" },
-  { name: "X", href: "https://x.com/alexsoldin" },
-  { name: "Instagram", href: "https://instagram.com/alexandersoldin" },
-];
+const year = new Date().getFullYear();
 ---
 
 <footer class="w-full mt-auto p-8 md:p-12">
@@ -15,11 +10,9 @@ const socials = [
   >
     <div class="text-xs font-mono text-[var(--muted)]">
       <span>&copy; {year} Alex Soldin</span>
-      <span class="mx-2">-</span>
-      <span>rebuilding in Astro</span>
     </div>
     <div
-      class="flex items-center gap-8 text-xs font-mono uppercase tracking-wider text-[var(--muted)]"
+      class="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 text-xs font-mono uppercase tracking-wider text-[var(--muted)]"
     >
       {
         socials.map((social) => (
@@ -27,7 +20,7 @@ const socials = [
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-[var(--foreground)] transition-colors"
+            class="pressable tap-target hover-underline whitespace-nowrap"
           >
             {social.name}
           </a>

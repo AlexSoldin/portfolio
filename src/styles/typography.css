@@ -22,13 +22,3 @@
   text-transform: uppercase;
   letter-spacing: 0.15em;
 }
-
-/* Interactive text utilities */
-.hover-text-accent {
-  cursor: default;
-  transition: color 0.3s;
-}
-
-.hover-text-accent:hover {
-  color: var(--foreground);
-}

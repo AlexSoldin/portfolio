@@ -1,51 +1,72 @@
 ---
-import { RotatingBadge } from "@/components/features/home/RotatingBadge";
+import NoiseToOrder from "@/components/features/home/NoiseToOrder.astro";
+import Icon from "@/components/ui/Icon.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Alex Soldin" showFooter={true}>
   <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pt-16 pb-16">
-    <div class="flex flex-col items-center gap-8 md:gap-12 w-full max-w-4xl mx-auto text-center">
-      <!-- Rotating Badge -->
-      <RotatingBadge client:load />
+    <div class="flex flex-col items-center w-full max-w-4xl mx-auto text-center">
+      <h1
+        style="--i: 0"
+        class="hero-enter font-serif text-4xl md:text-6xl lg:text-7xl italic leading-tight tracking-[-0.01em] text-(--foreground) z-20"
+      >
+        <span class="md:block">First, understand the problem.</span> Then, build what matters.
+      </h1>
 
-      <!-- Hero Content -->
-      <div class="relative w-full flex flex-col items-center">
-        <!-- Quote/Headline -->
-        <h1
-          class="font-serif text-4xl md:text-6xl lg:text-7xl italic leading-tight text-(--foreground) z-20 max-w-2xl"
-        >
-          First, understand the problem. Then, build what matters.
-        </h1>
+      <div style="--i: 1" class="hero-enter mt-10 w-full max-w-2xl">
+        <NoiseToOrder />
+      </div>
 
-        <!-- Featured Image -->
-        <div
-          class="mt-8 relative w-full max-w-md aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-sm shadow-xl group"
-        >
-          <div
-            class="w-full h-full bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700 ease-out bg-(--muted)/20"
-            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKXaD1-Ebr8wJSU3RyCGH_e6rCZjnjB6yyNu77eV3294_IHEUoreGO9469X1DGbGaIfJvyNTRuJvsLEXnELOyYY4YNq9bJHmrvceCRfRw5U7XxRMa6xuh7A1UF5enmn8NGiPE1_zlZDVxMwe9RuaCEsXZy38ZEMvJ-dk-TTPzUNqbjHL9wlNMqHzIwZN63Nh-V3XEC7lJF85X4Rsr2WZui0WDrynSuB0M8qrCPWF7atP-4J9uX1Xiv6hImWSygID50SXuBY3iQaHk');"
-          >
-          </div>
-          <div
-            class="absolute inset-0 bg-(--background) mix-blend-color opacity-20 pointer-events-none"
-          >
-          </div>
-        </div>
-
-        <div
-          class="mt-8 font-mono text-xs uppercase tracking-widest text-(--foreground) flex gap-8"
-        >
-          <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/about">
-            <span class="material-symbols-outlined text-base">north_east</span>
-            About
-          </a>
-          <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/contact">
-            <span class="material-symbols-outlined text-base">north_east</span>
-            Get in touch
-          </a>
-        </div>
+      <div
+        style="--i: 2"
+        class="hero-enter mt-8 font-mono text-xs uppercase tracking-widest text-(--foreground) flex gap-8"
+      >
+        {
+          [
+            { href: "/about", label: "About" },
+            { href: "/contact", label: "Get in touch" },
+          ].map(({ href, label }) => (
+            <a
+              class="group pressable tap-target hover-underline flex items-center gap-2"
+              href={href}
+            >
+              <Icon
+                name="arrow-east"
+                class="size-4 motion-safe:group-hover:translate-x-1 transition-transform duration-200 ease-(--ease-out)"
+              />
+              {label}
+            </a>
+          ))
+        }
       </div>
     </div>
   </main>
 </BaseLayout>
+
+<style>
+  /* First-load entrance: each hero block fades up, 60ms apart */
+  .hero-enter {
+    animation: hero-enter 400ms var(--ease-out) both;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+
+  @keyframes hero-enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes hero-enter-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-enter {
+      animation-name: hero-enter-fade;
+    }
+  }
+</style>

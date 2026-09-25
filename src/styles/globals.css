@@ -2,9 +2,9 @@
 @import "./typography.css";
 
 @theme {
-  --font-sans: "Manrope", system-ui, sans-serif;
-  --font-serif: "Instrument Serif", serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-jetbrains-mono);
 
   --color-background: #f2f0ea;
   --color-foreground: #1a1a1a;
@@ -17,6 +17,14 @@
   --foreground: #1a1a1a;
   --muted: #57534e;
   --border: rgba(0, 0, 0, 0.1);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+
+  /* Motion tokens */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  color-scheme: light;
 }
 
 [data-theme="dark"] {
@@ -24,7 +32,10 @@
   --foreground: #ffffff;
   --muted: rgba(255, 255, 255, 0.6);
   --border: rgba(255, 255, 255, 0.1);
-  --accent: #0c50ff;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+
+  color-scheme: dark;
 }
 
 body {
@@ -32,6 +43,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Paper texture overlay */
@@ -55,12 +67,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d6d3cd;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a29e;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Selection styling */
@@ -69,24 +81,33 @@ body {
   color: var(--background);
 }
 
-/* Rotating badge animation */
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 12s linear infinite;
-}
-
 /* Vertical text */
 .text-vertical {
   writing-mode: vertical-rl;
   text-orientation: mixed;
+}
+
+/* Press feedback for links and buttons; also carries their colour/opacity hover fades */
+.pressable {
+  transition:
+    transform 160ms var(--ease-out),
+    color 150ms ease,
+    opacity 150ms ease;
+}
+
+.pressable:active {
+  transform: scale(0.97);
+}
+
+/* Invisible hit area so small text links reach a comfortable tap size without changing layout */
+.tap-target {
+  position: relative;
+}
+
+.tap-target::before {
+  content: "";
+  position: absolute;
+  inset: -12px -8px;
 }
 
 /* Hover underline animation */
@@ -104,23 +125,82 @@ body {
   left: 0;
   background-color: currentColor;
   transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
+  transition: transform 250ms var(--ease-out);
 }
 
-.hover-underline:hover::after {
+@media (hover: hover) and (pointer: fine) {
+  .hover-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+}
+
+.hover-underline:focus-visible::after {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
 
-/* Theme Toggle */
+/* Theme toggle */
 #theme-toggle-switch {
   background-color: color-mix(in srgb, var(--foreground) 10%, transparent);
+  transition:
+    background-color 150ms ease,
+    transform 160ms var(--ease-out);
 }
 
-#theme-toggle-switch:hover {
-  background-color: color-mix(in srgb, var(--foreground) 15%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  #theme-toggle-switch:hover {
+    background-color: color-mix(in srgb, var(--foreground) 15%, transparent);
+  }
+}
+
+#theme-toggle-switch:active {
+  transform: scale(0.97);
+}
+
+#toggle-thumb {
+  transition: transform 200ms var(--ease-in-out);
 }
 
 [data-theme="dark"] #toggle-thumb {
   transform: translateX(1.25rem);
+}
+
+/* Cross-document page transitions (no JS): header stays put, content crossfades */
+@view-transition {
+  navigation: auto;
+}
+
+.site-header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: ease;
+}
+
+/* Theme toggle thumb keeps sliding during the theme crossfade */
+#toggle-thumb {
+  view-transition-name: theme-thumb;
+}
+
+::view-transition-group(theme-thumb) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--ease-in-out);
+}
+
+/* Reduced motion: keep opacity/colour feedback, drop movement */
+@media (prefers-reduced-motion: reduce) {
+  #toggle-thumb,
+  #theme-toggle-switch {
+    transition-duration: 0ms;
+  }
+
+  .pressable {
+    transition:
+      color 150ms ease,
+      opacity 150ms ease;
+  }
 }

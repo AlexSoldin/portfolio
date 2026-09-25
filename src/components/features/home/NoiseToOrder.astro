@@ -1,0 +1,143 @@
+---
+// Dots drift loose, settle into a grid, then trace a high-pass filter and a neural network
+// (current pulses through the circuit, backpropagation pulses through the network) before loosening again.
+// Pure CSS: every dot's positions are generated here from a fixed seed, so renders are identical.
+import {
+  createRandom,
+  gridPoints,
+  highPassPoints,
+  networkPoints,
+  scatterPoints,
+} from "./dotShapes";
+
+const COLUMNS = 16;
+const ROWS = 9;
+const COUNT = COLUMNS * ROWS;
+
+const random = createRandom(20260924);
+const scatter = scatterPoints(COUNT, random);
+const grid = gridPoints(COLUMNS, ROWS);
+const circuit = highPassPoints(COUNT);
+const network = networkPoints([2, 3, 2], COUNT);
+
+// Current: the pulse travels forward along the wire and back along the ground rail.
+const CURRENT_SWEEP_MS = 2400;
+// Backpropagation: the pulse starts at the output layer and sweeps back to the input.
+const PULSE_SWEEP_MS = 1800;
+
+const cq = (value: number, unit: "cqw" | "cqh") => `${value.toFixed(2)}${unit}`;
+
+const dots = grid.map((gridPoint, index) =>
+  [
+    `--sx: ${cq(scatter[index].x, "cqw")}`,
+    `--sy: ${cq(scatter[index].y, "cqh")}`,
+    `--gx: ${cq(gridPoint.x, "cqw")}`,
+    `--gy: ${cq(gridPoint.y, "cqh")}`,
+    `--cx: ${cq(circuit[index].x, "cqw")}`,
+    `--cy: ${cq(circuit[index].y, "cqh")}`,
+    `--nx: ${cq(network[index].x, "cqw")}`,
+    `--ny: ${cq(network[index].y, "cqh")}`,
+    `--current-delay: ${Math.round(circuit[index].flow * CURRENT_SWEEP_MS)}ms`,
+    `--pulse-delay: ${Math.round((1 - network[index].x / 100) * PULSE_SWEEP_MS)}ms`,
+    `--delay: ${Math.round(random() * -600)}ms`,
+  ].join("; ")
+);
+---
+
+<div class="noise-to-order" aria-hidden="true">
+  {dots.map((style) => <span class="dot" style={style} />)}
+</div>
+
+<style>
+  .noise-to-order {
+    position: relative;
+    container-type: size;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (width >= 48rem) {
+    .noise-to-order {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  .dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 3px;
+    margin: -1.5px 0 0 -1.5px;
+    border-radius: 9999px;
+    background: var(--foreground);
+    animation:
+      morph 22s var(--ease-in-out) var(--delay) infinite,
+      current 22s ease var(--current-delay) infinite,
+      backprop 22s ease var(--pulse-delay) infinite;
+  }
+
+  /* loose → grid → high-pass → neural network → loose */
+  @keyframes morph {
+    0%,
+    4%,
+    95%,
+    100% {
+      translate: var(--sx) var(--sy);
+      opacity: 0.3;
+    }
+    14%,
+    22% {
+      translate: var(--gx) var(--gy);
+      opacity: 0.6;
+    }
+    33%,
+    53% {
+      translate: var(--cx) var(--cy);
+      opacity: 0.9;
+    }
+    65%,
+    85% {
+      translate: var(--nx) var(--ny);
+      opacity: 0.9;
+    }
+  }
+
+  /*
+   * One pulse per loop while the circuit holds (33–53%); --current-delay staggers it along the wire.
+   * Uses transform so it stacks with backprop's scale instead of overriding it.
+   */
+  @keyframes current {
+    0%,
+    35%,
+    40%,
+    100% {
+      transform: scale(1);
+    }
+    37.5% {
+      transform: scale(1.9);
+    }
+  }
+
+  /* One pulse per loop while the network holds (65–85%); --pulse-delay staggers it right to left */
+  @keyframes backprop {
+    0%,
+    67.5%,
+    72.5%,
+    100% {
+      scale: 1;
+    }
+    70% {
+      scale: 1.9;
+    }
+  }
+
+  /* Reduced motion: show the finished circuit, no movement */
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
+      translate: var(--cx) var(--cy);
+      opacity: 0.8;
+    }
+  }
+</style>
