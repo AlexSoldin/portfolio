@@ -81,24 +81,33 @@ body {
   color: var(--background);
 }
 
-/* Rotating badge animation */
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 12s linear infinite;
-}
-
 /* Vertical text */
 .text-vertical {
   writing-mode: vertical-rl;
   text-orientation: mixed;
+}
+
+/* Press feedback for links and buttons; also carries their colour/opacity hover fades */
+.pressable {
+  transition:
+    transform 160ms var(--ease-out),
+    color 150ms ease,
+    opacity 150ms ease;
+}
+
+.pressable:active {
+  transform: scale(0.97);
+}
+
+/* Invisible hit area so small text links reach a comfortable tap size without changing layout */
+.tap-target {
+  position: relative;
+}
+
+.tap-target::before {
+  content: "";
+  position: absolute;
+  inset: -12px -8px;
 }
 
 /* Hover underline animation */
@@ -184,12 +193,14 @@ body {
 
 /* Reduced motion: keep opacity/colour feedback, drop movement */
 @media (prefers-reduced-motion: reduce) {
-  .animate-spin-slow {
-    animation: none;
-  }
-
   #toggle-thumb,
   #theme-toggle-switch {
     transition-duration: 0ms;
+  }
+
+  .pressable {
+    transition:
+      color 150ms ease,
+      opacity 150ms ease;
   }
 }

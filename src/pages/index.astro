@@ -1,45 +1,44 @@
 ---
 import NoiseToOrder from "@/components/features/home/NoiseToOrder.astro";
-import RotatingBadge from "@/components/features/home/RotatingBadge.astro";
 import Icon from "@/components/ui/Icon.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Alex Soldin" showFooter={true}>
   <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pt-16 pb-16">
-    <div class="flex flex-col items-center gap-8 md:gap-12 w-full max-w-4xl mx-auto text-center">
-      <div class="hero-enter" style="--i: 0">
-        <RotatingBadge />
+    <div class="flex flex-col items-center w-full max-w-4xl mx-auto text-center">
+      <h1
+        style="--i: 0"
+        class="hero-enter font-serif text-4xl md:text-6xl lg:text-7xl italic leading-tight tracking-[-0.01em] text-(--foreground) z-20"
+      >
+        <span class="md:block">First, understand the problem.</span> Then, build what matters.
+      </h1>
+
+      <div style="--i: 1" class="hero-enter mt-10 w-full max-w-2xl">
+        <NoiseToOrder />
       </div>
 
-      <div class="relative w-full flex flex-col items-center">
-        <h1
-          style="--i: 1"
-          class="hero-enter font-serif text-4xl md:text-6xl lg:text-7xl italic leading-tight text-(--foreground) z-20 max-w-2xl"
-        >
-          First, understand the problem. Then, build what matters.
-        </h1>
-
-        <div
-          style="--i: 2"
-          class="hero-enter mt-8 w-full max-w-md aspect-[4/3] md:aspect-[16/9] rounded-sm border border-(--border) bg-(--foreground)/[0.02]"
-        >
-          <NoiseToOrder />
-        </div>
-
-        <div
-          style="--i: 3"
-          class="hero-enter mt-8 font-mono text-xs uppercase tracking-widest text-(--foreground) flex gap-8"
-        >
-          <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/about">
-            <Icon name="arrow-north-east" />
-            About
-          </a>
-          <a class="flex items-center gap-2 hover:opacity-60 transition-opacity" href="/contact">
-            <Icon name="arrow-north-east" />
-            Get in touch
-          </a>
-        </div>
+      <div
+        style="--i: 2"
+        class="hero-enter mt-8 font-mono text-xs uppercase tracking-widest text-(--foreground) flex gap-8"
+      >
+        {
+          [
+            { href: "/about", label: "About" },
+            { href: "/contact", label: "Get in touch" },
+          ].map(({ href, label }) => (
+            <a
+              class="group pressable tap-target hover-underline flex items-center gap-2"
+              href={href}
+            >
+              <Icon
+                name="arrow-east"
+                class="size-4 motion-safe:group-hover:translate-x-1 transition-transform duration-200 ease-(--ease-out)"
+              />
+              {label}
+            </a>
+          ))
+        }
       </div>
     </div>
   </main>
@@ -48,7 +47,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 <style>
   /* First-load entrance: each hero block fades up, 60ms apart */
   .hero-enter {
-    animation: hero-enter 600ms var(--ease-out) both;
+    animation: hero-enter 400ms var(--ease-out) both;
     animation-delay: calc(var(--i) * 60ms);
   }
 

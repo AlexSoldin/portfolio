@@ -73,7 +73,30 @@ export const HIGH_PASS = {
   resistorX: 104,
 } as const;
 
-export function highPassPoints(count: number): Point[] {
+export interface CircuitPoint extends Point {
+  /** How far along the current's path this dot sits, 0 (input) to 1 (back at the input on the rail). */
+  flow: number;
+}
+
+/**
+ * Current runs left to right along the top wire (across the capacitor) to the output, then back
+ * right to left along the ground rail. The resistor branch is stretched so its pulse meets the
+ * top wire and the rail at the same moments they do.
+ */
+function circuitFlow({ x, y }: Point): number {
+  const { top, rail, inputX, outputX, resistorX } = HIGH_PASS;
+  const span = outputX - inputX;
+  const onRail = (x: number) => span + (outputX - x);
+
+  if (y === rail) return onRail(x) / (span * 2);
+  if (y > top && Math.abs(x - resistorX) <= 6) {
+    const start = resistorX - inputX;
+    return (start + ((y - top) / (rail - top)) * (onRail(resistorX) - start)) / (span * 2);
+  }
+  return (x - inputX) / (span * 2);
+}
+
+export function highPassPoints(count: number): CircuitPoint[] {
   const { top, rail, inputX, outputX, capacitorX, resistorX } = HIGH_PASS;
   const [plateA, plateB] = capacitorX;
   const zigTop = top + 10;
@@ -122,7 +145,9 @@ export function highPassPoints(count: number): Point[] {
     ],
   ];
 
-  return sampleSegments(segments, count).map(toPercent).sort(byColumn);
+  return sampleSegments(segments, count)
+    .map((point) => ({ ...toPercent(point), flow: circuitFlow(point) }))
+    .sort(byColumn);
 }
 
 /** Fully connected neural network, input layer on the left. Nodes are rings, weights are dotted lines. */
@@ -166,21 +191,4 @@ export function networkPoints(layerSizes: readonly number[], count: number): Poi
   );
 
   return [...nodes, ...sampleSegments(weights, count - nodes.length)].map(toPercent).sort(byColumn);
-}
-
-export interface Coordinate {
-  latitude: number;
-  longitude: number;
-}
-
-/**
- * Dots pinned to a latitude/longitude lattice on a sphere. The projection and spin happen in CSS,
- * so the globe can rotate once formed. Rows sit on parallels and columns line up into meridians.
- */
-export function globeCoordinates(parallels: number, meridians: number): Coordinate[] {
-  const latitudeStep = 150 / parallels;
-  return Array.from({ length: parallels * meridians }, (_, index) => ({
-    latitude: -75 + latitudeStep * (Math.floor(index / meridians) + 0.5),
-    longitude: (index % meridians) * (360 / meridians) - 180,
-  })).sort((a, b) => a.longitude - b.longitude || a.latitude - b.latitude);
 }

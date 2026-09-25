@@ -10,16 +10,12 @@ interface Props {
 const { period, location, organization, role, isActive = false } = Astro.props;
 ---
 
-<div
-  class="group cursor-default relative pl-6 border-l border-(--border) hover:border-(--foreground) transition-colors"
->
+<div class="relative pl-6 border-l border-(--border)">
   <span class="text-label-sm text-(--muted) mb-2 block">{period}</span>
   <h4
     class:list={[
       "font-serif italic text-3xl mb-1",
-      isActive
-        ? "text-(--foreground)"
-        : "text-(--muted) group-hover:text-(--foreground) transition-colors duration-300",
+      isActive ? "text-(--foreground)" : "text-(--muted)",
     ]}
   >
     {location}

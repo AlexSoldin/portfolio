@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
       <span>&copy; {year} Alex Soldin</span>
     </div>
     <div
-      class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-mono uppercase tracking-wider text-[var(--muted)]"
+      class="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 text-xs font-mono uppercase tracking-wider text-[var(--muted)]"
     >
       {
         socials.map((social) => (
@@ -20,7 +20,7 @@ const year = new Date().getFullYear();
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="whitespace-nowrap hover:text-[var(--foreground)] transition-colors"
+            class="pressable tap-target hover-underline whitespace-nowrap"
           >
             {social.name}
           </a>
