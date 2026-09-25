@@ -1,11 +1,13 @@
 ---
-// Dots drift loose, settle into a grid, reassemble as a high-pass filter, then loosen again.
+// Dots drift loose, settle into a grid, then trace a high-pass filter, a neural network
+// (with a backpropagation pulse) and a slowly spinning globe before loosening again.
 // Pure CSS: every dot's positions are generated here from a fixed seed, so renders are identical.
 import {
   createRandom,
+  globeCoordinates,
   gridPoints,
-  highPassLabels,
   highPassPoints,
+  networkPoints,
   scatterPoints,
 } from "./dotShapes";
 
@@ -17,16 +19,27 @@ const random = createRandom(20260924);
 const scatter = scatterPoints(COUNT, random);
 const grid = gridPoints(COLUMNS, ROWS);
 const circuit = highPassPoints(COUNT);
-const labels = highPassLabels();
+const network = networkPoints([2, 3, 2], COUNT);
+
+// Backpropagation: the pulse starts at the output layer and sweeps back to the input.
+const PULSE_SWEEP_MS = 1800;
+const globe = globeCoordinates(ROWS - 3, COLUMNS + 8);
+
+const cq = (value: number, unit: "cqw" | "cqh") => `${value.toFixed(2)}${unit}`;
 
 const dots = grid.map((gridPoint, index) =>
   [
-    `--sx: ${scatter[index].x.toFixed(2)}cqw`,
-    `--sy: ${scatter[index].y.toFixed(2)}cqh`,
-    `--gx: ${gridPoint.x.toFixed(2)}cqw`,
-    `--gy: ${gridPoint.y.toFixed(2)}cqh`,
-    `--cx: ${circuit[index].x.toFixed(2)}cqw`,
-    `--cy: ${circuit[index].y.toFixed(2)}cqh`,
+    `--sx: ${cq(scatter[index].x, "cqw")}`,
+    `--sy: ${cq(scatter[index].y, "cqh")}`,
+    `--gx: ${cq(gridPoint.x, "cqw")}`,
+    `--gy: ${cq(gridPoint.y, "cqh")}`,
+    `--cx: ${cq(circuit[index].x, "cqw")}`,
+    `--cy: ${cq(circuit[index].y, "cqh")}`,
+    `--nx: ${cq(network[index].x, "cqw")}`,
+    `--ny: ${cq(network[index].y, "cqh")}`,
+    `--pulse-delay: ${Math.round((1 - network[index].x / 100) * PULSE_SWEEP_MS)}ms`,
+    `--lat: ${globe[index].latitude.toFixed(2)}deg`,
+    `--lon: ${globe[index].longitude.toFixed(2)}deg`,
     `--delay: ${Math.round(random() * -600)}ms`,
   ].join("; ")
 );
@@ -34,16 +47,15 @@ const dots = grid.map((gridPoint, index) =>
 
 <div class="noise-to-order" aria-hidden="true">
   {dots.map((style) => <span class="dot" style={style} />)}
-  {
-    labels.map((label) => (
-      <span class="label font-mono" style={`left: ${label.x}%; top: ${label.y}%`}>
-        {label.text}
-      </span>
-    ))
-  }
 </div>
 
 <style>
+  @property --spin {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+
   .noise-to-order {
     position: relative;
     container-type: size;
@@ -60,51 +72,77 @@ const dots = grid.map((gridPoint, index) =>
     margin: -1.5px 0 0 -1.5px;
     border-radius: 9999px;
     background: var(--foreground);
-    animation: morph 15s var(--ease-in-out) var(--delay) infinite;
+    animation:
+      morph 28s var(--ease-in-out) var(--delay) infinite,
+      spin 24s linear infinite,
+      backprop 28s ease var(--pulse-delay) infinite;
+
+    /* Globe: orthographic projection of (--lat, --lon), tilted towards the viewer. Sized in cqmin so it stays round. */
+    --radius: 42cqmin;
+    --tilt: 22deg;
+    --depth: calc(
+      sin(var(--lat)) * sin(var(--tilt)) + cos(var(--lat)) * cos(var(--lon) + var(--spin)) *
+        cos(var(--tilt))
+    );
+    --wx: calc(50cqw + var(--radius) * cos(var(--lat)) * sin(var(--lon) + var(--spin)));
+    --wy: calc(
+      50cqh - var(--radius) *
+        (
+          sin(var(--lat)) * cos(var(--tilt)) - cos(var(--lat)) * cos(var(--lon) + var(--spin)) *
+            sin(var(--tilt))
+        )
+    );
+    /* Far side stays faintly visible, like a see-through globe */
+    --wo: calc(0.5 + 0.45 * var(--depth));
   }
 
-  .label {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    opacity: 0;
-    animation: label 15s ease infinite;
-  }
-
-  /* loose → grid → high-pass filter (longest hold) → loose */
+  /* loose → grid → high-pass → neural network → globe → loose */
   @keyframes morph {
     0%,
-    6%,
-    94%,
+    3%,
+    96%,
     100% {
-      transform: translate(var(--sx), var(--sy));
+      translate: var(--sx) var(--sy);
       opacity: 0.3;
     }
-    20%,
-    34% {
-      transform: translate(var(--gx), var(--gy));
+    11%,
+    17% {
+      translate: var(--gx) var(--gy);
       opacity: 0.6;
     }
-    48%,
-    80% {
-      transform: translate(var(--cx), var(--cy));
+    26%,
+    42% {
+      translate: var(--cx) var(--cy);
       opacity: 0.9;
+    }
+    51%,
+    67% {
+      translate: var(--nx) var(--ny);
+      opacity: 0.9;
+    }
+    76%,
+    88% {
+      translate: var(--wx) var(--wy);
+      opacity: var(--wo);
     }
   }
 
-  /* Labels appear once the circuit has formed and leave before it breaks up */
-  @keyframes label {
+  /* One pulse per loop while the network holds (51–67%); --pulse-delay staggers it right to left */
+  @keyframes backprop {
     0%,
-    50%,
-    80%,
+    53%,
+    57%,
     100% {
-      opacity: 0;
+      scale: 1;
     }
-    54%,
-    76% {
-      opacity: 1;
+    55% {
+      scale: 1.9;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      --spin: 360deg;
     }
   }
 
@@ -112,13 +150,8 @@ const dots = grid.map((gridPoint, index) =>
   @media (prefers-reduced-motion: reduce) {
     .dot {
       animation: none;
-      transform: translate(var(--cx), var(--cy));
+      translate: var(--cx) var(--cy);
       opacity: 0.8;
-    }
-
-    .label {
-      animation: none;
-      opacity: 1;
     }
   }
 </style>

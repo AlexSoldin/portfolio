@@ -36,7 +36,7 @@ export function gridPoints(columns: number, rows: number): Point[] {
   return points.sort(byColumn);
 }
 
-/** Spread `count` points evenly along a set of line segments. */
+/** Spread `count` points evenly along a set of line segments (canvas units). */
 function sampleSegments(segments: readonly Segment[], count: number): Point[] {
   const lengths = segments.map(([a, b]) => Math.hypot(b.x - a.x, b.y - a.y));
   const total = lengths.reduce((sum, length) => sum + length, 0);
@@ -51,7 +51,15 @@ function sampleSegments(segments: readonly Segment[], count: number): Point[] {
     }
     const [a, b] = segments[segment];
     const t = distance / lengths[segment];
-    return toPercent({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+  });
+}
+
+/** `count` points on a small circle, used to draw graph nodes. */
+function ringPoints(centre: Point, radius: number, count: number): Point[] {
+  return Array.from({ length: count }, (_, index) => {
+    const angle = (index / count) * Math.PI * 2 + Math.PI / 4;
+    return { x: centre.x + Math.cos(angle) * radius, y: centre.y + Math.sin(angle) * radius };
   });
 }
 
@@ -114,17 +122,65 @@ export function highPassPoints(count: number): Point[] {
     ],
   ];
 
-  return sampleSegments(segments, count).sort(byColumn);
+  return sampleSegments(segments, count).map(toPercent).sort(byColumn);
 }
 
-/** Label anchor positions (percent of the box) for the high-pass diagram. */
-export function highPassLabels() {
-  const { top, rail, inputX, outputX, capacitorX, resistorX } = HIGH_PASS;
-  const capacitorCentre = (capacitorX[0] + capacitorX[1]) / 2;
-  return [
-    { text: "in", ...toPercent({ x: inputX, y: top - 8 }) },
-    { text: "out", ...toPercent({ x: outputX, y: top - 8 }) },
-    { text: "C", ...toPercent({ x: capacitorCentre, y: top - 17 }) },
-    { text: "R", ...toPercent({ x: resistorX + 14, y: (top + rail) / 2 }) },
-  ];
+/** Fully connected neural network, input layer on the left. Nodes are rings, weights are dotted lines. */
+const NETWORK = {
+  left: 26,
+  right: 134,
+  nodeGap: 26,
+  nodeRadius: 3.4,
+  dotsPerNode: 6,
+} as const;
+
+export function networkPoints(layerSizes: readonly number[], count: number): Point[] {
+  const { left, right, nodeGap, nodeRadius, dotsPerNode } = NETWORK;
+  const layerGap = (right - left) / (layerSizes.length - 1);
+
+  const layers = layerSizes.map((size, layer) =>
+    Array.from({ length: size }, (_, index) => ({
+      x: left + layer * layerGap,
+      y: HEIGHT / 2 + (index - (size - 1) / 2) * nodeGap,
+    }))
+  );
+
+  const nodes = layers.flat().flatMap((centre) => ringPoints(centre, nodeRadius, dotsPerNode));
+
+  // Every node connects to every node in the next layer; weights stop short of the rings.
+  const weights = layers.slice(1).flatMap((targets, index) =>
+    layers[index].flatMap((source) =>
+      targets.map((target): Segment => {
+        const length = Math.hypot(target.x - source.x, target.y - source.y);
+        const gap = nodeRadius + 2;
+        const [dx, dy] = [
+          ((target.x - source.x) / length) * gap,
+          ((target.y - source.y) / length) * gap,
+        ];
+        return [
+          { x: source.x + dx, y: source.y + dy },
+          { x: target.x - dx, y: target.y - dy },
+        ];
+      })
+    )
+  );
+
+  return [...nodes, ...sampleSegments(weights, count - nodes.length)].map(toPercent).sort(byColumn);
+}
+
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
+/**
+ * Dots pinned to a latitude/longitude lattice on a sphere. The projection and spin happen in CSS,
+ * so the globe can rotate once formed. Rows sit on parallels and columns line up into meridians.
+ */
+export function globeCoordinates(parallels: number, meridians: number): Coordinate[] {
+  const latitudeStep = 150 / parallels;
+  return Array.from({ length: parallels * meridians }, (_, index) => ({
+    latitude: -75 + latitudeStep * (Math.floor(index / meridians) + 0.5),
+    longitude: (index % meridians) * (360 / meridians) - 180,
+  })).sort((a, b) => a.longitude - b.longitude || a.latitude - b.latitude);
 }
