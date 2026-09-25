@@ -39,7 +39,7 @@ export const toolkit = {
   build: ["Python", "Django", "Celery", "PostgreSQL", "Astro"],
   ship: ["Terraform", "Cloudflare", "GitHub Actions", "n8n"],
   run: ["Google Cloud", "Firebase", "Sentry"],
-  coordinate: ["Linear", "Notion", "Slack"],
+  coordinate: ["Claude", "Linear", "Notion", "Slack"],
 } as const;
 
 export type Location = (typeof locations)[number];
