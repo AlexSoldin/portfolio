@@ -4,21 +4,23 @@
 // Pure CSS: every dot's positions are generated here from a fixed seed, so renders are identical.
 import {
   createRandom,
+  fitTo,
   gridPoints,
   highPassPoints,
+  loosePoints,
   networkPoints,
-  scatterPoints,
 } from "./dotShapes";
 
-const COLUMNS = 16;
-const ROWS = 9;
-const COUNT = COLUMNS * ROWS;
-
 const random = createRandom(20260924);
-const scatter = scatterPoints(COUNT, random);
-const grid = gridPoints(COLUMNS, ROWS);
-const circuit = highPassPoints(COUNT);
-const network = networkPoints([2, 3, 2], COUNT);
+const circuitShape = highPassPoints();
+const networkShape = networkPoints([2, 3, 2]);
+
+// Every stage shares one set of dots; shapes that need fewer hide the extras.
+const COUNT = Math.max(circuitShape.length, networkShape.length);
+const grid = gridPoints(COUNT);
+const loose = loosePoints(grid, random);
+const circuit = fitTo(circuitShape, COUNT);
+const network = fitTo(networkShape, COUNT);
 
 // Current: the pulse travels forward along the wire and back along the ground rail.
 const CURRENT_SWEEP_MS = 2400;
@@ -26,17 +28,22 @@ const CURRENT_SWEEP_MS = 2400;
 const PULSE_SWEEP_MS = 1800;
 
 const cq = (value: number, unit: "cqw" | "cqh") => `${value.toFixed(2)}${unit}`;
+const alpha = (value: number) => value.toFixed(2);
 
 const dots = grid.map((gridPoint, index) =>
   [
-    `--sx: ${cq(scatter[index].x, "cqw")}`,
-    `--sy: ${cq(scatter[index].y, "cqh")}`,
+    `--sx: ${cq(loose[index].x, "cqw")}`,
+    `--sy: ${cq(loose[index].y, "cqh")}`,
+    `--sa: ${alpha(loose[index].alpha)}`,
     `--gx: ${cq(gridPoint.x, "cqw")}`,
     `--gy: ${cq(gridPoint.y, "cqh")}`,
+    `--ga: ${alpha(gridPoint.alpha)}`,
     `--cx: ${cq(circuit[index].x, "cqw")}`,
     `--cy: ${cq(circuit[index].y, "cqh")}`,
+    `--ca: ${alpha(circuit[index].alpha)}`,
     `--nx: ${cq(network[index].x, "cqw")}`,
     `--ny: ${cq(network[index].y, "cqh")}`,
+    `--na: ${alpha(network[index].alpha)}`,
     `--current-delay: ${Math.round(circuit[index].flow * CURRENT_SWEEP_MS)}ms`,
     `--pulse-delay: ${Math.round((1 - network[index].x / 100) * PULSE_SWEEP_MS)}ms`,
     `--delay: ${Math.round(random() * -600)}ms`,
@@ -66,9 +73,9 @@ const dots = grid.map((gridPoint, index) =>
     position: absolute;
     top: 0;
     left: 0;
-    width: 3px;
-    height: 3px;
-    margin: -1.5px 0 0 -1.5px;
+    width: 1.5px;
+    height: 1.5px;
+    margin: -0.75px 0 0 -0.75px;
     border-radius: 9999px;
     background: var(--foreground);
     animation:
@@ -84,22 +91,22 @@ const dots = grid.map((gridPoint, index) =>
     95%,
     100% {
       translate: var(--sx) var(--sy);
-      opacity: 0.3;
+      opacity: var(--sa);
     }
     14%,
     22% {
       translate: var(--gx) var(--gy);
-      opacity: 0.6;
+      opacity: var(--ga);
     }
     33%,
     53% {
       translate: var(--cx) var(--cy);
-      opacity: 0.9;
+      opacity: var(--ca);
     }
     65%,
     85% {
       translate: var(--nx) var(--ny);
-      opacity: 0.9;
+      opacity: var(--na);
     }
   }
 
@@ -115,7 +122,7 @@ const dots = grid.map((gridPoint, index) =>
       transform: scale(1);
     }
     37.5% {
-      transform: scale(1.9);
+      transform: scale(2.4);
     }
   }
 
@@ -128,7 +135,7 @@ const dots = grid.map((gridPoint, index) =>
       scale: 1;
     }
     70% {
-      scale: 1.9;
+      scale: 2.4;
     }
   }
 
@@ -137,7 +144,7 @@ const dots = grid.map((gridPoint, index) =>
     .dot {
       animation: none;
       translate: var(--cx) var(--cy);
-      opacity: 0.8;
+      opacity: var(--ca);
     }
   }
 </style>

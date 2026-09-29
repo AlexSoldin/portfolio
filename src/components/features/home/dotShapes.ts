@@ -1,9 +1,15 @@
 // Point sets for the homepage dot animation.
 // Shapes are drawn on a 160 × 90 canvas (16:9) and returned as percentages of the box.
+// Lines are sampled at a fixed pitch so every shape shares the same rhythm, and each point
+// carries its own opacity so the important parts of a shape read brighter than the wiring.
 
 export interface Point {
   x: number;
   y: number;
+}
+
+export interface Dot extends Point {
+  alpha: number;
 }
 
 type Segment = readonly [Point, Point];
@@ -11,7 +17,16 @@ type Segment = readonly [Point, Point];
 const WIDTH = 160;
 const HEIGHT = 90;
 
-const toPercent = ({ x, y }: Point): Point => ({ x: (x / WIDTH) * 100, y: (y / HEIGHT) * 100 });
+/** Canvas units between dots along wires and weights. */
+const LINE_PITCH = 2.2;
+/** Canvas units between dots inside filled shapes (network nodes). */
+const FILL_PITCH = 1.25;
+
+const toPercent = <T extends Point>(point: T): T => ({
+  ...point,
+  x: (point.x / WIDTH) * 100,
+  y: (point.y / HEIGHT) * 100,
+});
 
 const byColumn = (a: Point, b: Point) => a.x - b.x || a.y - b.y;
 
@@ -24,42 +39,69 @@ export function createRandom(seed: number) {
   };
 }
 
-export function scatterPoints(count: number, random: () => number): Point[] {
-  return Array.from({ length: count }, () => ({ x: 4 + random() * 92, y: 6 + random() * 88 }));
+/**
+ * Pad a shape to exactly `count` dots. Extras sit on top of existing dots with zero opacity,
+ * so they travel with the shape and fade in or out without adding visual weight.
+ */
+export function fitTo<T extends Dot>(points: readonly T[], count: number): T[] {
+  const padding = Array.from({ length: Math.max(0, count - points.length) }, (_, index) => ({
+    ...points[Math.floor((index * points.length) / (count - points.length)) % points.length],
+    alpha: 0,
+  }));
+  return [...points.slice(0, count), ...padding].sort(byColumn);
 }
 
-export function gridPoints(columns: number, rows: number): Point[] {
+/** An even lattice that fits within `count` dots at the canvas's 16:9 aspect. */
+function latticeSize(count: number) {
+  const columns = Math.floor(Math.sqrt((count * WIDTH) / HEIGHT));
+  return { columns, rows: Math.floor(count / columns) };
+}
+
+export function gridPoints(count: number): Dot[] {
+  const { columns, rows } = latticeSize(count);
   const points = Array.from({ length: columns * rows }, (_, index) => ({
     x: 8 + (index % columns) * (84 / (columns - 1)),
     y: 12 + Math.floor(index / columns) * (76 / (rows - 1)),
+    alpha: 0.28,
   }));
-  return points.sort(byColumn);
+  return fitTo(points, count);
 }
 
-/** Spread `count` points evenly along a set of line segments (canvas units). */
-function sampleSegments(segments: readonly Segment[], count: number): Point[] {
-  const lengths = segments.map(([a, b]) => Math.hypot(b.x - a.x, b.y - a.y));
-  const total = lengths.reduce((sum, length) => sum + length, 0);
-  const step = total / count;
+/** The grid, nudged off its lattice and dimmed: calm noise rather than a random spray. */
+export function loosePoints(grid: readonly Dot[], random: () => number): Dot[] {
+  const { columns, rows } = latticeSize(grid.length);
+  const [jitterX, jitterY] = [84 / (columns - 1), 76 / (rows - 1)];
+  return grid.map((point) => ({
+    x: point.x + (random() - 0.5) * jitterX * 1.6,
+    y: point.y + (random() - 0.5) * jitterY * 1.6,
+    alpha: point.alpha && 0.08 + random() * 0.16,
+  }));
+}
 
-  return Array.from({ length: count }, (_, index) => {
-    let distance = (index + 0.5) * step;
-    let segment = 0;
-    while (distance > lengths[segment] && segment < segments.length - 1) {
-      distance -= lengths[segment];
-      segment += 1;
-    }
-    const [a, b] = segments[segment];
-    const t = distance / lengths[segment];
-    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+/** Dots along a set of line segments (canvas units), `pitch` apart, centred on each segment. */
+function sampleSegments(segments: readonly Segment[], alpha: number, pitch = LINE_PITCH): Dot[] {
+  return segments.flatMap(([a, b]) => {
+    const steps = Math.max(1, Math.round(Math.hypot(b.x - a.x, b.y - a.y) / pitch));
+    return Array.from({ length: steps }, (_, index) => {
+      const t = (index + 0.5) / steps;
+      return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, alpha };
+    });
   });
 }
 
-/** `count` points on a small circle, used to draw graph nodes. */
-function ringPoints(centre: Point, radius: number, count: number): Point[] {
-  return Array.from({ length: count }, (_, index) => {
-    const angle = (index / count) * Math.PI * 2 + Math.PI / 4;
-    return { x: centre.x + Math.cos(angle) * radius, y: centre.y + Math.sin(angle) * radius };
+/** A filled disc of hex-packed dots, used for graph nodes. */
+function discPoints(centre: Point, radius: number, alpha: number): Dot[] {
+  const rowHeight = FILL_PITCH * (Math.sqrt(3) / 2);
+  const rows = Math.floor(radius / rowHeight);
+  return Array.from({ length: rows * 2 + 1 }, (_, row) => row - rows).flatMap((row) => {
+    const y = row * rowHeight;
+    const offset = Math.abs(row) % 2 === 1 ? FILL_PITCH / 2 : 0;
+    const reach = Math.floor((Math.sqrt(radius ** 2 - y ** 2) - offset) / FILL_PITCH);
+    return Array.from({ length: Math.max(0, reach * 2 + (offset ? 2 : 1)) }, (_, column) => ({
+      x: centre.x + (offset ? (column - reach - 0.5) * FILL_PITCH : (column - reach) * FILL_PITCH),
+      y: centre.y + y,
+      alpha,
+    }));
   });
 }
 
@@ -73,7 +115,10 @@ export const HIGH_PASS = {
   resistorX: 104,
 } as const;
 
-export interface CircuitPoint extends Point {
+const WIRE_ALPHA = 0.4;
+const COMPONENT_ALPHA = 0.95;
+
+export interface CircuitDot extends Dot {
   /** How far along the current's path this dot sits, 0 (input) to 1 (back at the input on the rail). */
   flow: number;
 }
@@ -96,7 +141,7 @@ function circuitFlow({ x, y }: Point): number {
   return (x - inputX) / (span * 2);
 }
 
-export function highPassPoints(count: number): CircuitPoint[] {
+export function highPassPoints(): CircuitDot[] {
   const { top, rail, inputX, outputX, capacitorX, resistorX } = HIGH_PASS;
   const [plateA, plateB] = capacitorX;
   const zigTop = top + 10;
@@ -113,18 +158,10 @@ export function highPassPoints(count: number): CircuitPoint[] {
     ];
   });
 
-  const segments: Segment[] = [
+  const wires: Segment[] = [
     [
       { x: inputX, y: top },
       { x: plateA, y: top },
-    ],
-    [
-      { x: plateA, y: top - 10 },
-      { x: plateA, y: top + 10 },
-    ],
-    [
-      { x: plateB, y: top - 10 },
-      { x: plateB, y: top + 10 },
     ],
     [
       { x: plateB, y: top },
@@ -134,7 +171,6 @@ export function highPassPoints(count: number): CircuitPoint[] {
       { x: resistorX, y: top },
       { x: resistorX, y: zigTop },
     ],
-    ...zigzag,
     [
       { x: resistorX, y: zigBottom },
       { x: resistorX, y: rail },
@@ -145,22 +181,36 @@ export function highPassPoints(count: number): CircuitPoint[] {
     ],
   ];
 
-  return sampleSegments(segments, count)
-    .map((point) => ({ ...toPercent(point), flow: circuitFlow(point) }))
-    .sort(byColumn);
+  const components: Segment[] = [
+    [
+      { x: plateA, y: top - 10 },
+      { x: plateA, y: top + 10 },
+    ],
+    [
+      { x: plateB, y: top - 10 },
+      { x: plateB, y: top + 10 },
+    ],
+    ...zigzag,
+  ];
+
+  return [
+    ...sampleSegments(wires, WIRE_ALPHA),
+    ...sampleSegments(components, COMPONENT_ALPHA, LINE_PITCH * 0.6),
+  ].map((point) => ({ ...toPercent(point), flow: circuitFlow(point) }));
 }
 
-/** Fully connected neural network, input layer on the left. Nodes are rings, weights are dotted lines. */
+/** Fully connected neural network, input layer on the left. Nodes are filled discs, weights are dotted lines. */
 const NETWORK = {
   left: 26,
   right: 134,
   nodeGap: 26,
-  nodeRadius: 3.4,
-  dotsPerNode: 6,
+  nodeRadius: 4,
+  nodeAlpha: 0.95,
+  weightAlpha: 0.3,
 } as const;
 
-export function networkPoints(layerSizes: readonly number[], count: number): Point[] {
-  const { left, right, nodeGap, nodeRadius, dotsPerNode } = NETWORK;
+export function networkPoints(layerSizes: readonly number[]): Dot[] {
+  const { left, right, nodeGap, nodeRadius, nodeAlpha, weightAlpha } = NETWORK;
   const layerGap = (right - left) / (layerSizes.length - 1);
 
   const layers = layerSizes.map((size, layer) =>
@@ -170,9 +220,9 @@ export function networkPoints(layerSizes: readonly number[], count: number): Poi
     }))
   );
 
-  const nodes = layers.flat().flatMap((centre) => ringPoints(centre, nodeRadius, dotsPerNode));
+  const nodes = layers.flat().flatMap((centre) => discPoints(centre, nodeRadius, nodeAlpha));
 
-  // Every node connects to every node in the next layer; weights stop short of the rings.
+  // Every node connects to every node in the next layer; weights stop short of the discs.
   const weights = layers.slice(1).flatMap((targets, index) =>
     layers[index].flatMap((source) =>
       targets.map((target): Segment => {
@@ -190,5 +240,5 @@ export function networkPoints(layerSizes: readonly number[], count: number): Poi
     )
   );
 
-  return [...nodes, ...sampleSegments(weights, count - nodes.length)].map(toPercent).sort(byColumn);
+  return [...nodes, ...sampleSegments(weights, weightAlpha, LINE_PITCH * 1.2)].map(toPercent);
 }
