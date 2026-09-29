@@ -24,7 +24,7 @@ pnpm cf:preview       # Build and preview with Wrangler
 
 ## Architecture
 
-This is an Astro 6 portfolio site deployed to Cloudflare Workers. It ships no client framework: every component is `.astro`, and the only client JS is the small inlined theme toggle script in `Header.astro`.
+This is an Astro 6 portfolio site deployed to Cloudflare Workers. It ships no client framework: every component is `.astro`, and the only client JS is the small inlined theme toggle script in `Header.astro` and the `<dot-matrix>` hero element (`features/home/dot-matrix/`).
 
 **Tech stack:** Astro 6, TypeScript (strict), Tailwind CSS 4, plain CSS for motion.
 
@@ -48,6 +48,8 @@ src/
 - **Fonts** - self-hosted via Astro's `fonts` config in `astro.config.mjs`, loaded with `<Font />` in `BaseLayout.astro`. Load only the weights actually used.
 - **Icons** - inline SVG through `components/ui/Icon.astro`; add new paths to its `paths` map. No icon fonts.
 - **Tabs** - the About page tabs are CSS-only (visually hidden radios + `:checked` sibling selectors in `styles/features/about.css`).
+- **Client scripts** - plain Astro `<script>` modules (bundled, deduped). Anything per-instance is a custom element that sets up in `connectedCallback` and tears down every observer, listener and animation frame in `disconnectedCallback`.
+- **Hero dots** - `features/home/dot-matrix/`: `<dot-matrix>` draws a fixed lattice on one `<canvas>`. Each stage is a brightness value per cell (`fields.ts`); shapes are drawn on lattice cells in `circuit.ts` / `network.ts` (rows, columns, 45° or one-dot lines, never free geometry); the loop is `timeline.ts`, drawing is `board.ts`, lifecycle is `element.ts`. A `<noscript>` SVG renders the finished circuit.
 - **Page transitions** - native cross-document view transitions (`@view-transition` in `globals.css`); the theme switch uses `document.startViewTransition`.
 
 ### Motion

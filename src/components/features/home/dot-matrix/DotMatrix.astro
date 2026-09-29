@@ -1,0 +1,77 @@
+---
+// Dot-matrix hero: a fixed lattice of dots on one canvas. Dots never move; they swell and brighten to
+// draw each stage, so the grid stays pixel-sharp at any size and a theme swap redraws a single element.
+// Without JavaScript, the finished circuit is drawn as a static SVG from the same fields at render time.
+import { dotLook, fitLattice } from "./board";
+
+const [WIDTH, HEIGHT, PITCH] = [880, 495, 10];
+const { origin, lattice, fields } = fitLattice(WIDTH, HEIGHT, PITCH);
+const { columns } = lattice;
+const rest = dotLook(0);
+const circuitDots = Array.from(fields.circuit).flatMap((level, index) => {
+  if (level === 0) return [];
+  const { radius, alpha } = dotLook(level);
+  return [
+    {
+      cx: origin.x + (index % columns) * PITCH,
+      cy: origin.y + Math.floor(index / columns) * PITCH,
+      r: (radius * PITCH).toFixed(2),
+      opacity: alpha.toFixed(2),
+    },
+  ];
+});
+---
+
+<dot-matrix aria-hidden="true">
+  <canvas></canvas>
+  <noscript>
+    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
+      <defs>
+        <pattern
+          id="dot-matrix-rest"
+          width={PITCH}
+          height={PITCH}
+          patternUnits="userSpaceOnUse"
+          patternTransform={`translate(${origin.x - PITCH / 2} ${origin.y - PITCH / 2})`}
+        >
+          <circle
+            cx={PITCH / 2}
+            cy={PITCH / 2}
+            r={rest.radius * PITCH}
+            fill="currentColor"
+            opacity={rest.alpha}></circle>
+        </pattern>
+      </defs>
+      <rect width={WIDTH} height={HEIGHT} fill="url(#dot-matrix-rest)"></rect>
+      {circuitDots.map((dot) => <circle {...dot} fill="currentColor" />)}
+    </svg>
+  </noscript>
+</dot-matrix>
+
+<script>
+  import "./element";
+</script>
+
+<style>
+  dot-matrix {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    color: var(--foreground);
+  }
+
+  @media (width >= 48rem) {
+    dot-matrix {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  canvas,
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
