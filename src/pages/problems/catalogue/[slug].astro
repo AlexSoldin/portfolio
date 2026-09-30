@@ -1,0 +1,88 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+import ProblemDiagram from "@/components/features/problems/ProblemDiagram.astro";
+import ProblemMeta from "@/components/features/problems/ProblemMeta.astro";
+import BackButton from "@/components/ui/BackButton.astro";
+import Icon from "@/components/ui/Icon.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getProblems, type Problem } from "@/utils/problems";
+import "@/styles/features/problems.css";
+
+export const prerender = true;
+
+export const getStaticPaths = (async () => {
+  const problems = await getProblems();
+  return problems.map((problem, index) => ({
+    params: { slug: problem.id },
+    props: { problem, next: problems[(index + 1) % problems.length] },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  problem: Problem;
+  next: Problem;
+}
+
+const { problem, next } = Astro.props;
+const { Content } = await render(problem);
+---
+
+<BaseLayout
+  title={`${problem.data.project} | Alex Soldin`}
+  description={problem.data.summary}
+  showFooter={true}
+>
+  <BackButton slot="nav" href="/problems/catalogue" text="All problems" />
+
+  <main class="relative z-10 flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+    <article class="w-full max-w-6xl mx-auto">
+      <header class="pt-16 pb-16 md:pt-24 md:pb-20 border-b border-(--border)/50">
+        <p class="text-sm font-light text-(--muted)">{problem.data.project}</p>
+        <h1
+          class="mt-6 font-serif italic text-5xl md:text-8xl leading-[0.95] tracking-tight text-balance"
+          style={`view-transition-name: problem-${problem.id}; view-transition-class: problem-title`}
+        >
+          {problem.data.title}
+        </h1>
+        <p
+          class="mt-10 max-w-2xl text-xl md:text-2xl font-light leading-relaxed text-(--foreground)/90"
+        >
+          {problem.data.summary}
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 py-16 md:py-24">
+        <aside class="lg:col-span-3">
+          <div class="lg:sticky lg:top-12">
+            <ProblemMeta problem={problem} />
+          </div>
+        </aside>
+
+        <div class="lg:col-span-9 space-y-16">
+          <div class="border border-(--border) p-6 md:p-10">
+            <ProblemDiagram diagram={problem.data.diagram} />
+          </div>
+          <div class="problem-prose">
+            <Content />
+          </div>
+        </div>
+      </div>
+
+      <a
+        href={`/problems/catalogue/${next.id}`}
+        class="group pressable block border-t border-(--border) pt-10"
+      >
+        <span class="text-sm font-light text-(--muted)">Next problem</span>
+        <span class="mt-3 flex items-baseline justify-between gap-6">
+          <span class="font-serif italic text-3xl md:text-5xl leading-tight">{next.data.title}</span
+          >
+          <Icon
+            name="arrow-east"
+            class="size-5 shrink-0 motion-safe:group-hover:translate-x-1 transition-transform duration-200 ease-(--ease-out)"
+          />
+        </span>
+      </a>
+    </article>
+  </main>
+</BaseLayout>

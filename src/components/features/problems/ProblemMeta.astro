@@ -1,0 +1,28 @@
+---
+import type { Problem } from "@/utils/problems";
+
+interface Props {
+  problem: Problem;
+  class?: string;
+}
+
+const { problem, class: className } = Astro.props;
+const { organization, period, role, stack } = problem.data;
+
+const rows = [
+  { term: "Where", detail: `${organization}, ${period}` },
+  { term: "Role", detail: role },
+  { term: "Stack", detail: stack.join(", ") },
+];
+---
+
+<dl class:list={["space-y-5", className]}>
+  {
+    rows.map(({ term, detail }) => (
+      <div>
+        <dt class="text-label text-(--muted) mb-1.5">{term}</dt>
+        <dd class="text-sm font-light leading-relaxed">{detail}</dd>
+      </div>
+    ))
+  }
+</dl>

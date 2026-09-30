@@ -1,0 +1,67 @@
+---
+import { render } from "astro:content";
+import ProblemMeta from "@/components/features/problems/ProblemMeta.astro";
+import BackButton from "@/components/ui/BackButton.astro";
+import PageHero from "@/components/ui/PageHero.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getProblems } from "@/utils/problems";
+import "@/styles/features/problems.css";
+
+export const prerender = true;
+
+const problems = await Promise.all(
+  (await getProblems()).map(async (problem) => ({ problem, ...(await render(problem)) }))
+);
+---
+
+<BaseLayout title="Problems | Alex Soldin" showFooter={true}>
+  <BackButton slot="nav" href="/problems" text="All layouts" />
+
+  <main class="relative z-10 flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+    <div class="w-full max-w-6xl mx-auto">
+      <PageHero title="Problems" />
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 py-16 md:py-24">
+        <nav aria-label="Problems on this page" class="hidden lg:block lg:col-span-3">
+          <ul class="sticky top-12 space-y-5 border-l border-(--border)">
+            {
+              problems.map(({ problem }) => (
+                <li>
+                  <a
+                    href={`#${problem.id}`}
+                    class="pressable block -ml-px pl-5 border-l border-transparent text-sm font-light text-(--muted) hover:text-(--foreground) focus-visible:text-(--foreground) focus-visible:border-(--foreground)"
+                  >
+                    {problem.data.project}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <div class="lg:col-span-9 space-y-32">
+          {
+            problems.map(({ problem, Content }) => (
+              <article id={problem.id} class="scroll-mt-12">
+                <p class="text-sm font-light text-(--muted)">{problem.data.project}</p>
+                <h2 class="mt-4 font-serif italic text-5xl md:text-7xl leading-[0.95] tracking-tight text-balance">
+                  {problem.data.title}
+                </h2>
+                <p class="mt-10 max-w-2xl text-xl md:text-2xl font-light leading-relaxed text-(--foreground)/90">
+                  {problem.data.summary}
+                </p>
+
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-9 gap-12">
+                  <ProblemMeta problem={problem} class="md:col-span-3" />
+                  <div class="problem-prose md:col-span-6">
+                    <Content />
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

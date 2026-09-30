@@ -1,0 +1,40 @@
+---
+const chain = [
+  { name: "Farm", tier: "Tier 3", hasFinding: true },
+  { name: "Processor", tier: "Tier 2", hasFinding: false },
+  { name: "Supplier", tier: "Tier 1", hasFinding: false },
+  { name: "Your product", tier: "You", hasFinding: false },
+];
+---
+
+<figure class="diagram">
+  <div class="chain">
+    <div class="chain-research">
+      <div class="node node--dashed">
+        <p class="node-title">n8n research</p>
+        <p class="node-fields">Country, commodity, sanctions, news</p>
+      </div>
+      <span class="chain-drop" aria-hidden="true"></span>
+    </div>
+
+    <ol class="chain-nodes">
+      {
+        chain.map((link) => (
+          <li class:list={["node", "chain-node", link.hasFinding && "node--focus"]}>
+            <p class="diagram-note">{link.tier}</p>
+            <p class="node-title">{link.name}</p>
+            <p class="chain-risk">{link.hasFinding ? "Finding raised" : "Risk inherited"}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="chain-directions">
+      <p class="diagram-note">Upstream: requests for information</p>
+      <p class="diagram-note">Downstream: risk propagates</p>
+    </div>
+  </div>
+  <figcaption class="diagram-caption">
+    One finding at the farm reaches every link that depends on it.
+  </figcaption>
+</figure>

@@ -1,0 +1,20 @@
+---
+import DocumentModel from "@/components/features/problems/diagrams/DocumentModel.astro";
+import LinearFlow from "@/components/features/problems/diagrams/LinearFlow.astro";
+import RiskPropagation from "@/components/features/problems/diagrams/RiskPropagation.astro";
+import type { Problem } from "@/utils/problems";
+
+interface Props {
+  diagram: Problem["data"]["diagram"];
+}
+
+const diagrams = {
+  "linear-flow": LinearFlow,
+  "document-model": DocumentModel,
+  "risk-propagation": RiskPropagation,
+} as const;
+
+const Diagram = diagrams[Astro.props.diagram];
+---
+
+<Diagram />

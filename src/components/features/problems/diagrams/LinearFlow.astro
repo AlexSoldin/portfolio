@@ -1,0 +1,47 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+const sources = ["Sales calls", "Support tickets", "Slack threads", "Product usage"];
+const triageSteps = ["Tag by product area", "Link to a roadmap project", "Link to the customer"];
+const teams = ["Platform", "Data", "Frontend"];
+---
+
+<figure class="diagram">
+  <div class="flow">
+    <div class="flow-stage">
+      <p class="diagram-heading">Comes in</p>
+      <ul class="flow-list">
+        {sources.map((source) => <li class="node">{source}</li>)}
+      </ul>
+    </div>
+
+    <Icon name="arrow-east" class="flow-arrow" />
+
+    <div class="flow-stage">
+      <p class="diagram-heading">PMO triage</p>
+      <ol class="flow-list node node--focus">
+        {triageSteps.map((step) => <li>{step}</li>)}
+      </ol>
+    </div>
+
+    <Icon name="arrow-east" class="flow-arrow" />
+
+    <div class="flow-stage">
+      <p class="diagram-heading">Lands in</p>
+      <div class="node node--focus">Roadmap project</div>
+      <div class="flow-branch">
+        <p class="diagram-note">Delivered by</p>
+        <ul class="flow-teams">
+          {teams.map((team) => <li class="node">{team}</li>)}
+        </ul>
+      </div>
+      <div class="flow-branch">
+        <p class="diagram-note">Evidence from</p>
+        <div class="node node--dashed">Customer requests</div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="diagram-caption">
+    Every insight takes the same path, and ends up linked to the work and the customer.
+  </figcaption>
+</figure>

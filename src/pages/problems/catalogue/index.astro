@@ -1,0 +1,67 @@
+---
+import BackButton from "@/components/ui/BackButton.astro";
+import PageHero from "@/components/ui/PageHero.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getProblems } from "@/utils/problems";
+import "@/styles/features/problems.css";
+
+export const prerender = true;
+
+const problems = await getProblems();
+---
+
+<BaseLayout title="Problems | Alex Soldin" showFooter={true}>
+  <BackButton slot="nav" href="/problems" text="All layouts" />
+
+  <main class="relative z-10 flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+    <div class="w-full max-w-6xl mx-auto">
+      <PageHero title="Problems" showBorder={false} />
+
+      <ul class="border-t border-(--border)">
+        {
+          problems.map((problem) => (
+            <li class="border-b border-(--border)">
+              <a
+                href={`/problems/catalogue/${problem.id}`}
+                class="catalogue-row group grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-12 py-10 md:py-14"
+              >
+                <span class="md:col-span-3 text-sm font-light text-(--muted)">
+                  {problem.data.project}
+                  <span class="block mt-1">{problem.data.period}</span>
+                </span>
+                <span class="md:col-span-9">
+                  <span
+                    class="problem-title block font-serif italic text-4xl md:text-6xl leading-[1] tracking-tight text-balance"
+                    style={`view-transition-name: problem-${problem.id}; view-transition-class: problem-title`}
+                  >
+                    {problem.data.title}
+                  </span>
+                  <span class="mt-5 block max-w-2xl font-light leading-relaxed text-(--muted)">
+                    {problem.data.summary}
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .problem-title {
+    transition: opacity 150ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .catalogue-row:hover .problem-title {
+      opacity: 0.6;
+    }
+  }
+
+  .catalogue-row:focus-visible {
+    outline: 1px solid var(--foreground);
+    outline-offset: 4px;
+  }
+</style>

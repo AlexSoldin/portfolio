@@ -1,0 +1,61 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import BackButton from "@/components/ui/BackButton.astro";
+import PageHero from "@/components/ui/PageHero.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const prerender = true;
+
+// Temporary chooser while the layout drafts are compared; replace with the chosen layout
+const drafts = [
+  {
+    href: "/problems/essay",
+    name: "Essay",
+    description: "One long read. Each problem is a chapter, with a rail to jump between them.",
+  },
+  {
+    href: "/problems/systems",
+    name: "Systems",
+    description: "Diagram first. Each problem is shown as the system that solved it.",
+  },
+  {
+    href: "/problems/catalogue",
+    name: "Catalogue",
+    description: "A short index of problems, each opening into its own page.",
+  },
+];
+---
+
+<BaseLayout title="Problems | Alex Soldin" showFooter={true}>
+  <BackButton slot="nav" />
+
+  <main class="relative z-10 flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+    <div class="w-full max-w-5xl mx-auto">
+      <PageHero title="Problems" />
+      <p class="mt-12 max-w-xl text-lg font-light leading-relaxed text-(--muted)">
+        Three layout drafts for the same three case studies. Pick one to keep.
+      </p>
+      <ul class="mt-12 border-t border-(--border)">
+        {
+          drafts.map((draft) => (
+            <li class="border-b border-(--border)">
+              <a
+                href={draft.href}
+                class="group pressable flex items-baseline justify-between gap-6 py-8"
+              >
+                <span class="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-10">
+                  <span class="font-serif italic text-4xl md:w-48">{draft.name}</span>
+                  <span class="font-light text-(--muted) max-w-md">{draft.description}</span>
+                </span>
+                <Icon
+                  name="arrow-east"
+                  class="size-5 shrink-0 motion-safe:group-hover:translate-x-1 transition-transform duration-200 ease-(--ease-out)"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+</BaseLayout>

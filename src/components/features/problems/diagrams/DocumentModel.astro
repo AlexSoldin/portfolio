@@ -1,0 +1,54 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+const sharedFields = ["company", "owner", "status", "files", "valid_until"];
+const subtypes = [
+  { name: "Certificate", fields: ["issuer", "expires_on"] },
+  { name: "Policy", fields: ["version", "scope"] },
+  { name: "Report", fields: ["period", "framework"] },
+];
+
+const published = `{
+  "id": "doc_8f2c",
+  "document_type": "certificate",
+  "company": "cmp_31",
+  "status": "approved",
+  "valid_until": "2026-03-31",
+  "attributes": {
+    "issuer": "FSC",
+    "expires_on": "2026-03-31"
+  },
+  "version": 3
+}`;
+---
+
+<figure class="diagram">
+  <div class="model">
+    <div class="model-tree">
+      <div class="node node--focus">
+        <p class="node-title">Document</p>
+        <p class="node-fields">{sharedFields.join(", ")}</p>
+      </div>
+      <ul class="model-children">
+        {
+          subtypes.map((subtype) => (
+            <li class="node">
+              <p class="node-title">{subtype.name}</p>
+              <p class="node-fields">{subtype.fields.join(", ")}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="model-publish">
+      <Icon name="arrow-east" class="flow-arrow" />
+      <p class="diagram-note">Flattened on publish</p>
+    </div>
+
+    <pre class="node model-payload"><code>{published}</code></pre>
+  </div>
+  <figcaption class="diagram-caption">
+    Typed inside the data room. One flat, versioned shape for everyone else.
+  </figcaption>
+</figure>
