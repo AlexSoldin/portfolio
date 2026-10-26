@@ -24,7 +24,6 @@ yarn.lock
 # IDE / tooling
 .idea
 .vscode
-.serena
 
 # Other
 *.md
